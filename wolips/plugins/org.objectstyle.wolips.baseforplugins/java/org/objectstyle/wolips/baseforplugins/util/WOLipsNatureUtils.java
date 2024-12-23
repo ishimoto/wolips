@@ -16,13 +16,13 @@ public class WOLipsNatureUtils {
 
 	public final static String INCREMENTAL_APPLICATION_ID = "org.objectstyle.wolips.incrementalapplicationnature";
 
-	public final static String ANT_FRAMEWORK_ID = "org.objectstyle.wolips.antframeworknature";
-
-	public final static String ANT_APPLICATION_ID = "org.objectstyle.wolips.antapplicationnature";
+//	public final static String ANT_FRAMEWORK_ID = "org.objectstyle.wolips.antframeworknature";
+//
+//	public final static String ANT_APPLICATION_ID = "org.objectstyle.wolips.antapplicationnature";
 
 	private final static String TARGET_BUILDER_ID = "org.objectstyle.wolips.targetbuilder.targetbuildernature";
 
-	private final static String[] NATURES = new String[] { INCREMENTAL_FRAMEWORK_ID, INCREMENTAL_APPLICATION_ID, ANT_FRAMEWORK_ID, ANT_APPLICATION_ID };
+	private final static String[] NATURES = new String[] { INCREMENTAL_FRAMEWORK_ID, INCREMENTAL_APPLICATION_ID};
 
 	/**
 	 * @param project
@@ -44,25 +44,25 @@ public class WOLipsNatureUtils {
 		return addNatureToProject(WOLipsNatureUtils.INCREMENTAL_APPLICATION_ID, project, monitor);
 	}
 
-	/**
-	 * @param project
-	 * @param monitor
-	 * @return true when the nature successfully added
-	 * @throws CoreException
-	 */
-	public static boolean addAntFrameworkNatureToProject(IProject project, IProgressMonitor monitor) throws CoreException {
-		return addNatureToProject(WOLipsNatureUtils.ANT_FRAMEWORK_ID, project, monitor);
-	}
+//	/**
+//	 * @param project
+//	 * @param monitor
+//	 * @return true when the nature successfully added
+//	 * @throws CoreException
+//	 */
+//	public static boolean addAntFrameworkNatureToProject(IProject project, IProgressMonitor monitor) throws CoreException {
+//		return addNatureToProject(WOLipsNatureUtils.ANT_FRAMEWORK_ID, project, monitor);
+//	}
 
-	/**
-	 * @param project
-	 * @param monitor
-	 * @return true when the nature successfully added
-	 * @throws CoreException
-	 */
-	public static boolean addAntApplicationNatureToProject(IProject project, IProgressMonitor monitor) throws CoreException {
-		return addNatureToProject(WOLipsNatureUtils.ANT_APPLICATION_ID, project, monitor);
-	}
+//	/**
+//	 * @param project
+//	 * @param monitor
+//	 * @return true when the nature successfully added
+//	 * @throws CoreException
+//	 */
+//	public static boolean addAntApplicationNatureToProject(IProject project, IProgressMonitor monitor) throws CoreException {
+//		return addNatureToProject(WOLipsNatureUtils.ANT_APPLICATION_ID, project, monitor);
+//	}
 
 	public static boolean addNatureToProject(String id, IProject project, IProgressMonitor monitor) throws CoreException {
 		IProjectNature nature = project.getNature(id);
@@ -77,22 +77,19 @@ public class WOLipsNatureUtils {
 	}
 
 	public static void removeNaturesFromProject(IProject project, IProgressMonitor monitor) throws CoreException {
-		setNatureForProject(null, false, project, monitor);
+		setNatureForProject(null, project, monitor);
 	}
 
-	public static void setNatureForProject(String id, boolean useTargetBuilder, IProject project, IProgressMonitor monitor) throws CoreException {
+	public static void setNatureForProject(String id, IProject project, IProgressMonitor monitor) throws CoreException {
 		IProjectDescription description = project.getDescription();
 		List<String> naturesList = new ArrayList<String>(Arrays.asList(description.getNatureIds()));
-		naturesList.remove(WOLipsNatureUtils.ANT_APPLICATION_ID);
-		naturesList.remove(WOLipsNatureUtils.ANT_FRAMEWORK_ID);
+//		naturesList.remove(WOLipsNatureUtils.ANT_APPLICATION_ID);
+//		naturesList.remove(WOLipsNatureUtils.ANT_FRAMEWORK_ID);
 		naturesList.remove(WOLipsNatureUtils.INCREMENTAL_APPLICATION_ID);
 		naturesList.remove(WOLipsNatureUtils.INCREMENTAL_FRAMEWORK_ID);
 		naturesList.remove(WOLipsNatureUtils.TARGET_BUILDER_ID);
 		if (id != null) {
 			naturesList.add(id);
-		}
-		if (useTargetBuilder) {
-			naturesList.add(WOLipsNatureUtils.TARGET_BUILDER_ID);
 		}
 		description.setNatureIds(naturesList.toArray(new String[naturesList.size()]));
 		project.setDescription(description, monitor);
