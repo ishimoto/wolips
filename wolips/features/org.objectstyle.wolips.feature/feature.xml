@@ -90,7 +90,6 @@ on the ObjectStyle Group, please see http://objectstyle.org/
       <import plugin="org.eclipse.ui.workbench.texteditor"/>
       <import plugin="org.junit"/>
       <import plugin="org.objectstyle.wolips"/>
-      <import plugin="org.objectstyle.wolips.ant"/>
       <import plugin="org.objectstyle.wolips.apieditor"/>
       <import plugin="org.objectstyle.wolips.baseforplugins"/>
       <import plugin="org.objectstyle.wolips.baseforuiplugins"/>
@@ -141,10 +140,6 @@ on the ObjectStyle Group, please see http://objectstyle.org/
 
    <plugin
          id="org.objectstyle.wolips"
-         version="5.0.0.qualifier"/>
-
-   <plugin
-         id="org.objectstyle.wolips.ant"
          version="5.0.0.qualifier"/>
 
    <plugin
@@ -224,10 +219,6 @@ on the ObjectStyle Group, please see http://objectstyle.org/
          version="5.0.0.qualifier"/>
 
    <plugin
-         id="org.objectstyle.wolips.woproject.ant"
-         version="5.0.0.qualifier"/>
-
-   <plugin
          id="org.objectstyle.wolips.workbenchutilities"
          version="5.0.0.qualifier"/>
 
@@ -272,10 +263,6 @@ on the ObjectStyle Group, please see http://objectstyle.org/
          version="5.0.0.qualifier"/>
 
    <plugin
-         id="org.objectstyle.wolips.deployment.ui"
-         version="5.0.0.qualifier"/>
-
-   <plugin
          id="org.objectstyle.wolips.eomodeler.core"
          version="5.0.0.qualifier"/>
 
@@ -289,10 +276,6 @@ on the ObjectStyle Group, please see http://objectstyle.org/
 
    <plugin
          id="org.objectstyle.wolips.debug"
-         version="5.0.0.qualifier"/>
-
-   <plugin
-         id="org.objectstyle.wolips.wooeditor"
          version="5.0.0.qualifier"/>
 
 </feature>

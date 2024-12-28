@@ -6,15 +6,6 @@
 
 
 <!-- =================================================================================== -->
-<!-- Extension: Antlauncher                                                              -->
-<!-- =================================================================================== -->  
-   <extension point="org.objectstyle.wolips.ant.antlaunchers">
-	  <antlauncher
-		id="org.objectstyle.wolips.ant.antlauncher"
-         name="Default Ant Launcher"
-         class="org.objectstyle.wolips.launching.antlauncher.internal.DefaultAntlauncher"/>
-   </extension>
-<!-- =================================================================================== -->
 <!-- Extension: Launch configuration types                                               -->
 <!-- =================================================================================== -->
    <extension
@@ -93,7 +84,6 @@
           <test property="org.eclipse.jdt.launching.hasProjectNature" args="org.eclipse.jdt.core.javanature"/>
           <or>
           	<test property="org.eclipse.jdt.launching.hasProjectNature" args="org.objectstyle.wolips.incrementalapplicationnature"/>
-          	<test property="org.eclipse.jdt.launching.hasProjectNature" args="org.objectstyle.wolips.antapplicationnature"/>
           </or>
          </and>
         </or>

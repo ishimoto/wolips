@@ -28,50 +28,6 @@
          </menu>
       </objectContribution>
 <!-- =================================================================================== -->
-<!-- menu ant                                                                            -->
-<!-- =================================================================================== -->
-<objectContribution
-            adaptable="true"
-            objectClass="org.eclipse.core.resources.IResource"
-            id="org.objectstyle.wolips.deployment.ui.ResourceContributions">
-         <menu
-               label="&amp;WOLips Ant Tools"
-               path="additions"
-               id="org.objectstyle.wolips.ant.ui.ResourceContributions">
-            <separator
-                  name="group1">
-            </separator>
-            <separator
-                  name="group2">
-            </separator>
-         </menu>
-      </objectContribution>
-<!-- =================================================================================== -->
-<!-- menu wolips tools                                                                   -->
-<!-- =================================================================================== -->
-      <objectContribution
-            adaptable="true"
-            objectClass="org.eclipse.core.resources.IResource"
-            id="org.objectstyle.wolips.ui.ResourceContributions">
-         <menu
-               label="&amp;WOLips Tools"
-               path="additions"
-               id="org.objectstyle.wolips.ui.ResourceContributions">
-            <separator
-                  name="group1">
-            </separator>
-            <separator
-                  name="group2">
-            </separator>
-            <separator
-                  name="group3">
-            </separator>
-            <separator
-                  name="group4">
-            </separator>
-         </menu>
-      </objectContribution>
-<!-- =================================================================================== -->
 <!-- project actions                                                                     -->
 <!-- =================================================================================== -->
       <objectContribution
@@ -144,78 +100,6 @@
                id="org.objectstyle.wolips.ui.actions.OpenEOModelIndexAction"
                label="Open EOModel"
                menubarPath="org.objectstyle.wolips.ui.ResourceContributions/group0">
-         </action>
-      </objectContribution>
-      <objectContribution
-            objectClass="org.eclipse.core.resources.IResource"
-            adaptable="true"
-            id="org.objectstyle.wolips.ui.actions.AddToWOAppResourcesIncludePatternsetAction">
-         <action
-               label="Include as WebServerResource"
-               class="org.objectstyle.wolips.ui.actions.AddToWOAppResourcesIncludePatternsetAction"
-               menubarPath="org.objectstyle.wolips.ui.ResourceContributions/group3"
-               enablesFor="1"
-               id="org.objectstyle.wolips.ui.actions.AddToWOAppResourcesIncludePatternsetAction">
-         </action>
-      </objectContribution>
-      <objectContribution
-            objectClass="org.eclipse.core.resources.IResource"
-            adaptable="true"
-            id="org.objectstyle.wolips.ui.actions.AddToWOAppResourcesExcludePatternsetAction">
-         <action
-               label="Exclude as WebServerResource"
-               class="org.objectstyle.wolips.ui.actions.AddToWOAppResourcesExcludePatternsetAction"
-               menubarPath="org.objectstyle.wolips.ui.ResourceContributions/group3"
-               enablesFor="1"
-               id="org.objectstyle.wolips.ui.actions.AddToWOAppResourcesExcludePatternsetAction">
-         </action>
-      </objectContribution>
-      <objectContribution
-            objectClass="org.eclipse.core.resources.IResource"
-            adaptable="true"
-            id="org.objectstyle.wolips.ui.actions.AddToResourcesIncludePatternsetAction">
-         <action
-               label="Include as Resource"
-               class="org.objectstyle.wolips.ui.actions.AddToResourcesIncludePatternsetAction"
-               menubarPath="org.objectstyle.wolips.ui.ResourceContributions/group3"
-               enablesFor="1"
-               id="org.objectstyle.wolips.ui.actions.AddToResourcesIncludePatternsetAction">
-         </action>
-      </objectContribution>
-      <objectContribution
-            objectClass="org.eclipse.core.resources.IResource"
-            adaptable="true"
-            id="org.objectstyle.wolips.ui.actions.AddToResourcesExcludePatternsetAction">
-         <action
-               label="Exclude as Resource"
-               class="org.objectstyle.wolips.ui.actions.AddToResourcesExcludePatternsetAction"
-               menubarPath="org.objectstyle.wolips.ui.ResourceContributions/group3"
-               enablesFor="1"
-               id="org.objectstyle.wolips.ui.actions.AddToResourcesExcludePatternsetAction">
-         </action>
-      </objectContribution>
-      <objectContribution
-            objectClass="org.eclipse.core.resources.IResource"
-            adaptable="true"
-            id="org.objectstyle.wolips.ui.actions.AddToClassesIncludePatternsetAction">
-         <action
-               label="Include as Class"
-               class="org.objectstyle.wolips.ui.actions.AddToClassesIncludePatternsetAction"
-               menubarPath="org.objectstyle.wolips.ui.ResourceContributions/group3"
-               enablesFor="1"
-               id="org.objectstyle.wolips.ui.actions.AddToClassesIncludePatternsetAction">
-         </action>
-      </objectContribution>
-      <objectContribution
-            objectClass="org.eclipse.core.resources.IResource"
-            adaptable="true"
-            id="org.objectstyle.wolips.ui.actions.AddToClassesExcludePatternsetAction">
-         <action
-               label="Exclude as Class"
-               class="org.objectstyle.wolips.ui.actions.AddToClassesExcludePatternsetAction"
-               menubarPath="org.objectstyle.wolips.ui.ResourceContributions/group3"
-               enablesFor="1"
-               id="org.objectstyle.wolips.ui.actions.AddToClassesExcludePatternsetAction">
          </action>
       </objectContribution>
       <objectContribution
@@ -359,9 +243,6 @@
 				</objectClass>
 				<or>
 					<objectState name="nature"
-						value="org.objectstyle.wolips.antapplicationnature">
-					</objectState>
-					<objectState name="nature"
 						value="org.objectstyle.wolips.incrementalapplicationnature">
 					</objectState>
 				</or>	
@@ -384,9 +265,6 @@
 				<objectClass name="org.eclipse.core.resources.IProject">
 				</objectClass>
 				<or>
-					<objectState name="nature"
-						value="org.objectstyle.wolips.antframeworknature">
-					</objectState>
 					<objectState name="nature"
 						value="org.objectstyle.wolips.incrementalframeworknature">
 					</objectState>
