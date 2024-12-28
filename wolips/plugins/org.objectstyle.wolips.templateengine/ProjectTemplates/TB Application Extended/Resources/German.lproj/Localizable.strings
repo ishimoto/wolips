@@ -1,0 +1,36 @@
+{
+	/* Override */
+	"TBWLogin.Title" = "Meine Bewerbung";
+	"TBWLogin.Message" = "<p>TDies ist eine lokalisierbare Login-Meldung</p>";
+
+	/* German */
+
+	"DisplayDate" = "dd-MM-yyyy";
+	"DisplayDTS" = "dd-MM-yyyy HH:mm:ss";
+	
+	"Hello World" = "Hallo Welt";
+	
+	/*** NAVGATION KEY VALUE PAIRS ***/
+	"Nav.Dashboard" = "Armaturenbrett-Bedienelemente";
+	
+	/*** IF PRO  **/
+	"Nav.Admin_ReferenceTables" = "Admin";
+	"Nav.Admin_TBRoles" = "Rollen";
+	"Nav.Admin_TBPersons" = "Menschen";
+
+	/*** PAGE KEY VALUE PAIRS ***/
+
+  	"Pages.List[EntityName]" = "Liste [Localized Name]s";
+  	"Pages.Query[EntityName]" = "Finded [Localized Name]s";
+  	"Pages.Inspect[EntityName]" = "Inspizieren [Localized Name]";
+   	"Pages.Edit[EntityName]" = "Bearbeiten [Localized Name]";
+
+
+	/*** PROPERTY KEY VALUE PAIRS ***/
+	"PropertyKey.oldClob" = "Old Values";
+	"PropertyKey.newClob" = "New Values";
+
+	/*** BUTTON DELEGATE KEY VALUE PAIRS ***/
+
+
+}

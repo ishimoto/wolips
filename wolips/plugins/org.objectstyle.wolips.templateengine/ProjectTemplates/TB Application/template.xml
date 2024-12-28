@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template name = "TB Application">
+	<inputs>
+		<input name = "basePackage" type = "Package">
+			<question>Base Package?</question>
+			<default>com.your.app</default>
+		</input>
+		<input name = "componentsPackage" type = "Package">
+			<question>Components Package?</question>
+			<default>com.your.app.components</default>
+		</input>
+		<input name = "userName" type = "Package">
+			<question>User Name of Machine?</question>
+			<default>myName</default>
+		</input>
+		<input name = "databaseConnector" type = "String">
+			<question>Database Connection ?</question>
+			<options>
+				<option name = "H2PlugIn" value = "H2"/>
+				<option name = "MySQL" value = "MY"/> 				
+				<option name = "MariaDB" value = "MD"/> 				
+				<option name = "OpenBase" value = "OB"/>
+				<option name = "PostgresqlPlugIn" value = "PO"/>
+				<option name = "No Connection" value = "--"/>
+			</options>
+			<default>--</default>
+      	</input>
+	</inputs>
+</template>

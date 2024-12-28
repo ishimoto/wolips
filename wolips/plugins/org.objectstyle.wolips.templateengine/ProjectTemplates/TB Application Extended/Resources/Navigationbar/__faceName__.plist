@@ -1,0 +1,64 @@
+(
+	/* 
+	Just a reminder:  the default word is a reflection of the default Face.
+	so if you had multiple Faces, then each would have their own top level plist
+	[Face = "default"]  Navigation Root Level 1
+	*/
+	{
+		name = Root;
+		children = (
+			"Welcome", 
+#if ($pro)	
+			"ContentPage",
+			"Admin_ReferenceTables",
+#end
+			"Dashboard"
+		);
+	},
+	{
+		name = "Welcome";
+		action = "session.handlers.welcome.customMainAction";
+#if ($pro)	
+	},
+	{
+		name = "ContentPage";
+		action = "session.handlers.contentPage.cmsIntraCMSAction";
+//      roleIdentifier is new.  The BaseModel for TBRole now has a single letter key for each role.  You can use that here
+//      roleIdentifier = "D";
+		roles = "Developer";
+	},
+	
+	/** Sample Child Menus **/
+	{
+		name = "Admin_ReferenceTables";
+		roles = "Developer";
+		href = "#";
+		children = (
+			"Admin_TBRoles","Admin_TBPersons"
+		);
+#end	
+	}
+	
+	/* 
+		Navigation Root Level 2
+    */
+#if ($pro)	
+	,
+	/** Sample Children Menus **/
+	{
+		name = "Admin_TBRoles";
+//      roleIdentifier is new.  The BaseModel for TBRole now has a single letter key for each role.  You can use that here
+//      roleIdentifier = "D";
+		roles = "Developer";
+		action = "session.handlers.admin_ReferenceTables.Admin_TBRoles.List_developer_TBRole";
+	},
+	{
+		name = "Admin_TBPersons";
+//      roleIdentifier is new.  The BaseModel for TBRole now has a single letter key for each role.  You can use that here
+//      roleIdentifier = "D";
+		roles = "Developer";
+		action = "session.handlers.admin_ReferenceTables.Admin_TBPersons.List_developer_TBPerson";
+	}
+#end	
+
+)

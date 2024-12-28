@@ -1,0 +1,20 @@
+(
+	/* 
+		Shared Navigation Menu
+	*/
+	
+    {	
+		name = "Dashboard";
+		directActionClass = "TBEDashboardDirectAction";
+		directActionName = "showDashboard";
+
+//      roleIdentifier is new.  The BaseModel for TBRole now has a single letter key for each role.  You can use that here.
+//       D == Developer, A == Administrator.  These are reserved.
+//      roleIdentifier = "DA";
+		roles = "Developer Administrator";
+
+//      These configurations are from the CSS from TBSkinKeen.  It allows you to specify the icon for the menu choice
+//		config = "fa-solid fa-cogs";
+	}
+
+)

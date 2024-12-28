@@ -1,0 +1,4 @@
+// Migration looks for the .migration extension by default.
+//  Place migration SQL scripts in here.
+//  Ideally you would create separate files for each Entity of interest.
+

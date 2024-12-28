@@ -1,0 +1,10 @@
+treasureboat {
+    principalClass = '${TBLipsContext.getProjectName()}'
+}
+
+dependencies {
+    compile "TreasureBoat:org.treasureboat.TBFoundation:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBContentsDelivery:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBEnterprise:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBWebCore:$tbVersion"
+}

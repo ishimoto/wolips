@@ -1,0 +1,15 @@
+#if ($pro)
+PageWrapper : TBSwitchComponent {
+	nameOfComponent = d2wContext.pageWrapperName;
+	d2wContext = d2wContext;
+#else
+PageWrapper : TBEDefaultPageWrapper {
+#end
+}
+
+Welcome : TBEHype {
+	javascriptLocationResource = "static://TBContentsDelivery:WelcomeToTreasureBoat.hyperesources/welcometotreasureboat_hype_generated_script.js";
+	id = "welcometotreasureboat_hype_container";
+	width = "800";
+	height = "600";
+}

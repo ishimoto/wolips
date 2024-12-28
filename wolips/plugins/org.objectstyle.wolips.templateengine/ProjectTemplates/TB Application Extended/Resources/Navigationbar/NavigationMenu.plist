@@ -1,0 +1,24 @@
+(
+	/**
+	*  You should use the default.plist or [face].plist for your Navigation Menus.
+	*/
+	/* 
+		Navigation Root Level 1
+	*/
+	{
+		name = Root;
+		children = (
+			"Welcome", 
+			"Dashboard"
+		);
+	},
+	{
+		name = "Welcome";
+		action = "session.handlers.welcome.customMainAction";
+	}
+	
+	/* 
+		Navigation Root Level 2
+    */
+
+)

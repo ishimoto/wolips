@@ -1,0 +1,131 @@
+// mainClassName = "${TBLipsContext.getPackageName()}"
+//  this is for running TBApps as a regular Java application in the future
+
+treasureboat {
+    applicationClass = '${TBLipsContext.getPackageName()}'
+    deploymentServers = ['localhost']
+    deploymentSSHUser = 'tbadm'
+    deploymentPath = '/tmp'
+    deploymentSSHPort = 22
+    deploymentSSHIgnoreHostKey = true
+    deploymentMonitorBounceTasks = ['localhost':'${TBLipsContext.getProjectName()}']
+    deploymentWebserver = 'localhost'
+    deploymentWebserverSSHUser = 'tbadm'
+    webserverResourcePath = '/tmp'
+}
+
+
+
+// ** define your TreasureBoat framework dependencies below **
+
+dependencies {
+    compile "TreasureBoat:org.treasureboat.TBFoundation:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBContentsDelivery:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBExtensions:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBEnterprise:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBWebCore:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBSkinGumby:$tbVersion"
+
+#if ($databaseConnector == "MY")
+    compile "TreasureBoat:org.treasureboat.TBPrototypes:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBDB_MySQL:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBKVDataStorage:$tbVersion"
+#end
+#if ($databaseConnector == "MD")
+    compile "TreasureBoat:org.treasureboat.TBPrototypes:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBDB_MariaDB:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBKVDataStorage:$tbVersion"
+#end
+#if ($databaseConnector == "FB")
+    compile "TreasureBoat:org.treasureboat.TBPrototypes:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBDB_FrontBase:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBKVDataStorage:$tbVersion"
+#end
+#if ($databaseConnector == "PO")
+    compile "TreasureBoat:org.treasureboat.TBPrototypes:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBDB_Postgresql:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBKVDataStorage:$tbVersion"
+#end
+#if ($databaseConnector == "MX")
+    compile "TreasureBoat:org.treasureboat.TBPrototypes:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBDB_MaxDB:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBKVDataStorage:$tbVersion"
+#end
+#if ($databaseConnector == "DB")
+    compile "TreasureBoat:org.treasureboat.TBPrototypes:$tbVersion"
+    compile "TreasureBoatExtra:org.treasureboat.TBDB_DB2:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBKVDataStorage:$tbVersion"
+#end
+#if ($databaseConnector == "DR")
+    compile "TreasureBoat:org.treasureboat.TBPrototypes:$tbVersion"
+    compile "TreasureBoatExtra:org.treasureboat.TBDB_Derby2:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBKVDataStorage:$tbVersion"
+#end
+#if ($databaseConnector == "H2")
+    compile "TreasureBoat:org.treasureboat.TBPrototypes:$tbVersion"
+    compile "TreasureBoatExtra:org.treasureboat.TBDB_H2:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBKVDataStorage:$tbVersion"
+#end
+#if ($databaseConnector == "OB")
+    compile "TreasureBoat:org.treasureboat.TBPrototypes:$tbVersion"
+    compile "TreasureBoatExtra:org.treasureboat.TBDB_OpenBase:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBKVDataStorage:$tbVersion"
+#end
+#if ($databaseConnector == "OR")
+    compile "TreasureBoat:org.treasureboat.TBPrototypes:$tbVersion"
+    compile "TreasureBoatExtra:org.treasureboat.TBDB_Oracle:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBKVDataStorage:$tbVersion"
+#end
+#if ($databaseConnector == "MS")
+    compile "TreasureBoat:org.treasureboat.TBPrototypes:$tbVersion"
+    compile "TreasureBoatProfessional:org.treasureboat.TBDB_Microsoft:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBKVDataStorage:$tbVersion"
+#end
+#if ($rebel)
+    compile "TreasureBoatExtra:org.treasureboat.TBJRebel:$tbVersion"
+#end
+
+    compile "TreasureBoat:org.treasureboat.TBExcelGenerator:$tbVersion"
+
+#if ($ajax || $pro)
+    compile "TreasureBoat:org.treasureboat.TBAjax:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBCoolComponents:$tbVersion"
+#end
+#if ($attachment || $pro)
+    compile "TreasureBoat:org.treasureboat.TBAttachment:$tbVersion"
+#end
+#if ($mail || $pro)
+    compile "TreasureBoat:org.treasureboat.TBJavaMail:$tbVersion"
+#end
+#if ($rest || $pro)
+    compile "TreasureBoat:org.treasureboat.TBRest:$tbVersion"
+#end
+#if ($mobile || $pro)
+    compile "TreasureBoat:org.treasureboat.TBJQMobile:$tbVersion"
+#end
+#if ($base || $pro)
+    compile "TreasureBoat:org.treasureboat.TBTag:$tbVersion"
+    compile "TreasureBoat:org.treasureboat.TBBaseModel:$tbVersion"
+#end
+#if ($quartz || $pro)
+    compile "TreasureBoat:org.treasureboat.TBQuartz:$tbVersion"
+#end
+#if ($sangria)
+	compile "TreasureBoatSangria:org.treasureboat.TBCSV:$tbVersion"
+	compile "TreasureBoatSangria:org.treasureboat.TBD2WCoreLogic:$tbVersion"
+	compile "TreasureBoatSangria:org.treasureboat.TBD3WAttributeLogic:$tbVersion"
+	compile "TreasureBoatSangria:org.treasureboat.TBD3WCoreLogic:$tbVersion"
+	compile "TreasureBoatSangria:org.treasureboat.TBD3WPageLogic:$tbVersion"
+	compile "TreasureBoatSangria:org.treasureboat.TBDistribution:$tbVersion"
+#end
+#if ($pro)
+    compile "TreasureBoat:org.treasureboat.TBJQuery:$tbVersion"
+    compile "TreasureBoatProfessional:org.treasureboat.TBBaseModelBridge:$tbVersion"
+    compile "TreasureBoatProfessional:org.treasureboat.TBCMS:$tbVersion"
+    compile "TreasureBoatProfessional:org.treasureboat.TBD3WExcelSupport:$tbVersion"
+    compile "TreasureBoatProfessional:org.treasureboat.TBNotificationCenter:$tbVersion"
+    compile "TreasureBoatProfessional:org.treasureboat.SKIN_Gumby:$tbVersion"
+#end
+
+
+}

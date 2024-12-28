@@ -1,0 +1,6 @@
+{
+	/*
+		"{RoleInformation}:{username}" = "{password}";
+		For example	"Developer:wodka" = "wodka";
+	*/
+}

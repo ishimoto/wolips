@@ -1,0 +1,36 @@
+{
+	/* Override */
+	"TBWLogin.Title" = "My Application Login";
+	"TBWLogin.Message" = "<p>This is a localizable login message</p>";
+
+	/* English */
+	"DisplayDate" = "MM/dd/yyyy";
+	"DisplayDTS" = "MM/dd/yyyy HH:mm:ss";
+	
+	"Hello World" = "Hello World";
+	
+	
+	/*** NAVGATION KEY VALUE PAIRS ***/
+	"Nav.Dashboard" = "Dashboard Controls";
+	
+	/*** IF PRO  **/
+	"Nav.Admin_ReferenceTables" = "Admin";
+	"Nav.Admin_TBRoles" = "Roles";
+	"Nav.Admin_TBPersons" = "People";
+
+	/*** PAGE KEY VALUE PAIRS ***/
+
+  	"Pages.List[EntityName]" = "List [Localized Name]s";
+  	"Pages.Query[EntityName]" = "Find [Localized Name]s";
+  	"Pages.Inspect[EntityName]" = "Inspect [Localized Name]";
+   	"Pages.Edit[EntityName]" = "Edit [Localized Name]";
+
+
+	/*** PROPERTY KEY VALUE PAIRS ***/
+	"PropertyKey.oldClob" = "Old Values";
+	"PropertyKey.newClob" = "New Values";
+
+	/*** BUTTON DELEGATE KEY VALUE PAIRS ***/
+
+
+}
