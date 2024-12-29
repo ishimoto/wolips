@@ -17,10 +17,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgements normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -47,24 +47,43 @@
  * Group, please see <http://objectstyle.org/>.
  *  
  */
-package org.objectstyle.wolips.eomodeler.editors.fetchspec;
+package org.objectstyle.wolips.eomodeler.editors.attribute;
 
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.Viewer;
-import org.objectstyle.wolips.eomodeler.core.model.EOFetchSpecification;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.swt.graphics.Image;
+import org.objectstyle.wolips.eomodeler.Messages;
+import org.objectstyle.wolips.eomodeler.core.model.EOAttribute;
 
-public class EOSortOrderingsContentProvider implements IStructuredContentProvider {
-	public Object[] getElements(Object _inputElement) {
-		EOFetchSpecification fetchSpec = (EOFetchSpecification) _inputElement;
-		Object[] sortOrderings = fetchSpec.getSortOrderings().toArray();
-		return sortOrderings;
+public class TBPrototypeListLabelProvider implements ILabelProvider {
+	public Image getImage(Object _element) {
+		return null;
+	}
+
+	public String getText(Object _element) {
+		String prototypeName = null;
+		if (_element instanceof EOAttribute) {
+			EOAttribute prototype = (EOAttribute) _element;
+			prototypeName = prototype.getName();
+		} else {
+			prototypeName = Messages.getString("EOAttributesCellModifier.noPrototype");
+		}
+		return prototypeName;
+	}
+
+	public void addListener(ILabelProviderListener _listener) {
+		// DO NOTHING
 	}
 
 	public void dispose() {
 		// DO NOTHING
 	}
 
-	public void inputChanged(Viewer _viewer, Object _oldInput, Object _newInput) {
+	public boolean isLabelProperty(Object _element, String _property) {
+		return true;
+	}
+
+	public void removeListener(ILabelProviderListener _listener) {
 		// DO NOTHING
 	}
 }

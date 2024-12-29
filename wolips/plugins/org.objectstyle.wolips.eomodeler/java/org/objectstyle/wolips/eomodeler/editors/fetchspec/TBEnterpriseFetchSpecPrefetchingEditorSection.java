@@ -17,10 +17,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgements normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -51,8 +51,6 @@ package org.objectstyle.wolips.eomodeler.editors.fetchspec;
 
 import java.util.Iterator;
 
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -65,43 +63,34 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.tabbed.AbstractPropertySection;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.objectstyle.wolips.baseforplugins.util.ComparisonUtils;
-import org.objectstyle.wolips.baseforuiplugins.utils.WOTextCellEditor;
-import org.objectstyle.wolips.eomodeler.Activator;
-import org.objectstyle.wolips.eomodeler.core.model.EOAttribute;
-import org.objectstyle.wolips.eomodeler.core.model.EOAttributePath;
-import org.objectstyle.wolips.eomodeler.core.model.EOFetchSpecification;
-import org.objectstyle.wolips.eomodeler.core.model.EOSortOrdering;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseFetchSpecification;
+import org.objectstyle.wolips.eomodeler.core.model.EORelationship;
+import org.objectstyle.wolips.eomodeler.core.model.EORelationshipPath;
 import org.objectstyle.wolips.eomodeler.outline.EOEntityTreeViewUpdater;
 import org.objectstyle.wolips.eomodeler.outline.EOModelOutlineContentProvider;
 import org.objectstyle.wolips.eomodeler.utils.AddRemoveButtonGroup;
 import org.objectstyle.wolips.eomodeler.utils.FormUtils;
-import org.objectstyle.wolips.eomodeler.utils.StayEditingCellEditorListener;
-import org.objectstyle.wolips.eomodeler.utils.TablePropertyCellModifier;
 import org.objectstyle.wolips.eomodeler.utils.TableRefreshPropertyListener;
-import org.objectstyle.wolips.eomodeler.utils.TableRowRefreshPropertyListener;
 import org.objectstyle.wolips.eomodeler.utils.TableUtils;
 
-public class EOFetchSpecSortOrderingEditorSection extends AbstractPropertySection implements ISelectionChangedListener {
-	private EOFetchSpecification myFetchSpecification;
+public class TBEnterpriseFetchSpecPrefetchingEditorSection extends AbstractPropertySection implements ISelectionChangedListener {
+	private TBEnterpriseFetchSpecification myFetchSpecification;
 
 	private TreeViewer myModelTreeViewer;
 
-	private TableViewer mySortOrderingsTableViewer;
+	private TableViewer myPrefetchKeyPathsTableViewer;
 
 	private AddRemoveButtonGroup myAddRemoveButtonGroup;
 
 	private EOEntityTreeViewUpdater myEntityTreeViewUpdater;
 
-	private TableRefreshPropertyListener mySortOrderingsChangedRefresher;
+	private TableRefreshPropertyListener myPrefetchKeyPathsChangedRefresher;
 
-	private TableRowRefreshPropertyListener myTableRowRefresher;
-
-	public EOFetchSpecSortOrderingEditorSection() {
+	public TBEnterpriseFetchSpecPrefetchingEditorSection() {
 		// DO NOTHING
 	}
 	
@@ -121,41 +110,19 @@ public class EOFetchSpecSortOrderingEditorSection extends AbstractPropertySectio
 
 		myModelTreeViewer = new TreeViewer(topForm);
 		GridData modelTreeLayoutData = new GridData(GridData.FILL_BOTH);
-		//modelTreeLayoutData.heightHint = 100;
+		modelTreeLayoutData.heightHint = 100;
 		myModelTreeViewer.getTree().setLayoutData(modelTreeLayoutData);
-		myEntityTreeViewUpdater = new EOEntityTreeViewUpdater(myModelTreeViewer, new EOModelOutlineContentProvider(true, true, true, false, false, false, false, true));
+		myEntityTreeViewUpdater = new EOEntityTreeViewUpdater(myModelTreeViewer, new EOModelOutlineContentProvider(true, false, true, false, false, false, false, true));
 		myModelTreeViewer.addSelectionChangedListener(this);
 
-		mySortOrderingsTableViewer = TableUtils.createTableViewer(topForm, "EOFetchSpecification", EOSortOrdering.class.getName(), new EOSortOrderingsContentProvider(), new EOSortOrderingsLabelProvider(EOSortOrdering.class.getName()), null);
+		myPrefetchKeyPathsTableViewer = TableUtils.createTableViewer(topForm, "TBEnterpriseFetchSpecification", EOPrefetchingKeyPathsConstants.COLUMNS, new PrefetchingKeyPathsContentProvider(), new PrefetchingKeyPathsLabelProvider(EOPrefetchingKeyPathsConstants.COLUMNS), new PrefetchingKeyPathsViewerSorter(EOPrefetchingKeyPathsConstants.COLUMNS));
+		GridData prefetchKeyPathsTableLayoutData = new GridData(GridData.FILL_BOTH);
+		prefetchKeyPathsTableLayoutData.heightHint = 100;
+		myPrefetchKeyPathsTableViewer.getTable().setLayoutData(prefetchKeyPathsTableLayoutData);
+		myPrefetchKeyPathsTableViewer.addSelectionChangedListener(this);
+		myPrefetchKeyPathsChangedRefresher = new TableRefreshPropertyListener("PrefetchKeyPathsChanged", myPrefetchKeyPathsTableViewer);
 
-		TableColumn ascendingColumn = TableUtils.getColumn(mySortOrderingsTableViewer, EOSortOrdering.class.getName(), EOSortOrdering.ASCENDING);
-		if (ascendingColumn != null) {
-			ascendingColumn.setText("");
-			ascendingColumn.setImage(Activator.getDefault().getImageRegistry().get(Activator.ASCENDING_ICON));
-		}
-
-		TableColumn caseInsensitiveColumn = TableUtils.getColumn(mySortOrderingsTableViewer, EOSortOrdering.class.getName(), EOSortOrdering.CASE_INSENSITIVE);
-		if (caseInsensitiveColumn != null) {
-			caseInsensitiveColumn.setText("i/s");
-		}
-
-		GridData sortOrderingsTableLayoutData = new GridData(GridData.FILL_BOTH);
-		//sortOrderingsTableLayoutData.heightHint = 100;
-		mySortOrderingsTableViewer.addSelectionChangedListener(this);
-		mySortOrderingsChangedRefresher = new TableRefreshPropertyListener("SortOrderingsChanged", mySortOrderingsTableViewer);
-		myTableRowRefresher = new TableRowRefreshPropertyListener(mySortOrderingsTableViewer);
-
-		CellEditor[] cellEditors = new CellEditor[TableUtils.getColumnsForTableNamed(EOSortOrdering.class.getName()).length];
-		TableUtils.setCellEditor(EOSortOrdering.class.getName(), EOSortOrdering.KEY, new WOTextCellEditor(mySortOrderingsTableViewer.getTable()), cellEditors);
-		TableUtils.setCellEditor(EOSortOrdering.class.getName(), EOSortOrdering.ASCENDING, new CheckboxCellEditor(mySortOrderingsTableViewer.getTable()), cellEditors);
-		TableUtils.setCellEditor(EOSortOrdering.class.getName(), EOSortOrdering.CASE_INSENSITIVE, new CheckboxCellEditor(mySortOrderingsTableViewer.getTable()), cellEditors);
-		mySortOrderingsTableViewer.setCellEditors(cellEditors);
-		mySortOrderingsTableViewer.setCellModifier(new TablePropertyCellModifier(mySortOrderingsTableViewer));
-		mySortOrderingsTableViewer.getTable().setLayoutData(sortOrderingsTableLayoutData);
-
-		new StayEditingCellEditorListener(mySortOrderingsTableViewer, EOSortOrdering.class.getName(), EOSortOrdering.KEY);
-
-		myAddRemoveButtonGroup = new AddRemoveButtonGroup(topForm, new AddSortOrderingHandler(), new RemoveSortOrderingHandler());
+		myAddRemoveButtonGroup = new AddRemoveButtonGroup(topForm, new AddPrefetchKeyPathHandler(), new RemovePrefetchKeyPathHandler());
 		myAddRemoveButtonGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	}
 
@@ -168,21 +135,19 @@ public class EOFetchSpecSortOrderingEditorSection extends AbstractPropertySectio
 		disposeBindings();
 
 		Object selectedObject = ((IStructuredSelection) selection).getFirstElement();
-		myFetchSpecification = (EOFetchSpecification) selectedObject;
+		myFetchSpecification = (TBEnterpriseFetchSpecification) selectedObject;
 		if (myFetchSpecification != null) {
-			myFetchSpecification.addPropertyChangeListener(EOFetchSpecification.SORT_ORDERINGS, mySortOrderingsChangedRefresher);
-			myFetchSpecification.addPropertyChangeListener(EOFetchSpecification.SORT_ORDERING, myTableRowRefresher);
+			myFetchSpecification.addPropertyChangeListener(TBEnterpriseFetchSpecification.PREFETCHING_RELATIONSHIP_KEY_PATHS, myPrefetchKeyPathsChangedRefresher);
 			myEntityTreeViewUpdater.setEntity(myFetchSpecification.getEntity());
-			mySortOrderingsTableViewer.setInput(myFetchSpecification);
-			TableUtils.packTableColumns(mySortOrderingsTableViewer);
+			myPrefetchKeyPathsTableViewer.setInput(myFetchSpecification);
+			TableUtils.packTableColumns(myPrefetchKeyPathsTableViewer);
 			updateButtonsEnabled();
 		}
 	}
 
 	protected void disposeBindings() {
 		if (myFetchSpecification != null) {
-			myFetchSpecification.removePropertyChangeListener(EOFetchSpecification.SORT_ORDERINGS, mySortOrderingsChangedRefresher);
-			myFetchSpecification.removePropertyChangeListener(EOFetchSpecification.SORT_ORDERING, myTableRowRefresher);
+			myFetchSpecification.removePropertyChangeListener(TBEnterpriseFetchSpecification.PREFETCHING_RELATIONSHIP_KEY_PATHS, myPrefetchKeyPathsChangedRefresher);
 		}
 	}
 
@@ -191,63 +156,58 @@ public class EOFetchSpecSortOrderingEditorSection extends AbstractPropertySectio
 		disposeBindings();
 	}
 
-	public void addSortOrdering() {
+	public void addPrefetchKeyPath() {
 		IStructuredSelection selection = (IStructuredSelection) myModelTreeViewer.getSelection();
 		Object selectedObject = selection.getFirstElement();
 		String path;
-		if (selectedObject instanceof EOAttributePath) {
-			path = ((EOAttributePath) selectedObject).toKeyPath();
-		} else if (selectedObject instanceof EOAttribute) {
-			path = ((EOAttribute) selectedObject).getName();
+		if (selectedObject instanceof EORelationshipPath) {
+			path = ((EORelationshipPath) selectedObject).toKeyPath();
+		} else if (selectedObject instanceof EORelationship) {
+			path = ((EORelationship) selectedObject).getName();
 		} else {
 			path = null;
 		}
 		if (path != null) {
-			EOSortOrdering sortOrdering = new EOSortOrdering();
-			sortOrdering.setKey(path);
-			sortOrdering.setSelectorName(EOSortOrdering.ASCENDING);
-			myFetchSpecification.addSortOrdering(sortOrdering, true);
-			TableUtils.packTableColumns(mySortOrderingsTableViewer);
+			myFetchSpecification.addPrefetchingRelationshipKeyPath(path, true);
+			TableUtils.packTableColumns(myPrefetchKeyPathsTableViewer);
 		}
 	}
 
-	public void removeSortOrdering() {
-		IStructuredSelection selection = (IStructuredSelection) mySortOrderingsTableViewer.getSelection();
+	public void removePrefetchKeyPath() {
+		IStructuredSelection selection = (IStructuredSelection) myPrefetchKeyPathsTableViewer.getSelection();
 		Iterator selectedObjectsIter = selection.toList().iterator();
 		while (selectedObjectsIter.hasNext()) {
-			EOSortOrdering sortOrdering = (EOSortOrdering) selectedObjectsIter.next();
-			myFetchSpecification.removeSortOrdering(sortOrdering, true);
+			String prefetchKeyPath = (String) selectedObjectsIter.next();
+			myFetchSpecification.removePrefetchingRelationshipKeyPath(prefetchKeyPath, true);
 		}
 	}
 
 	public void updateButtonsEnabled() {
-		Object selectedObject = ((IStructuredSelection) myModelTreeViewer.getSelection()).getFirstElement();
-		boolean addEnabled = (selectedObject instanceof EOAttributePath || selectedObject instanceof EOAttribute);
-		myAddRemoveButtonGroup.setAddEnabled(addEnabled);
-		myAddRemoveButtonGroup.setRemoveEnabled(!mySortOrderingsTableViewer.getSelection().isEmpty());
+		myAddRemoveButtonGroup.setAddEnabled(!myModelTreeViewer.getSelection().isEmpty());
+		myAddRemoveButtonGroup.setRemoveEnabled(!myPrefetchKeyPathsTableViewer.getSelection().isEmpty());
 	}
 
 	public void selectionChanged(SelectionChangedEvent _event) {
 		updateButtonsEnabled();
 	}
 
-	protected class AddSortOrderingHandler implements SelectionListener {
+	protected class AddPrefetchKeyPathHandler implements SelectionListener {
 		public void widgetDefaultSelected(SelectionEvent _e) {
 			widgetSelected(_e);
 		}
 
 		public void widgetSelected(SelectionEvent _e) {
-			EOFetchSpecSortOrderingEditorSection.this.addSortOrdering();
+			TBEnterpriseFetchSpecPrefetchingEditorSection.this.addPrefetchKeyPath();
 		}
 	}
 
-	protected class RemoveSortOrderingHandler implements SelectionListener {
+	protected class RemovePrefetchKeyPathHandler implements SelectionListener {
 		public void widgetDefaultSelected(SelectionEvent _e) {
 			widgetSelected(_e);
 		}
 
 		public void widgetSelected(SelectionEvent _e) {
-			EOFetchSpecSortOrderingEditorSection.this.removeSortOrdering();
+			TBEnterpriseFetchSpecPrefetchingEditorSection.this.removePrefetchKeyPath();
 		}
 	}
 }

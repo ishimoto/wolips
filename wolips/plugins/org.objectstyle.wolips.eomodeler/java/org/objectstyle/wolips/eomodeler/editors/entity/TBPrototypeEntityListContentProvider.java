@@ -17,10 +17,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgements normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -47,7 +47,7 @@
  * Group, please see <http://objectstyle.org/>.
  *  
  */
-package org.objectstyle.wolips.eomodeler.editors.attribute;
+package org.objectstyle.wolips.eomodeler.editors.entity;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -57,35 +57,39 @@ import java.util.Set;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.objectstyle.wolips.eomodeler.core.kvc.KVCComparator;
-import org.objectstyle.wolips.eomodeler.core.model.EOAttribute;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
 import org.objectstyle.wolips.eomodeler.core.model.EOModel;
+import org.objectstyle.wolips.eomodeler.core.utils.EOModelUtils;
 
-public class EOPrototypeListContentProvider implements IStructuredContentProvider {
+public class TBPrototypeEntityListContentProvider implements IStructuredContentProvider {
 	public static final Object BLANK_ENTITY = "";
+
+	private boolean myAllowBlank;
 
 	private KVCComparator myComparator;
 
-	public EOPrototypeListContentProvider() {
-		myComparator = new KVCComparator(EOAttribute.class, EOEntity.NAME);
+	public TBPrototypeEntityListContentProvider(boolean _allowBlank) {
+		myAllowBlank = _allowBlank;
+		myComparator = new KVCComparator(EOEntity.class, EOEntity.NAME);
 	}
 
 	public Object[] getElements(Object _inputElement) {
-		Set prototypeAttributesList;
-		if (_inputElement instanceof EOAttribute) {
-			prototypeAttributesList = ((EOAttribute) _inputElement).getEntity().getModel().getPrototypeAttributes();
-		} else if (_inputElement instanceof EOModel) {
-				prototypeAttributesList = ((EOModel) _inputElement).getPrototypeAttributes();
+		Set entitiesList;
+		EOModel model = EOModelUtils.getRelatedModel(_inputElement);
+		if (model != null) {
+			entitiesList = model.getModelGroup().getPrototypeEntities();
 		} else {
 			throw new IllegalArgumentException("Unknown input element: " + _inputElement);
 		}
 
-		List prototypeAttributesListCopy = new LinkedList();
-		prototypeAttributesListCopy.addAll(prototypeAttributesList);
-		Collections.sort(prototypeAttributesListCopy, myComparator);
-		prototypeAttributesListCopy.add(0, EOPrototypeListContentProvider.BLANK_ENTITY);
-		Object[] attributes = prototypeAttributesListCopy.toArray();
-		return attributes;
+		List entitiesListCopy = new LinkedList();
+		entitiesListCopy.addAll(entitiesList);
+		Collections.sort(entitiesListCopy, myComparator);
+		if (myAllowBlank) {
+			entitiesListCopy.add(0, TBPrototypeEntityListContentProvider.BLANK_ENTITY);
+		}
+		Object[] entities = entitiesListCopy.toArray();
+		return entities;
 	}
 
 	public void dispose() {

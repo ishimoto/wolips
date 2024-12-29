@@ -17,10 +17,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgements normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -72,7 +72,7 @@ import org.objectstyle.wolips.baseforplugins.util.ComparisonUtils;
 import org.objectstyle.wolips.eomodeler.Messages;
 import org.objectstyle.wolips.eomodeler.core.model.EOAttribute;
 import org.objectstyle.wolips.eomodeler.core.model.EOAttributePath;
-import org.objectstyle.wolips.eomodeler.core.model.EOFetchSpecification;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseFetchSpecification;
 import org.objectstyle.wolips.eomodeler.outline.EOEntityTreeViewUpdater;
 import org.objectstyle.wolips.eomodeler.outline.EOModelOutlineContentProvider;
 import org.objectstyle.wolips.eomodeler.utils.AddRemoveButtonGroup;
@@ -80,8 +80,8 @@ import org.objectstyle.wolips.eomodeler.utils.FormUtils;
 import org.objectstyle.wolips.eomodeler.utils.TableRefreshPropertyListener;
 import org.objectstyle.wolips.eomodeler.utils.TableUtils;
 
-public class EOFetchSpecRawFetchEditorSection extends AbstractPropertySection implements ISelectionChangedListener, SelectionListener {
-	private EOFetchSpecification myFetchSpecification;
+public class TBEnterpriseFetchSpecRawFetchEditorSection extends AbstractPropertySection implements ISelectionChangedListener, SelectionListener {
+	private TBEnterpriseFetchSpecification myFetchSpecification;
 
 	private TreeViewer myModelTreeViewer;
 
@@ -99,7 +99,7 @@ public class EOFetchSpecRawFetchEditorSection extends AbstractPropertySection im
 
 	private Button myFetchSpecificAttributesAsRawRowsButton;
 
-	public EOFetchSpecRawFetchEditorSection() {
+	public TBEnterpriseFetchSpecRawFetchEditorSection() {
 		// DO NOTHING
 	}
 	
@@ -121,11 +121,11 @@ public class EOFetchSpecRawFetchEditorSection extends AbstractPropertySection im
 		GridLayout fetchStyleLayout = new GridLayout();
 		fetchStyleComposite.setLayout(fetchStyleLayout);
 		myFetchEnterpriseObjectsButton = new Button(fetchStyleComposite, SWT.RADIO);
-		myFetchEnterpriseObjectsButton.setText(Messages.getString("EOFetchSpecRawFetchEditorSection.fetchEnterpriseObjects")); //$NON-NLS-1$
+		myFetchEnterpriseObjectsButton.setText(Messages.getString("TBEnterpriseFetchSpecRawFetchEditorSection.fetchEnterpriseObjects")); //$NON-NLS-1$
 		myFetchAllAttributesAsRawRowsButton = new Button(fetchStyleComposite, SWT.RADIO);
-		myFetchAllAttributesAsRawRowsButton.setText(Messages.getString("EOFetchSpecRawFetchEditorSection.fetchAllAttributes")); //$NON-NLS-1$
+		myFetchAllAttributesAsRawRowsButton.setText(Messages.getString("TBEnterpriseFetchSpecRawFetchEditorSection.fetchAllAttributes")); //$NON-NLS-1$
 		myFetchSpecificAttributesAsRawRowsButton = new Button(fetchStyleComposite, SWT.RADIO);
-		myFetchSpecificAttributesAsRawRowsButton.setText(Messages.getString("EOFetchSpecRawFetchEditorSection.fetchSpecificAttributes")); //$NON-NLS-1$
+		myFetchSpecificAttributesAsRawRowsButton.setText(Messages.getString("TBEnterpriseFetchSpecRawFetchEditorSection.fetchSpecificAttributes")); //$NON-NLS-1$
 
 		myModelTreeViewer = new TreeViewer(topForm);
 		GridData modelTreeLayoutData = new GridData(GridData.FILL_HORIZONTAL);
@@ -134,7 +134,7 @@ public class EOFetchSpecRawFetchEditorSection extends AbstractPropertySection im
 		myEntityTreeViewUpdater = new EOEntityTreeViewUpdater(myModelTreeViewer, new EOModelOutlineContentProvider(true, true, true, false, false, false, false, true));
 		myModelTreeViewer.addSelectionChangedListener(this);
 
-		myRawRowKeyPathsTableViewer = TableUtils.createTableViewer(topForm, "EOFetchSpecification", EORawRowKeyPathsConstants.COLUMNS, new RawRowKeyPathsContentProvider(), new RawRowKeyPathsLabelProvider(EORawRowKeyPathsConstants.COLUMNS), new RawRowKeyPathsViewerSorter(EORawRowKeyPathsConstants.COLUMNS));
+		myRawRowKeyPathsTableViewer = TableUtils.createTableViewer(topForm, "TBEnterpriseFetchSpecification", EORawRowKeyPathsConstants.COLUMNS, new RawRowKeyPathsContentProvider(), new RawRowKeyPathsLabelProvider(EORawRowKeyPathsConstants.COLUMNS), new RawRowKeyPathsViewerSorter(EORawRowKeyPathsConstants.COLUMNS));
 		GridData rawRowKeyPathsTableLayoutData = new GridData(GridData.FILL_BOTH);
 		rawRowKeyPathsTableLayoutData.heightHint = 100;
 		myRawRowKeyPathsTableViewer.getTable().setLayoutData(rawRowKeyPathsTableLayoutData);
@@ -154,9 +154,9 @@ public class EOFetchSpecRawFetchEditorSection extends AbstractPropertySection im
 		disposeBindings();
 
 		Object selectedObject = ((IStructuredSelection) selection).getFirstElement();
-		myFetchSpecification = (EOFetchSpecification) selectedObject;
+		myFetchSpecification = (TBEnterpriseFetchSpecification) selectedObject;
 		if (myFetchSpecification != null) {
-			myFetchSpecification.addPropertyChangeListener(EOFetchSpecification.RAW_ROW_KEY_PATHS, myRawRowKeyPathsChangedRefresher);
+			myFetchSpecification.addPropertyChangeListener(TBEnterpriseFetchSpecification.RAW_ROW_KEY_PATHS, myRawRowKeyPathsChangedRefresher);
 			myEntityTreeViewUpdater.setEntity(myFetchSpecification.getEntity());
 			myRawRowKeyPathsTableViewer.setInput(myFetchSpecification);
 			TableUtils.packTableColumns(myRawRowKeyPathsTableViewer);
@@ -166,7 +166,7 @@ public class EOFetchSpecRawFetchEditorSection extends AbstractPropertySection im
 
 	protected void disposeBindings() {
 		if (myFetchSpecification != null) {
-			myFetchSpecification.removePropertyChangeListener(EOFetchSpecification.RAW_ROW_KEY_PATHS, myRawRowKeyPathsChangedRefresher);
+			myFetchSpecification.removePropertyChangeListener(TBEnterpriseFetchSpecification.RAW_ROW_KEY_PATHS, myRawRowKeyPathsChangedRefresher);
 		}
 	}
 
@@ -265,7 +265,7 @@ public class EOFetchSpecRawFetchEditorSection extends AbstractPropertySection im
 		}
 
 		public void widgetSelected(SelectionEvent _e) {
-			EOFetchSpecRawFetchEditorSection.this.addRawRowKeyPath();
+			TBEnterpriseFetchSpecRawFetchEditorSection.this.addRawRowKeyPath();
 		}
 	}
 
@@ -275,7 +275,7 @@ public class EOFetchSpecRawFetchEditorSection extends AbstractPropertySection im
 		}
 
 		public void widgetSelected(SelectionEvent _e) {
-			EOFetchSpecRawFetchEditorSection.this.removePrefetchKeyPath();
+			TBEnterpriseFetchSpecRawFetchEditorSection.this.removePrefetchKeyPath();
 		}
 	}
 }

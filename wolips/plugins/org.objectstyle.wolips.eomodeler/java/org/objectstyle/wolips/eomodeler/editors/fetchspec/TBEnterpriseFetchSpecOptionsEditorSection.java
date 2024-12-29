@@ -17,10 +17,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgements normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -65,13 +65,13 @@ import org.eclipse.ui.views.properties.tabbed.AbstractPropertySection;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.objectstyle.wolips.baseforplugins.util.ComparisonUtils;
 import org.objectstyle.wolips.eomodeler.Messages;
-import org.objectstyle.wolips.eomodeler.core.model.EOFetchSpecification;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseFetchSpecification;
 import org.objectstyle.wolips.eomodeler.utils.BooleanUpdateValueStrategy;
 import org.objectstyle.wolips.eomodeler.utils.FormUtils;
 import org.objectstyle.wolips.eomodeler.utils.UglyFocusHackWorkaroundListener;
 
-public class EOFetchSpecOptionsEditorSection extends AbstractPropertySection {
-	private EOFetchSpecification _fetchSpecification;
+public class TBEnterpriseFetchSpecOptionsEditorSection extends AbstractPropertySection {
+	private TBEnterpriseFetchSpecification _fetchSpecification;
 
 	private Text _fetchLimitText;
 
@@ -89,7 +89,7 @@ public class EOFetchSpecOptionsEditorSection extends AbstractPropertySection {
 
 	private DataBindingContext _bindingContext;
 
-	public EOFetchSpecOptionsEditorSection() {
+	public TBEnterpriseFetchSpecOptionsEditorSection() {
 		// DO NOTHING
 	}
 
@@ -101,7 +101,7 @@ public class EOFetchSpecOptionsEditorSection extends AbstractPropertySection {
 
 		Composite topForm = FormUtils.createForm(getWidgetFactory(), form);
 
-		getWidgetFactory().createCLabel(topForm, Messages.getString("EOFetchSpecification." + EOFetchSpecification.FETCH_LIMIT), SWT.NONE);
+		getWidgetFactory().createCLabel(topForm, Messages.getString("TBEnterpriseFetchSpecification." + TBEnterpriseFetchSpecification.FETCH_LIMIT), SWT.NONE);
 		_fetchLimitText = new Text(topForm, SWT.BORDER);
 		GridData fetchLimitLayoutData = new GridData(GridData.FILL_HORIZONTAL);
 		_fetchLimitText.setLayoutData(fetchLimitLayoutData);
@@ -109,27 +109,27 @@ public class EOFetchSpecOptionsEditorSection extends AbstractPropertySection {
 
 		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
 		_promptsAfterFetchLimitButton = new Button(topForm, SWT.CHECK);
-		_promptsAfterFetchLimitButton.setText(Messages.getString("EOFetchSpecification." + EOFetchSpecification.PROMPTS_AFTER_FETCH_LIMIT));
+		_promptsAfterFetchLimitButton.setText(Messages.getString("TBEnterpriseFetchSpecification." + TBEnterpriseFetchSpecification.PROMPTS_AFTER_FETCH_LIMIT));
 
 		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
 		_deepButton = new Button(topForm, SWT.CHECK);
-		_deepButton.setText(Messages.getString("EOFetchSpecification." + EOFetchSpecification.DEEP));
+		_deepButton.setText(Messages.getString("TBEnterpriseFetchSpecification." + TBEnterpriseFetchSpecification.DEEP));
 
 		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
 		_usesDistinctButton = new Button(topForm, SWT.CHECK);
-		_usesDistinctButton.setText(Messages.getString("EOFetchSpecification." + EOFetchSpecification.USES_DISTINCT));
+		_usesDistinctButton.setText(Messages.getString("TBEnterpriseFetchSpecification." + TBEnterpriseFetchSpecification.USES_DISTINCT));
 
 		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
 		_lockObjectsButton = new Button(topForm, SWT.CHECK);
-		_lockObjectsButton.setText(Messages.getString("EOFetchSpecification." + EOFetchSpecification.LOCKS_OBJECTS));
+		_lockObjectsButton.setText(Messages.getString("TBEnterpriseFetchSpecification." + TBEnterpriseFetchSpecification.LOCKS_OBJECTS));
 
 		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
 		_refreshesRefetchedObjectsButton = new Button(topForm, SWT.CHECK);
-		_refreshesRefetchedObjectsButton.setText(Messages.getString("EOFetchSpecification." + EOFetchSpecification.REFRESHES_REFETCHED_OBJECTS));
+		_refreshesRefetchedObjectsButton.setText(Messages.getString("TBEnterpriseFetchSpecification." + TBEnterpriseFetchSpecification.REFRESHES_REFETCHED_OBJECTS));
 
 		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
 		_requiresAllQualifierBindingVariablesButton = new Button(topForm, SWT.CHECK);
-		_requiresAllQualifierBindingVariablesButton.setText(Messages.getString("EOFetchSpecification." + EOFetchSpecification.REQUIRES_ALL_QUALIFIER_BINDING_VARIABLES));
+		_requiresAllQualifierBindingVariablesButton.setText(Messages.getString("TBEnterpriseFetchSpecification." + TBEnterpriseFetchSpecification.REQUIRES_ALL_QUALIFIER_BINDING_VARIABLES));
 
 	}
 
@@ -142,52 +142,57 @@ public class EOFetchSpecOptionsEditorSection extends AbstractPropertySection {
 		disposeBindings();
 
 		Object selectedObject = ((IStructuredSelection) selection).getFirstElement();
-		_fetchSpecification = (EOFetchSpecification) selectedObject;
+		_fetchSpecification = (TBEnterpriseFetchSpecification) selectedObject;
 		if (_fetchSpecification != null) {
 			_bindingContext = new DataBindingContext();
+			
 			_bindingContext.bindValue(
 					//SWTObservables.observeText(_fetchLimitText, SWT.Modify),
 					WidgetProperties.text(SWT.Modify).observe(_fetchLimitText), 
 					//BeansObservables.observeValue(_fetchSpecification, EOFetchSpecification.FETCH_LIMIT),
-					BeanProperties.value(EOFetchSpecification.FETCH_LIMIT).observe(_fetchSpecification), 
+					BeanProperties.value(TBEnterpriseFetchSpecification.FETCH_LIMIT).observe(_fetchSpecification), 
 					null, null);
+
 			// new BindSpec(null, null, new RegexStringValidator("^[0-9]*$",
 			// "^[0-9]+$", "Please enter a number"), null));
+			
+			
 			_bindingContext.bindValue(
 					//SWTObservables.observeSelection(_promptsAfterFetchLimitButton),
 					WidgetProperties.buttonSelection().observe(_promptsAfterFetchLimitButton), 
 					//BeansObservables.observeValue(_fetchSpecification, EOFetchSpecification.PROMPTS_AFTER_FETCH_LIMIT),
-					BeanProperties.value(EOFetchSpecification.PROMPTS_AFTER_FETCH_LIMIT).observe(_fetchSpecification), 
+					BeanProperties.value(TBEnterpriseFetchSpecification.PROMPTS_AFTER_FETCH_LIMIT).observe(_fetchSpecification), 
 					null, new BooleanUpdateValueStrategy());
 			_bindingContext.bindValue(
 					//SWTObservables.observeSelection(_deepButton),
 					WidgetProperties.buttonSelection().observe(_deepButton), 
 					//BeansObservables.observeValue(_fetchSpecification, EOFetchSpecification.DEEP),
-					BeanProperties.value(EOFetchSpecification.DEEP).observe(_fetchSpecification), 
+					BeanProperties.value(TBEnterpriseFetchSpecification.DEEP).observe(_fetchSpecification), 
 					null, new BooleanUpdateValueStrategy());
 			_bindingContext.bindValue(
 					//SWTObservables.observeSelection(_usesDistinctButton),
 					WidgetProperties.buttonSelection().observe(_usesDistinctButton), 
 					//BeansObservables.observeValue(_fetchSpecification, EOFetchSpecification.USES_DISTINCT),
-					BeanProperties.value(EOFetchSpecification.USES_DISTINCT).observe(_fetchSpecification), 
+					BeanProperties.value(TBEnterpriseFetchSpecification.USES_DISTINCT).observe(_fetchSpecification), 
 					null, new BooleanUpdateValueStrategy());
+
 			_bindingContext.bindValue(
 					//SWTObservables.observeSelection(_lockObjectsButton),
 					WidgetProperties.buttonSelection().observe(_lockObjectsButton), 
 					//BeansObservables.observeValue(_fetchSpecification, EOFetchSpecification.LOCKS_OBJECTS),
-					BeanProperties.value(EOFetchSpecification.LOCKS_OBJECTS).observe(_fetchSpecification), 
+					BeanProperties.value(TBEnterpriseFetchSpecification.LOCKS_OBJECTS).observe(_fetchSpecification), 
 					null, new BooleanUpdateValueStrategy());
 			_bindingContext.bindValue(
 					//SWTObservables.observeSelection(_refreshesRefetchedObjectsButton),
 					WidgetProperties.buttonSelection().observe(_refreshesRefetchedObjectsButton), 
 					//BeansObservables.observeValue(_fetchSpecification, EOFetchSpecification.REFRESHES_REFETCHED_OBJECTS),
-					BeanProperties.value(EOFetchSpecification.REFRESHES_REFETCHED_OBJECTS).observe(_fetchSpecification), 
+					BeanProperties.value(TBEnterpriseFetchSpecification.REFRESHES_REFETCHED_OBJECTS).observe(_fetchSpecification), 
 					null, new BooleanUpdateValueStrategy());
 			_bindingContext.bindValue(
 					//SWTObservables.observeSelection(_requiresAllQualifierBindingVariablesButton),
 					WidgetProperties.buttonSelection().observe(_requiresAllQualifierBindingVariablesButton), 
 					//BeansObservables.observeValue(_fetchSpecification, EOFetchSpecification.REQUIRES_ALL_QUALIFIER_BINDING_VARIABLES),
-					BeanProperties.value(EOFetchSpecification.REQUIRES_ALL_QUALIFIER_BINDING_VARIABLES).observe(_fetchSpecification), 
+					BeanProperties.value(TBEnterpriseFetchSpecification.REQUIRES_ALL_QUALIFIER_BINDING_VARIABLES).observe(_fetchSpecification), 
 					null, new BooleanUpdateValueStrategy());
 		}
 	}

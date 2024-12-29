@@ -17,10 +17,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgements normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -47,37 +47,24 @@
  * Group, please see <http://objectstyle.org/>.
  *  
  */
-package org.objectstyle.wolips.eomodeler.editors.entity;
+package org.objectstyle.wolips.eomodeler.editors.fetchspec;
 
-import org.eclipse.swt.graphics.Image;
-import org.objectstyle.wolips.eomodeler.Activator;
-import org.objectstyle.wolips.eomodeler.core.model.EOFetchSpecification;
-import org.objectstyle.wolips.eomodeler.utils.TablePropertyLabelProvider;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.Viewer;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseFetchSpecification;
 
-public class EOFetchSpecsLabelProvider extends TablePropertyLabelProvider {
-	public EOFetchSpecsLabelProvider(String tableName) {
-		super(tableName);
+public class TBEnterpriseSortOrderingsContentProvider implements IStructuredContentProvider {
+	public Object[] getElements(Object _inputElement) {
+		TBEnterpriseFetchSpecification fetchSpec = (TBEnterpriseFetchSpecification) _inputElement;
+		Object[] sortOrderings = fetchSpec.getSortOrderings().toArray();
+		return sortOrderings;
 	}
 
-	public Image getColumnImage(Object _element, String _property) {
-		EOFetchSpecification fetchSpec = (EOFetchSpecification) _element;
-		Image image;
-		if (EOFetchSpecification.SHARES_OBJECTS.equals(_property)) {
-			image = yesNoImage(fetchSpec.isSharesObjects(), Activator.getDefault().getImageRegistry().get(Activator.CHECK_ICON), null, null);
-		} else {
-			image = super.getColumnImage(_element, _property);
-		}
-		return image;
+	public void dispose() {
+		// DO NOTHING
 	}
 
-	public String getColumnText(Object _element, String _property) {
-		String text;
-		if (EOFetchSpecification.SHARES_OBJECTS.equals(_property)) {
-			text = null;
-		} else {
-			text = super.getColumnText(_element, _property);
-		}
-		return text;
+	public void inputChanged(Viewer _viewer, Object _oldInput, Object _newInput) {
+		// DO NOTHING
 	}
-
 }

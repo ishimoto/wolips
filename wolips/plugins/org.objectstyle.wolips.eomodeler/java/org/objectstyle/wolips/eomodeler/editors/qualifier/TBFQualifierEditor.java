@@ -14,9 +14,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOAggregateQualifier;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseQualifier;
 
-public class EOQualifierEditor extends Composite implements IQualifierTypeEditorListener {
+public class TBFQualifierEditor extends Composite implements IQualifierTypeEditorListener {
 	private ComboViewer _typeCombo;
 
 	private Composite _typeEditorContainer;
@@ -35,7 +35,7 @@ public class EOQualifierEditor extends Composite implements IQualifierTypeEditor
 
 	private IQualifierEditorListener _listener;
 
-	public EOQualifierEditor(Composite parent, int style) {
+	public TBFQualifierEditor(Composite parent, int style) {
 		super(parent, style);
 
 		GridLayout layout = new GridLayout(4, false);
@@ -50,7 +50,9 @@ public class EOQualifierEditor extends Composite implements IQualifierTypeEditor
 		setLayout(layout);
 
 		_typeCombo = new ComboViewer(this, SWT.READ_ONLY);
-		_typeCombo.add(_qualifierTypes);
+		for (IQualifierType type: _qualifierTypes) {
+			_typeCombo.add(type);
+		}
 		_typeCombo.addSelectionChangedListener(new TypeSelectionHandler());
 		_typeCombo.getCombo().setLayoutData(new GridData());
 
@@ -79,7 +81,7 @@ public class EOQualifierEditor extends Composite implements IQualifierTypeEditor
 			public void widgetSelected(SelectionEvent e) {
 				IQualifierEditorListener listener = getQualifierEditorListener();
 				if (listener != null) {
-					listener.qualifierRemoved(EOQualifierEditor.this);
+					listener.qualifierRemoved(TBFQualifierEditor.this);
 				}
 			}
 		});
@@ -95,17 +97,17 @@ public class EOQualifierEditor extends Composite implements IQualifierTypeEditor
 			public void widgetSelected(SelectionEvent e) {
 				IQualifierEditorListener listener = getQualifierEditorListener();
 				if (listener != null) {
-					listener.qualifierAddedBelow(EOQualifierEditor.this);
+					listener.qualifierAddedBelow(TBFQualifierEditor.this);
 				}
 			}
 		});
 	}
 
-	public EOQualifier getQualifier() {
+	public TBEnterpriseQualifier getQualifier() {
 		return (_typeEditor == null) ? null : _typeEditor.getQualifier();
 	}
 
-	public void setQualifier(EOQualifier qualifier) {
+	public void setQualifier(TBEnterpriseQualifier qualifier) {
 		IQualifierType matchingQualifierType = null;
 		for (IQualifierType qualifierType : _qualifierTypes) {
 			if (!(qualifierType instanceof ExpressionQualifierType) && qualifierType.isTypeFor(qualifier)) {
@@ -135,7 +137,7 @@ public class EOQualifierEditor extends Composite implements IQualifierTypeEditor
 		IQualifierType selectedQualifierType = (IQualifierType) selection.getFirstElement();
 
 		if (selectedQualifierType != null && _qualifierType != selectedQualifierType) {
-			EOQualifier previousQualifier = getQualifier();
+			TBEnterpriseQualifier previousQualifier = getQualifier();
 			if (_typeEditor != null) {
 				_typeEditor.dispose();
 				_typeEditor = null;
@@ -161,7 +163,7 @@ public class EOQualifierEditor extends Composite implements IQualifierTypeEditor
 		// _typeCombo.getSelection();
 		// IQualifierType selectedQualifierType = (IQualifierType)
 		// selection.getFirstElement();
-		EOQualifier qualifier = _typeEditor.getQualifier();
+		TBEnterpriseQualifier qualifier = _typeEditor.getQualifier();
 		for (IQualifierType qualifierType : _qualifierTypes) {
 			qualifierType.setQualifier(qualifier);
 			_typeCombo.refresh(qualifierType);
@@ -191,7 +193,7 @@ public class EOQualifierEditor extends Composite implements IQualifierTypeEditor
 
 	protected class TypeSelectionHandler implements ISelectionChangedListener {
 		public void selectionChanged(SelectionChangedEvent event) {
-			EOQualifierEditor.this.typeChanged();
+			TBFQualifierEditor.this.typeChanged();
 		}
 	}
 }

@@ -17,10 +17,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgements normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -49,54 +49,35 @@
  */
 package org.objectstyle.wolips.eomodeler.editors.entity;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import org.eclipse.swt.graphics.Image;
+import org.objectstyle.wolips.eomodeler.Activator;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseFetchSpecification;
+import org.objectstyle.wolips.eomodeler.utils.TablePropertyLabelProvider;
 
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.Viewer;
-import org.objectstyle.wolips.eomodeler.core.kvc.KVCComparator;
-import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
-import org.objectstyle.wolips.eomodeler.core.model.EOModel;
-import org.objectstyle.wolips.eomodeler.core.utils.EOModelUtils;
-
-public class EOPrototypeEntityListContentProvider implements IStructuredContentProvider {
-	public static final Object BLANK_ENTITY = "";
-
-	private boolean myAllowBlank;
-
-	private KVCComparator myComparator;
-
-	public EOPrototypeEntityListContentProvider(boolean _allowBlank) {
-		myAllowBlank = _allowBlank;
-		myComparator = new KVCComparator(EOEntity.class, EOEntity.NAME);
+public class TBEnterpriseFetchSpecsLabelProvider extends TablePropertyLabelProvider {
+	public TBEnterpriseFetchSpecsLabelProvider(String tableName) {
+		super(tableName);
 	}
 
-	public Object[] getElements(Object _inputElement) {
-		Set entitiesList;
-		EOModel model = EOModelUtils.getRelatedModel(_inputElement);
-		if (model != null) {
-			entitiesList = model.getModelGroup().getPrototypeEntities();
+	public Image getColumnImage(Object _element, String _property) {
+		TBEnterpriseFetchSpecification fetchSpec = (TBEnterpriseFetchSpecification) _element;
+		Image image;
+		if (TBEnterpriseFetchSpecification.SHARES_OBJECTS.equals(_property)) {
+			image = yesNoImage(fetchSpec.isSharesObjects(), Activator.getDefault().getImageRegistry().get(Activator.CHECK_ICON), null, null);
 		} else {
-			throw new IllegalArgumentException("Unknown input element: " + _inputElement);
+			image = super.getColumnImage(_element, _property);
 		}
+		return image;
+	}
 
-		List entitiesListCopy = new LinkedList();
-		entitiesListCopy.addAll(entitiesList);
-		Collections.sort(entitiesListCopy, myComparator);
-		if (myAllowBlank) {
-			entitiesListCopy.add(0, EOPrototypeEntityListContentProvider.BLANK_ENTITY);
+	public String getColumnText(Object _element, String _property) {
+		String text;
+		if (TBEnterpriseFetchSpecification.SHARES_OBJECTS.equals(_property)) {
+			text = null;
+		} else {
+			text = super.getColumnText(_element, _property);
 		}
-		Object[] entities = entitiesListCopy.toArray();
-		return entities;
+		return text;
 	}
 
-	public void dispose() {
-		// DO NOTHING
-	}
-
-	public void inputChanged(Viewer _viewer, Object _oldInput, Object _newInput) {
-		// DO NOTHING
-	}
 }

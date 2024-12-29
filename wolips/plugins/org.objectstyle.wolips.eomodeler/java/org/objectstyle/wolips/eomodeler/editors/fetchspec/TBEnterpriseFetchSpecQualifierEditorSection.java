@@ -17,10 +17,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgements normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -71,15 +71,15 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.objectstyle.wolips.baseforplugins.util.ComparisonUtils;
 import org.objectstyle.wolips.eomodeler.Messages;
 import org.objectstyle.wolips.eomodeler.core.model.AbstractEOAttributePath;
-import org.objectstyle.wolips.eomodeler.core.model.EOFetchSpecification;
 import org.objectstyle.wolips.eomodeler.core.model.IEOAttribute;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseFetchSpecification;
 import org.objectstyle.wolips.eomodeler.outline.EOEntityTreeViewUpdater;
 import org.objectstyle.wolips.eomodeler.outline.EOModelOutlineContentProvider;
 import org.objectstyle.wolips.eomodeler.utils.FormUtils;
 import org.objectstyle.wolips.eomodeler.utils.UglyFocusHackWorkaroundListener;
 
-public class EOFetchSpecQualifierEditorSection extends AbstractPropertySection implements ISelectionChangedListener {
-	private EOFetchSpecification _fetchSpecification;
+public class TBEnterpriseFetchSpecQualifierEditorSection extends AbstractPropertySection implements ISelectionChangedListener {
+	private TBEnterpriseFetchSpecification _fetchSpecification;
 
 	private Text _nameText;
 
@@ -93,7 +93,7 @@ public class EOFetchSpecQualifierEditorSection extends AbstractPropertySection i
 
 	private CLabel _errorLabel;
 
-	public EOFetchSpecQualifierEditorSection() {
+	public TBEnterpriseFetchSpecQualifierEditorSection() {
 		// DO NOTHING
 	}
 
@@ -110,7 +110,7 @@ public class EOFetchSpecQualifierEditorSection extends AbstractPropertySection i
 
 		Composite topForm = FormUtils.createForm(getWidgetFactory(), form);
 
-		getWidgetFactory().createCLabel(topForm, Messages.getString("EOFetchSpecification." + EOFetchSpecification.NAME), SWT.NONE);
+		getWidgetFactory().createCLabel(topForm, Messages.getString("TBEnterpriseFetchSpecification." + TBEnterpriseFetchSpecification.NAME), SWT.NONE);
 		_nameText = new Text(topForm, SWT.BORDER);
 		GridData nameLayoutData = new GridData(GridData.FILL_HORIZONTAL);
 		_nameText.setLayoutData(nameLayoutData);
@@ -149,26 +149,28 @@ public class EOFetchSpecQualifierEditorSection extends AbstractPropertySection i
 		disposeBindings();
 
 		Object selectedObject = ((IStructuredSelection) selection).getFirstElement();
-		_fetchSpecification = (EOFetchSpecification) selectedObject;
+		_fetchSpecification = (TBEnterpriseFetchSpecification) selectedObject;
 		if (_fetchSpecification != null) {
 			_bindingContext = new DataBindingContext();
+			
 			_bindingContext.bindValue(
 					//SWTObservables.observeText(_nameText, SWT.Modify),
 					WidgetProperties.text(SWT.Modify).observe(_nameText), 
 					//BeansObservables.observeValue(_fetchSpecification, EOFetchSpecification.NAME),
-					BeanProperties.value(EOFetchSpecification.NAME).observe(_fetchSpecification), 
+					BeanProperties.value(TBEnterpriseFetchSpecification.NAME).observe(_fetchSpecification), 
 					null, null);
 			Binding qualifierBinding = _bindingContext.bindValue(
 					//SWTObservables.observeText(_qualifierText, SWT.Modify),
 					WidgetProperties.text(SWT.Modify).observe(_qualifierText), 
 					//BeansObservables.observeValue(_fetchSpecification, EOFetchSpecification.QUALIFIER_STRING),
-					BeanProperties.value(EOFetchSpecification.QUALIFIER_STRING).observe(_fetchSpecification), 
+					BeanProperties.value(TBEnterpriseFetchSpecification.QUALIFIER_STRING).observe(_fetchSpecification), 
 					null, null);
 			_bindingContext.bindValue(
 					//SWTObservables.observeText(_errorLabel),
 					WidgetProperties.text().observe(_errorLabel),
 					qualifierBinding.getValidationStatus(), 
 					null, null);
+			
 			_entityTreeViewUpdater.setEntity(_fetchSpecification.getEntity());
 		}
 	}

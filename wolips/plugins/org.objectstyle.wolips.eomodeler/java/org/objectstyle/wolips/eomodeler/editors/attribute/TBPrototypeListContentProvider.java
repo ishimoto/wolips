@@ -17,10 +17,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgements normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -49,41 +49,50 @@
  */
 package org.objectstyle.wolips.eomodeler.editors.attribute;
 
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.swt.graphics.Image;
-import org.objectstyle.wolips.eomodeler.Messages;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.Viewer;
+import org.objectstyle.wolips.eomodeler.core.kvc.KVCComparator;
 import org.objectstyle.wolips.eomodeler.core.model.EOAttribute;
+import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
+import org.objectstyle.wolips.eomodeler.core.model.EOModel;
 
-public class EOPrototypeListLabelProvider implements ILabelProvider {
-	public Image getImage(Object _element) {
-		return null;
+public class TBPrototypeListContentProvider implements IStructuredContentProvider {
+	public static final Object BLANK_ENTITY = "";
+
+	private KVCComparator<Object> myComparator;
+
+	public TBPrototypeListContentProvider() {
+		myComparator = new KVCComparator(EOAttribute.class, EOEntity.NAME);
 	}
 
-	public String getText(Object _element) {
-		String prototypeName = null;
-		if (_element instanceof EOAttribute) {
-			EOAttribute prototype = (EOAttribute) _element;
-			prototypeName = prototype.getName();
+	public Object[] getElements(Object _inputElement) {
+		Set<?> prototypeAttributesList;
+		if (_inputElement instanceof EOAttribute) {
+			prototypeAttributesList = ((EOAttribute) _inputElement).getEntity().getModel().getPrototypeAttributes();
+		} else if (_inputElement instanceof EOModel) {
+				prototypeAttributesList = ((EOModel) _inputElement).getPrototypeAttributes();
 		} else {
-			prototypeName = Messages.getString("EOAttributesCellModifier.noPrototype");
+			throw new IllegalArgumentException("Unknown input element: " + _inputElement);
 		}
-		return prototypeName;
-	}
 
-	public void addListener(ILabelProviderListener _listener) {
-		// DO NOTHING
+		List<Object> prototypeAttributesListCopy = new LinkedList<>();
+		prototypeAttributesListCopy.addAll(prototypeAttributesList);
+		Collections.sort(prototypeAttributesListCopy, myComparator);
+		prototypeAttributesListCopy.add(0, TBPrototypeListContentProvider.BLANK_ENTITY);
+		Object[] attributes = prototypeAttributesListCopy.toArray();
+		return attributes;
 	}
 
 	public void dispose() {
 		// DO NOTHING
 	}
 
-	public boolean isLabelProperty(Object _element, String _property) {
-		return true;
-	}
-
-	public void removeListener(ILabelProviderListener _listener) {
+	public void inputChanged(Viewer _viewer, Object _oldInput, Object _newInput) {
 		// DO NOTHING
 	}
 }

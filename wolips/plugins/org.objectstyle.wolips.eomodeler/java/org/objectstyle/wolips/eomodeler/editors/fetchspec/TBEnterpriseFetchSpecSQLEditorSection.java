@@ -17,10 +17,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgements normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -75,9 +75,9 @@ import org.eclipse.ui.views.properties.tabbed.AbstractPropertySection;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.objectstyle.wolips.baseforplugins.util.ComparisonUtils;
 import org.objectstyle.wolips.eomodeler.Messages;
-import org.objectstyle.wolips.eomodeler.core.model.EOFetchSpecification;
 import org.objectstyle.wolips.eomodeler.core.model.EOModel;
 import org.objectstyle.wolips.eomodeler.core.model.EOStoredProcedure;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseFetchSpecification;
 import org.objectstyle.wolips.eomodeler.editors.storedProcedures.EOStoredProceduresConstants;
 import org.objectstyle.wolips.eomodeler.editors.storedProcedures.EOStoredProceduresContentProvider;
 import org.objectstyle.wolips.eomodeler.utils.FormUtils;
@@ -86,8 +86,8 @@ import org.objectstyle.wolips.eomodeler.utils.TablePropertyViewerSorter;
 import org.objectstyle.wolips.eomodeler.utils.TableRefreshPropertyListener;
 import org.objectstyle.wolips.eomodeler.utils.TableUtils;
 
-public class EOFetchSpecSQLEditorSection extends AbstractPropertySection implements ISelectionChangedListener, SelectionListener {
-	private EOFetchSpecification _fetchSpecification;
+public class TBEnterpriseFetchSpecSQLEditorSection extends AbstractPropertySection implements ISelectionChangedListener, SelectionListener {
+	private TBEnterpriseFetchSpecification _fetchSpecification;
 
 	private Text _rawSQLText;
 
@@ -105,7 +105,7 @@ public class EOFetchSpecSQLEditorSection extends AbstractPropertySection impleme
 
 	private DataBindingContext _bindingContext;
 
-	public EOFetchSpecSQLEditorSection() {
+	public TBEnterpriseFetchSpecSQLEditorSection() {
 		_storedProcedureChangedHandler = new StoredProcedureChangedHandler();
 	}
 	
@@ -123,16 +123,16 @@ public class EOFetchSpecSQLEditorSection extends AbstractPropertySection impleme
 		Composite topForm = FormUtils.createForm(getWidgetFactory(), form, 1);
 
 		_useQualifierButton = new Button(topForm, SWT.RADIO);
-		_useQualifierButton.setText(Messages.getString("EOFetchSpecSQLEditorSection.useQualifier")); //$NON-NLS-1$
+		_useQualifierButton.setText(Messages.getString("TBEnterpriseFetchSpecSQLEditorSection.useQualifier")); //$NON-NLS-1$
 		_useRawSQLButton = new Button(topForm, SWT.RADIO);
-		_useRawSQLButton.setText(Messages.getString("EOFetchSpecSQLEditorSection.useRawSQL")); //$NON-NLS-1$
+		_useRawSQLButton.setText(Messages.getString("TBEnterpriseFetchSpecSQLEditorSection.useRawSQL")); //$NON-NLS-1$
 
 		_rawSQLText = new Text(topForm, SWT.BORDER);
 		GridData nameLayoutData = new GridData(GridData.FILL_HORIZONTAL);
 		_rawSQLText.setLayoutData(nameLayoutData);
 
 		_useStoredProcedureButton = new Button(topForm, SWT.RADIO);
-		_useStoredProcedureButton.setText(Messages.getString("EOFetchSpecSQLEditorSection.useStoredProcedure")); //$NON-NLS-1$
+		_useStoredProcedureButton.setText(Messages.getString("TBEnterpriseFetchSpecSQLEditorSection.useStoredProcedure")); //$NON-NLS-1$
 
 		_storedProcedureTableViewer = TableUtils.createTableViewer(topForm, "EOStoredProcedure", EOStoredProceduresConstants.COLUMNS, new EOStoredProceduresContentProvider(), new TablePropertyLabelProvider(EOStoredProceduresConstants.COLUMNS), new TablePropertyViewerSorter(EOStoredProceduresConstants.COLUMNS));
 		GridData rawRowKeyPathsTableLayoutData = new GridData(GridData.FILL_BOTH);
@@ -151,7 +151,7 @@ public class EOFetchSpecSQLEditorSection extends AbstractPropertySection impleme
 		disposeBindings();
 
 		Object selectedObject = ((IStructuredSelection) selection).getFirstElement();
-		_fetchSpecification = (EOFetchSpecification) selectedObject;
+		_fetchSpecification = (TBEnterpriseFetchSpecification) selectedObject;
 		if (_fetchSpecification != null) {
 			addBindings();
 			_storedProcedureTableViewer.setInput(_fetchSpecification);
@@ -163,16 +163,19 @@ public class EOFetchSpecSQLEditorSection extends AbstractPropertySection impleme
 	protected void addBindings() {
 		if (_fetchSpecification != null) {
 			_bindingContext = new DataBindingContext();
+
 			_bindingContext.bindValue(
 					//SWTObservables.observeText(_rawSQLText, SWT.Modify),
 					WidgetProperties.text(SWT.Modify).observe(_rawSQLText), 
 					//BeansObservables.observeValue(_fetchSpecification, EOFetchSpecification.CUSTOM_QUERY_EXPRESSION),
-					BeanProperties.value(EOFetchSpecification.CUSTOM_QUERY_EXPRESSION).observe(_fetchSpecification), 
+					BeanProperties.value(TBEnterpriseFetchSpecification.CUSTOM_QUERY_EXPRESSION).observe(_fetchSpecification), 
 					null, null);
+
+			
 			_fetchSpecification.getEntity().getModel().addPropertyChangeListener(EOModel.STORED_PROCEDURES, _storedProcedureChangedRefresher);
 			_fetchSpecification.getEntity().getModel().addPropertyChangeListener(EOModel.STORED_PROCEDURE, _storedProcedureChangedRefresher);
-			_fetchSpecification.addPropertyChangeListener(EOFetchSpecification.STORED_PROCEDURE, _storedProcedureChangedHandler);
-			_fetchSpecification.addPropertyChangeListener(EOFetchSpecification.CUSTOM_QUERY_EXPRESSION, _storedProcedureChangedHandler);
+			_fetchSpecification.addPropertyChangeListener(TBEnterpriseFetchSpecification.STORED_PROCEDURE, _storedProcedureChangedHandler);
+			_fetchSpecification.addPropertyChangeListener(TBEnterpriseFetchSpecification.CUSTOM_QUERY_EXPRESSION, _storedProcedureChangedHandler);
 		}
 	}
 
@@ -183,8 +186,8 @@ public class EOFetchSpecSQLEditorSection extends AbstractPropertySection impleme
 		if (_fetchSpecification != null) {
 			_fetchSpecification.getEntity().getModel().removePropertyChangeListener(EOModel.STORED_PROCEDURES, _storedProcedureChangedRefresher);
 			_fetchSpecification.getEntity().getModel().removePropertyChangeListener(EOModel.STORED_PROCEDURE, _storedProcedureChangedRefresher);
-			_fetchSpecification.removePropertyChangeListener(EOFetchSpecification.STORED_PROCEDURE, _storedProcedureChangedHandler);
-			_fetchSpecification.removePropertyChangeListener(EOFetchSpecification.CUSTOM_QUERY_EXPRESSION, _storedProcedureChangedHandler);
+			_fetchSpecification.removePropertyChangeListener(TBEnterpriseFetchSpecification.STORED_PROCEDURE, _storedProcedureChangedHandler);
+			_fetchSpecification.removePropertyChangeListener(TBEnterpriseFetchSpecification.CUSTOM_QUERY_EXPRESSION, _storedProcedureChangedHandler);
 		}
 	}
 
@@ -253,7 +256,7 @@ public class EOFetchSpecSQLEditorSection extends AbstractPropertySection impleme
 
 	protected class StoredProcedureChangedHandler implements PropertyChangeListener {
 		public void propertyChange(PropertyChangeEvent event) {
-			EOFetchSpecSQLEditorSection.this.updateButtonsEnabled();
+			TBEnterpriseFetchSpecSQLEditorSection.this.updateButtonsEnabled();
 		}
 	}
 }
