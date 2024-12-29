@@ -56,20 +56,23 @@
 package org.objectstyle.wolips.core.resources.builder;
 
 import java.util.Map;
+import java.util.Set;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 public interface IIncrementalBuilder extends IBuilder {
-	public abstract void handleSourceDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map buildCache);
+	
+	public abstract void handleSourceDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map<String, Set<IContainer>> buildCache);
 
-	public abstract void handleClassesDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map buildCache);
+	public abstract void handleClassesDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map<String, Set<IContainer>> buildCache);
 
-	public abstract void handleWoappResourcesDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map buildCache);
+	public abstract void handleWoappResourcesDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map<String, Set<IContainer>> buildCache);
 
-	public abstract void handleWebServerResourcesDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map buildCache);
+	public abstract void handleWebServerResourcesDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map<String, Set<IContainer>> buildCache);
 
-	public abstract void handleOtherDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map buildCache);
+	public abstract void handleOtherDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map<String, Set<IContainer>> buildCache);
 
-	public abstract void classpathChanged(IResourceDelta delta, IProgressMonitor progressMonitor, Map buildCache);
+	public abstract void classpathChanged(IResourceDelta delta, IProgressMonitor progressMonitor, Map<String, Set<IContainer>> buildCache);
 }

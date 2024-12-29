@@ -76,9 +76,9 @@ public interface IPBDotProjectAdapter extends IFileAdapter {
 
 	public abstract void removeClass(ILocalizedPath localizedPath);
 
-	public abstract void addWoComponent(ILocalizedPath localizedPath);
+	public abstract void addTbComponent(ILocalizedPath localizedPath);
 
-	public abstract void removeWoComponent(ILocalizedPath localizedPath);
+	public abstract void removeTbComponent(ILocalizedPath localizedPath);
 
 	public abstract void addWoappResource(ILocalizedPath localizedPath);
 

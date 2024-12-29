@@ -80,7 +80,7 @@ public class InsertComponentDialogue extends Dialog {
 		_inline.setSelection(Activator.getDefault().useInlineBindings(_project.getProject()));
 
 		_componentInstanceLabel = new Label(composite, SWT.NONE);
-		_componentInstanceLabel.setText("WebObject tag name:");
+		_componentInstanceLabel.setText("TreasureBoat tag name:");
 		GridData componentInstanceLabelLayout = new GridData(GridData.FILL_HORIZONTAL);
 		_componentInstanceLabel.setLayoutData(componentInstanceLabelLayout);
 

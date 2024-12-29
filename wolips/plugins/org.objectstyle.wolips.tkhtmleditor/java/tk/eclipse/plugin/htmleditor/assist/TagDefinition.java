@@ -3,6 +3,8 @@ package tk.eclipse.plugin.htmleditor.assist;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.objectstyle.wolips.core.TBLipsConstants;
+
 /**
  * This is the defintion of HTML-tags.
  */

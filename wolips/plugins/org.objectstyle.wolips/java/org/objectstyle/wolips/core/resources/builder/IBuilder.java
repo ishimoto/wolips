@@ -56,11 +56,14 @@
 package org.objectstyle.wolips.core.resources.builder;
 
 import java.util.Map;
+import java.util.Set;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 public interface IBuilder {
+	
 	public abstract boolean isEnabled();
 	
 	/**
@@ -82,7 +85,7 @@ public interface IBuilder {
 	 *         happen when this build is done (only an IDeltaBuilder should
 	 *         return true from this)
 	 */
-	public abstract boolean buildStarted(int kind, Map args, IProgressMonitor monitor, IProject project, Map buildCache);
+	public abstract boolean buildStarted(int kind, Map args, IProgressMonitor monitor, IProject project, Map<String, Set<IContainer>> buildCache);
 
 	/**
 	 * Called when all the preparations for building are complete. Some builders
@@ -104,6 +107,6 @@ public interface IBuilder {
 	 *         happen when this build is done (only an IDeltaBuilder should
 	 *         return true from this)
 	 */
-	public abstract boolean buildPreparationDone(int kind, Map args, IProgressMonitor monitor, IProject project, Map buildCache);
+	public abstract boolean buildPreparationDone(int kind, Map args, IProgressMonitor monitor, IProject project, Map<String, Set<IContainer>> buildCache);
 
 }

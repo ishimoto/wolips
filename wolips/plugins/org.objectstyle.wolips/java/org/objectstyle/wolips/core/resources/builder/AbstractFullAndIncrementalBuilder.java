@@ -50,32 +50,35 @@
 package org.objectstyle.wolips.core.resources.builder;
 
 import java.util.Map;
+import java.util.Set;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 public abstract class AbstractFullAndIncrementalBuilder implements IIncrementalBuilder, IFullBuilder {
-	public void handleSourceDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map buildCache) {
+	
+	public void handleSourceDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map<String, Set<IContainer>> buildCache) {
 		handleSource(delta.getResource(), progressMonitor, buildCache);
 	}
 
-	public void handleClassesDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map buildCache) {
+	public void handleClassesDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map<String, Set<IContainer>> buildCache) {
 		handleClasses(delta.getResource(), progressMonitor, buildCache);
 	}
 
-	public void handleWoappResourcesDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map buildCache) {
+	public void handleWoappResourcesDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map<String, Set<IContainer>> buildCache) {
 		handleWoappResources(delta.getResource(), progressMonitor, buildCache);
 	}
 
-	public void handleWebServerResourcesDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map buildCache) {
+	public void handleWebServerResourcesDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map<String, Set<IContainer>> buildCache) {
 		handleWebServerResources(delta.getResource(), progressMonitor, buildCache);
 	}
 
-	public void handleOtherDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map buildCache) {
+	public void handleOtherDelta(IResourceDelta delta, IProgressMonitor progressMonitor, Map<String, Set<IContainer>> buildCache) {
 		handleOther(delta.getResource(), progressMonitor, buildCache);
 	}
 
-	public void classpathChanged(IResourceDelta delta, IProgressMonitor progressMonitor, Map buildCache) {
+	public void classpathChanged(IResourceDelta delta, IProgressMonitor progressMonitor, Map<String, Set<IContainer>> buildCache) {
 		handleClasspath(delta.getResource(), progressMonitor, buildCache);
 	}
 }

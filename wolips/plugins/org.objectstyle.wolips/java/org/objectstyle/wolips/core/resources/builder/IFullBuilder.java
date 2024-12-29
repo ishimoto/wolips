@@ -56,21 +56,24 @@
 package org.objectstyle.wolips.core.resources.builder;
 
 import java.util.Map;
+import java.util.Set;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 public interface IFullBuilder extends IBuilder {
-	public abstract void handleSource(IResource resource, IProgressMonitor _progressMonitor, Map _buildCache);
+	
+	public abstract void handleSource(IResource resource, IProgressMonitor _progressMonitor, Map<String, Set<IContainer>> _buildCache);
 
-	public abstract void handleClasses(IResource resource, IProgressMonitor _progressMonitor, Map _buildCache);
+	public abstract void handleClasses(IResource resource, IProgressMonitor _progressMonitor, Map<String, Set<IContainer>> _buildCache);
 
-	public abstract void handleWoappResources(IResource resource, IProgressMonitor _progressMonitor, Map _buildCache);
+	public abstract void handleWoappResources(IResource resource, IProgressMonitor _progressMonitor, Map<String, Set<IContainer>> _buildCache);
 
-	public abstract void handleWebServerResources(IResource resource, IProgressMonitor _progressMonitor, Map _buildCache);
+	public abstract void handleWebServerResources(IResource resource, IProgressMonitor _progressMonitor, Map<String, Set<IContainer>> _buildCache);
 
-	public abstract void handleOther(IResource resource, IProgressMonitor _progressMonitor, Map _buildCache);
+	public abstract void handleOther(IResource resource, IProgressMonitor _progressMonitor, Map<String, Set<IContainer>> _buildCache);
 
-	public abstract void handleClasspath(IResource resource, IProgressMonitor _progressMonitor, Map _buildCache);
+	public abstract void handleClasspath(IResource resource, IProgressMonitor _progressMonitor, Map<String, Set<IContainer>> _buildCache);
 
 }

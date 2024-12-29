@@ -47,7 +47,7 @@ public abstract class InsertComponentAction extends InsertHtmlAndWodAction {
 	/**
 	 * <P>
 	 * This method will return the Wo file from which parsed information can be
-	 * derived about components to be inserted. Otherwise it will reutrn null.
+	 * derived about components to be inserted. Otherwise it will return null.
 	 * </P>
 	 */
 	protected Wo getWo(String componentName) {
@@ -107,7 +107,7 @@ public abstract class InsertComponentAction extends InsertHtmlAndWodAction {
 	/**
 	 * <P>
 	 * This is the name of the component that will be inserted. Some examples of
-	 * standard component named might be <TT>WOString</TT>, <TT>WOForm</TT>
+	 * standard component named might be <TT>TBString</TT>, <TT>TBForm</TT>
 	 * etc...
 	 * </P>
 	 */

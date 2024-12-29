@@ -19,7 +19,7 @@ import org.objectstyle.wolips.wizards.WizardsPlugin.WO_VERSION;
  * Uses the WizardNewLinkPage for basic support plus easy to override
  */
 /**
- * Configure WebObjects Direct To Web project configuration options
+ * Configure TreasureBoat Direct To Web project configuration options
  * @author dlee
  */
 public class D2WApplicationConfigurationPage extends WizardNewLinkPage {
@@ -164,7 +164,7 @@ public class D2WApplicationConfigurationPage extends WizardNewLinkPage {
         d2wWOVersionGroup.setLayout(versionLayout);
         d2wWOVersionGroup.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL
                 | GridData.GRAB_HORIZONTAL));
-        d2wWOVersionGroup.setText("WebObjects Version:");
+        d2wWOVersionGroup.setText("TreasureBoat Version:");
         d2wWOVersionGroup.setFont(topLevel.getFont());
 
         woVersionList = new Combo(d2wWOVersionGroup, SWT.READ_ONLY);

@@ -242,7 +242,7 @@ public class ProjectTemplate implements Comparable<ProjectTemplate> {
 		templateEngine.init();
 
 		templateEngine.getWolipsContext().setProjectName(project.getName());
-		templateEngine.getWolipsContext().setAntFolderName(ProjectPatternsets.ANT_FOLDER_NAME);
+//		templateEngine.getWolipsContext().setAntFolderName(ProjectPatternsets.ANT_FOLDER_NAME);
 		templateEngine.setPropertyForKey(project.getName(), "projectName");
 		templateEngine.setPropertyForKey(project.getName().toLowerCase(), "projectName_lowercase");
 		for (ProjectInput input : getInputs()) {
@@ -277,7 +277,7 @@ public class ProjectTemplate implements Comparable<ProjectTemplate> {
 			String templateChildName = templateChild.getName();
 			// Skip over files named "__placeholder__".  These exist only so
 			// empty folders make it into the plugin.
-			if ("__placeholder__".equals(templateChildName) || "__placeholder".equals(templateChildName) || ".svn".equals(templateChildName) || "CVS".equals(templateChildName)) {
+			if ("__placeholder__".equals(templateChildName) || "__placeholder".equals(templateChildName) || ".git".equals(templateChildName) || ".svn".equals(templateChildName) || "CVS".equals(templateChildName)) {
 				continue;
 			}
 			boolean binary = false;

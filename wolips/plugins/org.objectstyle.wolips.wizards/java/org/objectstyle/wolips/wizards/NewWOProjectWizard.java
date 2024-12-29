@@ -136,7 +136,7 @@ import org.objectstyle.wolips.wizards.template.TemplateInputsWizardPage;
  * Standard workbench wizard that creates a new project resource in the
  * workspace.
  * <p>
- * This class may be instantiated and used without further configuration. WOLips
+ * This class may be instantiated and used without further configuration. TBLips
  * wizards extensively subclass this for project creation.
  * </p>
  * <p>
@@ -155,15 +155,9 @@ import org.objectstyle.wolips.wizards.template.TemplateInputsWizardPage;
  * returns.
  * </p>
  * 
- * @see D2WApplicationWizard
- * @see WOApplicationWizard
- * @see WOFrameworkWizard
- * @see D2WebServiceApplicationWizard
- * @see WOnderApplicationWizard
- * @see WOnderFrameworkWizard
- * @see WOSubprojectCreationWizard
- * @see WOnderApplicationWizard
- * @see ERRestApplicationWizard
+ * @see TBApplicationWizard
+ * @see TBApplicationExtendedWizard
+ * @see TBFrameworkWizard
  */
 public abstract class NewWOProjectWizard extends BasicNewResourceWizard implements IExecutableExtension {
 
@@ -482,7 +476,7 @@ public abstract class NewWOProjectWizard extends BasicNewResourceWizard implemen
 	}
 
 	public String getWindowTitle() {
-		return "New WOLips Project";
+		return "New TreasureBoat Project";
 	}
 
 	/*

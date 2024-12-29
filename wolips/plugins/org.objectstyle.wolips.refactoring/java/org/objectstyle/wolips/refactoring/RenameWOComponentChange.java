@@ -107,7 +107,7 @@ public final class RenameWOComponentChange extends CompositeChange {
 	private IFile _groovyFile;
 
 	private RenameWOComponentChange(RefactoringDescriptor descriptor, IPath resourcePath, String newName, String comment, boolean renameClass) {
-		super("Rename WOComponent");
+		super("Rename TBComponent");
 		_descriptor = descriptor;
 		_resourcePath = resourcePath;
 		_newName = newName;
@@ -141,7 +141,7 @@ public final class RenameWOComponentChange extends CompositeChange {
 	}
 
 	public String getName() {
-		return "Rename WOComponent " + getOldName() + " to " + getNewName();
+		return "Rename TBComponent " + getOldName() + " to " + getNewName();
 	}
 
 	public String getNewName() {
@@ -192,7 +192,7 @@ public final class RenameWOComponentChange extends CompositeChange {
 			throw new CoreException(new Status(IStatus.ERROR, RefactoringPlugin.getDefault().getBundleID(), IStatus.ERROR, "Could not locate component: " + _resourcePath.lastSegment(), null)); //$NON-NLS-1$
 		}
 		if (oldApiFile != null || oldWoFolders.length > 0) {
-			CompositeChange compositeChange = new CompositeChange("Rename WOComponent Files");
+			CompositeChange compositeChange = new CompositeChange("Rename TBComponent Files");
 			if (oldApiFile != null) {
 				String javaFileName = getCompilationUnit().getElementName();
 				if (!renameJavaClassInAPIFile(compositeChange, oldApiFile, javaFileName)) {

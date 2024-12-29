@@ -43,7 +43,7 @@ public class WOHierarchyScope extends AbstractSearchScope implements SuffixConst
 
 	private ITypeHierarchy hierarchy;
 	private IType[] types;
-	private Set resourcePaths;
+	private Set<String> resourcePaths;
 	private IPath[] enclosingProjectsAndJars;
 
 	protected IResource[] elements;
@@ -105,8 +105,8 @@ public class WOHierarchyScope extends AbstractSearchScope implements SuffixConst
 		//JavaModelManager.getJavaModelManager().rememberScope(this);
 	}
 	private void buildResourceVector() {
-		HashMap resources = new HashMap();
-		HashMap paths = new HashMap();
+		HashMap<IResource, IResource> resources = new HashMap<IResource, IResource>();
+		HashMap<IPath, IType> paths = new HashMap<IPath, IType>();
 		this.types = this.hierarchy.getAllTypes();
 		for (int i = 0; i < this.types.length; i++) {
 			IType type = this.types[i];
@@ -147,8 +147,8 @@ public class WOHierarchyScope extends AbstractSearchScope implements SuffixConst
 		}
 		this.enclosingProjectsAndJars = new IPath[paths.size()];
 		int i = 0;
-		for (Iterator iter = paths.keySet().iterator(); iter.hasNext();) {
-			this.enclosingProjectsAndJars[i++] = (IPath) iter.next();
+		for (Iterator<IPath> iter = paths.keySet().iterator(); iter.hasNext();) {
+			this.enclosingProjectsAndJars[i++] = iter.next();
 		}
 	}
 	/*
@@ -156,7 +156,8 @@ public class WOHierarchyScope extends AbstractSearchScope implements SuffixConst
 	 * This is a super set of the project and jar paths once the hierarchy is computed.
 	 */
 	private IPath[] computeProjectsAndJars(IType type) throws JavaModelException {
-		HashSet set = new HashSet();
+		HashSet<IPath> set = new HashSet<IPath>();
+		// System.err.print("\n type = " + type.getElementName());
 		IPackageFragmentRoot root = (IPackageFragmentRoot)type.getPackageFragment().getParent();
 		if (root.isArchive()) {
 			// add the root
@@ -165,7 +166,7 @@ public class WOHierarchyScope extends AbstractSearchScope implements SuffixConst
 			IPath rootPath = root.getPath();
 			IJavaModel model = JavaModelManager.getJavaModelManager().getJavaModel();
 			IJavaProject[] projects = model.getJavaProjects();
-			HashSet visited = new HashSet();
+			HashSet<IJavaProject> visited = new HashSet<IJavaProject>();
 			for (int i = 0; i < projects.length; i++) {
 				JavaProject project = (JavaProject) projects[i];
 				IClasspathEntry entry = project.getClasspathEntryFor(rootPath);
@@ -196,13 +197,13 @@ public class WOHierarchyScope extends AbstractSearchScope implements SuffixConst
 				}
 			}
 			// add the dependent projects
-			computeDependents(project, set, new HashSet());
+			computeDependents(project, set, new HashSet<IJavaProject>());
 		}
 		IPath[] result = new IPath[set.size()];
 		set.toArray(result);
 		return result;
 	}
-	private void computeDependents(IJavaProject project, HashSet set, HashSet visited) {
+	private void computeDependents(IJavaProject project, HashSet<IPath> set, HashSet<IJavaProject> visited) {
 		if (visited.contains(project)) return;
 		visited.add(project);
 		IProject[] dependents = project.getProject().getReferencingProjects();
