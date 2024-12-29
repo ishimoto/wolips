@@ -85,11 +85,6 @@
               id="org.objectstyle.wolips.componenteditor.editors.command.format"
               name="Format"/>
         <command
-              categoryId="org.objectstyle.wolips.componenteditor.componenteditorcommands"
-              description="Insert Component"
-              id="org.objectstyle.wolips.componenteditor.editors.command.InsertAnyComponentAction"
-              name="Insert Component"/>
-        <command
               categoryId="org.eclipse.ui.category.navigate"
               id="org.objectstyle.wolips.componenteditor.openComponent"
               name="Open Component">
