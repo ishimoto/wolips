@@ -94,7 +94,7 @@ public abstract class TagDelegate {
 
 			if (webserverResourceFile != null) {
 				try {
-					resourceUrl = webserverResourceFile.getAbsoluteFile().toURL().toExternalForm();
+					resourceUrl = webserverResourceFile.getAbsoluteFile().toURI().toURL().toExternalForm();
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 				}
