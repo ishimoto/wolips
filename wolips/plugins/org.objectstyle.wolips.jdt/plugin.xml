@@ -412,7 +412,7 @@
           allowMultiple="false"
           category="org.objectstyle.wolips.ui"
           class="org.objectstyle.wolips.jdt.ui.WOPackageExplorerPart"
-          icon="icons/WOLips16-16.png"
+          icon="icons/TBLips16-16.png"
           id="org.objectstyle.wolips.jdt.ui.WOPackageExplorer"
           name="WO Explorer">
     </view>
