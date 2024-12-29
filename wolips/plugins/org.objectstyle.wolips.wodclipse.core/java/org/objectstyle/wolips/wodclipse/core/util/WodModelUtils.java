@@ -72,8 +72,6 @@ import org.objectstyle.wolips.wodclipse.core.Activator;
 import org.objectstyle.wolips.wodclipse.core.completion.WodParserCache;
 import org.objectstyle.wolips.wodclipse.core.document.DocumentWodModel;
 import org.objectstyle.wolips.wodclipse.core.document.WodFileDocumentProvider;
-import org.objectstyle.wolips.wodclipse.core.woo.WooModel;
-import org.objectstyle.wolips.wodclipse.core.woo.WooModelException;
 
 /**
  * @author mschrag
@@ -81,14 +79,6 @@ import org.objectstyle.wolips.wodclipse.core.woo.WooModelException;
 public class WodModelUtils {
   public static IWodModel createWodModel(IFile wodFile, IDocument wodDocument) {
     return new DocumentWodModel(wodFile, wodDocument);
-  }
-
-  public static WooModel createWooModel(IDocument wooDocument) throws WooModelException {
-    return new WooModel(wooDocument.get());
-  }
-
-  public static WooModel createWooModel(IFile wooFile) {
-    return new WooModel(wooFile);
   }
 
   public static void deleteProblems(IFile wodFile) {

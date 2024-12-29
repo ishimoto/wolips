@@ -47,7 +47,7 @@ public class RelatedLabelProvider extends AppearanceAwareLabelProvider implement
 			IResource resource = (IResource) _element;
 			String ext = resource.getFileExtension();
 			String name = resource.getName();
-			if (_columnIndex == 0) { // display of resource type (HTML/WOD/WOO/API/WO/...)
+			if (_columnIndex == 0) { // display of resource type (HTML/WOD/API/WO/...)
 				if (ext != null) {
 					if ("java".equalsIgnoreCase(ext)) {
 						text = "Java";
@@ -58,7 +58,7 @@ public class RelatedLabelProvider extends AppearanceAwareLabelProvider implement
 					if ("eomodeld".equalsIgnoreCase(ext)) {
 						text = "EOM";
 					} else
-					if (ext.matches("^wod|wo|woo|html|api$")) {
+					if (ext.matches("^wod|wo|html|api$")) {
 						text = ext.toUpperCase();
 					}
 					else {

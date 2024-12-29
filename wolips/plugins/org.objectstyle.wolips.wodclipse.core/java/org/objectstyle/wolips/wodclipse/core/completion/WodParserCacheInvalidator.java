@@ -90,7 +90,7 @@ public class WodParserCacheInvalidator implements IResourceChangeListener, IReso
           String newComponent = file.getParent().getFullPath().removeFileExtension().lastSegment();
           final IFile oldFile = file;
           final IPath newPath = file.getParent().getFullPath().append(newComponent).addFileExtension(file.getFileExtension());
-          if (file.getFileExtension().matches("(xml|html|xhtml|wod|woo)") && 
+          if (file.getFileExtension().matches("(xml|html|xhtml|wod)") && 
               !file.getFullPath().equals(newPath) && !newPath.toFile().exists()) {
             Display.getDefault().asyncExec(new Runnable() {
               public void run() {

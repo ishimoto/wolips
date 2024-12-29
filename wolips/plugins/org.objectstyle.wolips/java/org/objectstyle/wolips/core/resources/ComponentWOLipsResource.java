@@ -13,7 +13,7 @@ import org.objectstyle.wolips.locate.LocatePlugin;
 import org.objectstyle.wolips.locate.result.LocalizedComponentsLocateResult;
 
 public class ComponentWOLipsResource implements IWOLipsResource {
-	public static String[] EXTENSIONS = new String[] { "java", "groovy", "wo", "html", "wod", "woo", "api" };
+	public static String[] EXTENSIONS = new String[] { "java", "wo", "html", "wod", "api" };
 
 	private IResource _resource;
 

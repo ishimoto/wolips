@@ -78,7 +78,6 @@ import org.eclipse.ltk.core.refactoring.RefactoringDescriptor;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.ltk.core.refactoring.resource.RenameResourceChange;
-import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.objectstyle.wolips.locate.LocateException;
 import org.objectstyle.wolips.locate.LocatePlugin;
@@ -211,7 +210,7 @@ public final class RenameWOComponentChange extends CompositeChange {
 				}
 				CompositeChange renameWoFolderChange = new CompositeChange("Rename " + oldWoFolder.getName());
 
-				String[] renameExtensions = { ".html", ".wod", ".woo", ".xml", ".xhtml" };
+				String[] renameExtensions = { ".html", ".wod", ".xml", ".xhtml" };
 				for (int j = 0; j < renameExtensions.length; j++) {
 					IFile woFile = oldWoFolder.getFile(getOldName() + renameExtensions[j]);
 					if (woFile.exists()) {
