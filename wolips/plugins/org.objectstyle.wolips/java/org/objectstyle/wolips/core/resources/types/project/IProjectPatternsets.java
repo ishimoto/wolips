@@ -113,36 +113,6 @@ public interface IProjectPatternsets {
 	 */
 	public abstract boolean hasResourcesExcludePattern(String string);
 
-	/**
-	 * @param string
-	 */
-	public abstract void addClassesIncludePattern(String string);
-
-	/**
-	 * @param string
-	 */
-	public abstract void addClassesExcludePattern(String string);
-
-	/**
-	 * @param string
-	 */
-	public abstract void addWOAppResourcesIncludePattern(String string);
-
-	/**
-	 * @param string
-	 */
-	public abstract void addWOAppResourcesExcludePattern(String string);
-
-	/**
-	 * @param string
-	 */
-	public abstract void addResourcesIncludePattern(String string);
-
-	/**
-	 * @param string
-	 */
-	public abstract void addResourcesExcludePattern(String string);
-
 	public void setUpPatternsetFiles();
 
 	public void releasePatternsetCache();

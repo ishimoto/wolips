@@ -82,8 +82,6 @@ public abstract class Builder extends IncrementalProjectBuilder {
 
 	protected final static String INCREMENTAL_BUILDER_ID = "org.objectstyle.wolips.incrementalbuilder";
 
-	protected final static String ANT_BUILDER_ID = "org.objectstyle.wolips.antbuilder";
-
 	private BuilderWrapper[] builderWrappers;
 
 	public Builder() {

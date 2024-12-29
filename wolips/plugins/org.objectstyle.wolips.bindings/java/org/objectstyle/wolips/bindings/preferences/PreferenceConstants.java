@@ -76,7 +76,7 @@ public class PreferenceConstants {
 
 	public static final String VALIDATE_TEMPLATES_ON_BUILD_KEY = "ValidateTemplatesOnBuildKey";
 
-	public static final String VALIDATE_WOO_ENCODINGS_KEY = "ValidateWooEncodingsKey";
+//	public static final String VALIDATE_WOO_ENCODINGS_KEY = "ValidateWooEncodingsKey";
 
 	public static final String TAG_SHORTCUTS_KEY = "TagShortcuts";
 

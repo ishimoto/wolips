@@ -12,13 +12,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.objectstyle.wolips.baseforplugins.Activator;
 
 public class WOLipsNatureUtils {
+	
 	public final static String INCREMENTAL_FRAMEWORK_ID = "org.objectstyle.wolips.incrementalframeworknature";
 
 	public final static String INCREMENTAL_APPLICATION_ID = "org.objectstyle.wolips.incrementalapplicationnature";
-
-//	public final static String ANT_FRAMEWORK_ID = "org.objectstyle.wolips.antframeworknature";
-//
-//	public final static String ANT_APPLICATION_ID = "org.objectstyle.wolips.antapplicationnature";
 
 	private final static String TARGET_BUILDER_ID = "org.objectstyle.wolips.targetbuilder.targetbuildernature";
 
