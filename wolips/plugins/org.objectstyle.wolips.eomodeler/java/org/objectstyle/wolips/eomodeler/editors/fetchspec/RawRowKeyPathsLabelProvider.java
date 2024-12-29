@@ -1,7 +1,7 @@
 package org.objectstyle.wolips.eomodeler.editors.fetchspec;
 
 import org.eclipse.swt.graphics.Image;
-import org.objectstyle.wolips.eomodeler.core.model.EOFetchSpecification;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseFetchSpecification;
 import org.objectstyle.wolips.eomodeler.utils.TablePropertyLabelProvider;
 
 public class RawRowKeyPathsLabelProvider extends TablePropertyLabelProvider {
@@ -16,7 +16,7 @@ public class RawRowKeyPathsLabelProvider extends TablePropertyLabelProvider {
 	public String getColumnText(Object _element, String _property) {
 		String rawRowRelationshipKeyPath = (String) _element;
 		String text = null;
-		if (EOFetchSpecification.RAW_ROW_KEY_PATH.equals(_property)) {
+		if (TBEnterpriseFetchSpecification.RAW_ROW_KEY_PATH.equals(_property)) {
 			text = rawRowRelationshipKeyPath;
 		} else {
 			text = super.getColumnText(_element, _property);

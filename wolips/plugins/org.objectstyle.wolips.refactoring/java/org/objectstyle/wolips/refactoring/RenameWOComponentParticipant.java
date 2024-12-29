@@ -59,8 +59,8 @@ import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
 import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
 
 /**
- * Plugs into the refactoring process and renames a WOComponent by renaming the
- * .api, .html, .wod, and .woo files then renaming the .wo folder
+ * Plugs into the refactoring process and renames a TBComponent by renaming the
+ * .api, .html, .wod files then renaming the .wo folder
  * 
  * @author Mike Schrag original version
  * @author ak wolips integration
@@ -84,7 +84,7 @@ public class RenameWOComponentParticipant extends RenameParticipant {
 	}
 
 	public String getName() {
-		return "Rename WOComponent Files";
+		return "Rename TBComponent Files";
 	}
 
 	public RefactoringStatus checkConditions(IProgressMonitor _pm, CheckConditionsContext _context) throws OperationCanceledException {
@@ -94,7 +94,7 @@ public class RenameWOComponentParticipant extends RenameParticipant {
 	public Change createChange(final IProgressMonitor _pm) throws CoreException, OperationCanceledException {
 		if (mySourceType != null && mySourceType.getResource() != null) {
 			return new RenameWOComponentChange(null, mySourceType.getResource(), 
-					getArguments().getNewName() + ".java", "Rename WOComponent " + mySourceType.getElementName(), false);
+					getArguments().getNewName() + ".java", "Rename TBComponent " + mySourceType.getElementName(), false);
 		}
 		return null;
 	}

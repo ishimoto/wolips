@@ -49,15 +49,17 @@
  */
 package org.objectstyle.wolips.eomodeler.editors.attribute;
 
+import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
-import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPart;
@@ -68,9 +70,14 @@ import org.objectstyle.wolips.eomodeler.Messages;
 import org.objectstyle.wolips.eomodeler.core.model.EOAttribute;
 import org.objectstyle.wolips.eomodeler.core.model.EOAttributePath;
 import org.objectstyle.wolips.eomodeler.utils.BooleanUpdateValueStrategy;
+import org.objectstyle.wolips.eomodeler.utils.ComboViewerBinding;
 import org.objectstyle.wolips.eomodeler.utils.FormUtils;
 import org.objectstyle.wolips.eomodeler.utils.UglyFocusHackWorkaroundListener;
 
+/**
+ * this is the part on the left bottom side. after you click the 'Advanced' Tab,
+ * this code get executed.
+ */
 public class EOAttributeAdvancedEditorSection extends AbstractPropertySection {
 	private EOAttribute _attribute;
 

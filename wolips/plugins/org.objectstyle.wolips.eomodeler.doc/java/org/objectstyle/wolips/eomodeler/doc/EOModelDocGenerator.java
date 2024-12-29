@@ -105,7 +105,7 @@ public class EOModelDocGenerator {
 
 	public static void main(String[] args) throws Exception {
 		// String userHomeWOLipsPath = System.getProperty("user.home") +
-		// File.separator + "Library" + File.separator + "WOLips";
+		// File.separator + "Library" + File.separator + "TBLips";
 		// URL url = null;
 		// url = FileLocator.resolve(Activator.getDefault().getBundle().);
 		// String templatePaths = userHomeWOLipsPath + ", ";
@@ -120,9 +120,9 @@ public class EOModelDocGenerator {
 		// velocityEngine.setProperty("jar.resource.loader.path", "jar:" +
 		// TemplateEnginePlugin.getDefault().getBundle().getResource("plugin.xml").getFile());
 		EOModelGroup modelGroup = new EOModelGroup();
-		modelGroup.loadModelFromURL(new File("/Users/mschrag/Documents/workspace/ERPrototypes/Resources/erprototypes.eomodeld").toURL());
-		modelGroup.loadModelFromURL(new File("/Users/mschrag/Documents/workspace/MDTAccounting/MDTAccounting.eomodeld").toURL());
-		modelGroup.loadModelFromURL(new File("/Users/mschrag/Documents/workspace/MDTask/MDTask.eomodeld").toURL());
+		modelGroup.loadModelFromURL(new File("/Users/mschrag/Documents/workspace/ERPrototypes/Resources/erprototypes.eomodeld").toURI().toURL());
+		modelGroup.loadModelFromURL(new File("/Users/mschrag/Documents/workspace/MDTAccounting/MDTAccounting.eomodeld").toURI().toURL());
+		modelGroup.loadModelFromURL(new File("/Users/mschrag/Documents/workspace/MDTask/MDTask.eomodeld").toURI().toURL());
 		modelGroup.resolve(new HashSet<EOModelVerificationFailure>());
 
 		File outputFolder = new File("/tmp/eomodeldoc");

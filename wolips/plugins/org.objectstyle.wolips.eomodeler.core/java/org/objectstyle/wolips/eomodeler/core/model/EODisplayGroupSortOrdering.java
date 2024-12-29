@@ -50,7 +50,7 @@
 package org.objectstyle.wolips.eomodeler.core.model;
 
 
-public class EODisplayGroupSortOrdering extends EOSortOrdering {
+public class EODisplayGroupSortOrdering extends TBEnterpriseSortOrdering {
   @SuppressWarnings("hiding")
   public static final String SELECTOR_ASCENDING = "compareAscending:";
 
@@ -62,20 +62,20 @@ public class EODisplayGroupSortOrdering extends EOSortOrdering {
     super.loadFromMap(map);
     String mySelectorName = getSelectorName();
     if (SELECTOR_ASCENDING.equals(mySelectorName)) {
-      setSelectorName(EOSortOrdering.SELECTOR_ASCENDING);
+      setSelectorName(TBEnterpriseSortOrdering.SELECTOR_ASCENDING);
     }
     if (SELECTOR_DESCENDING.equals(mySelectorName)) {
-      setSelectorName(EOSortOrdering.SELECTOR_DESCENDING);
+      setSelectorName(TBEnterpriseSortOrdering.SELECTOR_DESCENDING);
     }
   }
 
   @Override
   public EOModelMap toMap() {
     String mySelectorName = getSelectorName();
-    if (EOSortOrdering.SELECTOR_ASCENDING.equals(mySelectorName)) {
+    if (TBEnterpriseSortOrdering.SELECTOR_ASCENDING.equals(mySelectorName)) {
       setSelectorName(SELECTOR_ASCENDING);
     }
-    if (EOSortOrdering.SELECTOR_DESCENDING.equals(mySelectorName)) {
+    if (TBEnterpriseSortOrdering.SELECTOR_DESCENDING.equals(mySelectorName)) {
       setSelectorName(SELECTOR_DESCENDING);
     }
     EOModelMap myModelMap = super.toMap();

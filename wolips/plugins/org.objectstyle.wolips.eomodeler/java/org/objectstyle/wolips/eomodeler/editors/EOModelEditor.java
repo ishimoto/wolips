@@ -53,6 +53,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.URI;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -97,6 +99,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -116,7 +119,6 @@ import org.objectstyle.wolips.eomodeler.core.model.EOAttribute;
 import org.objectstyle.wolips.eomodeler.core.model.EODatabaseConfig;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntityIndex;
-import org.objectstyle.wolips.eomodeler.core.model.EOFetchSpecification;
 import org.objectstyle.wolips.eomodeler.core.model.EOLastModified;
 import org.objectstyle.wolips.eomodeler.core.model.EOModel;
 import org.objectstyle.wolips.eomodeler.core.model.EOModelGroup;
@@ -126,6 +128,7 @@ import org.objectstyle.wolips.eomodeler.core.model.EORelationshipOptionalityMism
 import org.objectstyle.wolips.eomodeler.core.model.EOStoredProcedure;
 import org.objectstyle.wolips.eomodeler.core.model.IEOAttribute;
 import org.objectstyle.wolips.eomodeler.core.model.IEOModelGroupFactory;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseFetchSpecification;
 import org.objectstyle.wolips.eomodeler.core.utils.EOModelUtils;
 import org.objectstyle.wolips.eomodeler.editors.arguments.EOArgumentsTableEditor;
 import org.objectstyle.wolips.eomodeler.editors.entities.EOEntitiesTableEditor;
@@ -305,7 +308,7 @@ public class EOModelEditor extends MultiPageEditorPart implements IResourceChang
 		}
 	}
 
-	protected class FetchSpecsChangeRefresher extends AbstractAddRemoveChangeRefresher<EOFetchSpecification> {
+	protected class FetchSpecsChangeRefresher extends AbstractAddRemoveChangeRefresher<TBEnterpriseFetchSpecification> {
 		public FetchSpecsChangeRefresher() {
 			super("FetchSpecsChange");
 		}
@@ -316,12 +319,12 @@ public class EOModelEditor extends MultiPageEditorPart implements IResourceChang
 		}
 
 		@Override
-		protected void objectsAdded(final List<EOFetchSpecification> _addedObjects) {
+		protected void objectsAdded(final List<TBEnterpriseFetchSpecification> _addedObjects) {
 			// DO NOTHING
 		}
 
 		@Override
-		protected void objectsRemoved(final List<EOFetchSpecification> _removedObjects) {
+		protected void objectsRemoved(final List<TBEnterpriseFetchSpecification> _removedObjects) {
 			EOModelEditor.this.setSelection(new StructuredSelection(EOModelEditor.this.getModel()));
 			EOModelEditor.this.setActivePage(getPageNum(EOModelEditor.EOMODEL_PAGE));
 		}
@@ -365,7 +368,7 @@ public class EOModelEditor extends MultiPageEditorPart implements IResourceChang
 
 	private EOModelContentOutlinePage myContentOutlinePage;
 
-	private final ListenerList mySelectionChangedListeners;
+	private final ListenerList<ISelectionChangedListener> mySelectionChangedListeners;
 
 	private IStructuredSelection mySelection;
 
@@ -443,7 +446,7 @@ public class EOModelEditor extends MultiPageEditorPart implements IResourceChang
 				else {
 					jarPath = jarResource.getLocation();
 				}
-				indexURL = new URI("jar:" + jarPath.toFile().toURL() + "!" + jarEntryPath.toPortableString());
+				indexURL = new URI("jar:" + jarPath.toFile().toURI().toURL() + "!" + jarEntryPath.toPortableString());
 			}
 			if (myModel != null) {
 				if (myModel.getModelGroup() != null) {
@@ -1191,8 +1194,8 @@ public class EOModelEditor extends MultiPageEditorPart implements IResourceChang
 						setSelectedEntity(selectedRelationship.getEntity());
 						getEntityEditor().setSelection(selection);
 						setActivePage(getPageNum(EOModelEditor.EOENTITY_PAGE));
-					} else if (selectedObject instanceof EOFetchSpecification) {
-						EOFetchSpecification selectedFetchSpec = (EOFetchSpecification) selectedObject;
+					} else if (selectedObject instanceof TBEnterpriseFetchSpecification) {
+						TBEnterpriseFetchSpecification selectedFetchSpec = (TBEnterpriseFetchSpecification) selectedObject;
 						setSelectedEntity(selectedFetchSpec.getEntity());
 						getEntityEditor().setSelection(selection);
 						// setActivePage(EOModelEditor.EOENTITY_PAGE);
@@ -1249,7 +1252,7 @@ public class EOModelEditor extends MultiPageEditorPart implements IResourceChang
 
 	/**
 	 * Called when Entity Modeler should switch from Entity Modeler Perspective
-	 * back to WOLips perspective.
+	 * back to TBLips perspective.
 	 */
 	public void switchFromEntityModelerPerspective() {
 		// MS: If "Open in New Window" is selected, then we want to watch for
@@ -1273,7 +1276,7 @@ public class EOModelEditor extends MultiPageEditorPart implements IResourceChang
 
 		// MS: If the window didn't need to close, then we want to switch
 		// perspectives on your current
-		// window from Entity Modeler over to the WOLips perspective.
+		// window from Entity Modeler over to the TBLips perspective.
 		if (!closedWindow && Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.CHANGE_PERSPECTIVES_KEY)) {
 			try {
 				IWorkbench workbench = Activator.getDefault().getWorkbench();

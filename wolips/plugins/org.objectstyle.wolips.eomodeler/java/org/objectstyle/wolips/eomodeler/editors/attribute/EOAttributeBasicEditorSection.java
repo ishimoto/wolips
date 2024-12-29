@@ -104,8 +104,8 @@ public class EOAttributeBasicEditorSection extends AbstractEOArgumentBasicEditor
 		getWidgetFactory().createCLabel(parent, Messages.getString("EOAttribute." + EOAttribute.PROTOTYPE), SWT.NONE);
 		Combo prototypeCombo = new Combo(parent, SWT.BORDER | SWT.FLAT | SWT.READ_ONLY);
 		_prototypeComboViewer = new ComboViewer(prototypeCombo);
-		_prototypeComboViewer.setLabelProvider(new EOPrototypeListLabelProvider());
-		_prototypeComboViewer.setContentProvider(new EOPrototypeListContentProvider());
+		_prototypeComboViewer.setLabelProvider(new TBPrototypeListLabelProvider());
+		_prototypeComboViewer.setContentProvider(new TBPrototypeListContentProvider());
 		GridData prototypeComboLayoutData = new GridData(GridData.FILL_HORIZONTAL);
 		prototypeCombo.setLayoutData(prototypeComboLayoutData);
 	}

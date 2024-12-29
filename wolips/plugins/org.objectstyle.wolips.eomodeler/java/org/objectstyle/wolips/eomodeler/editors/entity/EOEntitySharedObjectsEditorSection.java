@@ -76,7 +76,7 @@ import org.objectstyle.wolips.eomodeler.Activator;
 import org.objectstyle.wolips.eomodeler.Messages;
 import org.objectstyle.wolips.eomodeler.core.model.DuplicateFetchSpecNameException;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
-import org.objectstyle.wolips.eomodeler.core.model.EOFetchSpecification;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseFetchSpecification;
 import org.objectstyle.wolips.eomodeler.utils.FormUtils;
 import org.objectstyle.wolips.eomodeler.utils.TablePropertyCellModifier;
 import org.objectstyle.wolips.eomodeler.utils.TablePropertyViewerSorter;
@@ -125,15 +125,15 @@ public class EOEntitySharedObjectsEditorSection extends AbstractPropertySection 
 		myShareFetchSpecsButton.setText(Messages.getString("EOEntity.shareFetchSpecs"));
 		myShareFetchSpecsButton.addSelectionListener(new ShareFetchSpecsListener());
 
-		myFetchSpecsViewer = TableUtils.createTableViewer(topForm, SWT.BORDER | SWT.FLAT | SWT.MULTI | SWT.FULL_SELECTION, "EOFetchSpecification", EOFetchSpecification.class.getName(), new EOFetchSpecsContentProvider(), new EOFetchSpecsLabelProvider(EOFetchSpecification.class.getName()), new TablePropertyViewerSorter(EOFetchSpecification.class.getName()));
-		TableColumn nameColumn = TableUtils.getColumn(myFetchSpecsViewer, EOFetchSpecification.class.getName(), EOFetchSpecification.SHARES_OBJECTS);
+		myFetchSpecsViewer = TableUtils.createTableViewer(topForm, SWT.BORDER | SWT.FLAT | SWT.MULTI | SWT.FULL_SELECTION, "TBEnterpriseFetchSpecification", TBEnterpriseFetchSpecification.class.getName(), new TBEnterpriseFetchSpecsContentProvider(), new TBEnterpriseFetchSpecsLabelProvider(TBEnterpriseFetchSpecification.class.getName()), new TablePropertyViewerSorter(TBEnterpriseFetchSpecification.class.getName()));
+		TableColumn nameColumn = TableUtils.getColumn(myFetchSpecsViewer, TBEnterpriseFetchSpecification.class.getName(), TBEnterpriseFetchSpecification.SHARES_OBJECTS);
 		if (nameColumn != null) {
 			nameColumn.setText("");
 			nameColumn.setImage(Activator.getDefault().getImageRegistry().get(Activator.CHECK_ICON));
 		}
 
 		CellEditor[] cellEditors = new CellEditor[1];
-		TableUtils.setCellEditor(EOFetchSpecification.class.getName(), EOFetchSpecification.SHARES_OBJECTS, new CheckboxCellEditor(myFetchSpecsViewer.getTable()), cellEditors);
+		TableUtils.setCellEditor(TBEnterpriseFetchSpecification.class.getName(), TBEnterpriseFetchSpecification.SHARES_OBJECTS, new CheckboxCellEditor(myFetchSpecsViewer.getTable()), cellEditors);
 		myFetchSpecsViewer.setCellModifier(new TablePropertyCellModifier(myFetchSpecsViewer));
 		myFetchSpecsViewer.setCellEditors(cellEditors);
 		GridData fetchSpecsLayoutData = new GridData(GridData.FILL_BOTH);
@@ -185,7 +185,7 @@ public class EOEntitySharedObjectsEditorSection extends AbstractPropertySection 
 		shareTypeChanged(false);
 	}
 
-	protected void fetchSpecChanged(EOFetchSpecification _fetchSpec) {
+	protected void fetchSpecChanged(TBEnterpriseFetchSpecification _fetchSpec) {
 		myFetchSpecsViewer.refresh(_fetchSpec);
 		shareTypeChanged(false);
 	}
@@ -220,7 +220,7 @@ public class EOEntitySharedObjectsEditorSection extends AbstractPropertySection 
 		public void propertyChange(PropertyChangeEvent _event) {
 			String propertyName = _event.getPropertyName();
 			if (EOEntity.FETCH_SPECIFICATION == propertyName) {
-				EOFetchSpecification fetchSpec = (EOFetchSpecification) _event.getNewValue();
+				TBEnterpriseFetchSpecification fetchSpec = (TBEnterpriseFetchSpecification) _event.getNewValue();
 				EOEntitySharedObjectsEditorSection.this.fetchSpecChanged(fetchSpec);
 
 			} else if (EOEntity.FETCH_SPECIFICATIONS == propertyName) {

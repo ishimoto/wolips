@@ -11,15 +11,15 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOAggregateQualifier;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseQualifier;
 import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOTruePredicate;
 
 public abstract class AggregateQualifierTypeEditor extends AbstractQualifierTypeEditor implements IQualifierEditorListener {
-	private List<EOQualifierEditor> _editors;
+	private List<TBFQualifierEditor> _editors;
 
 	public AggregateQualifierTypeEditor(Composite parent, int style) {
 		super(parent, style);
-		_editors = new LinkedList<EOQualifierEditor>();
+		_editors = new LinkedList<TBFQualifierEditor>();
 		GridLayout layout = new GridLayout(1, false);
 		layout.marginLeft = 0;
 		layout.marginRight = 0;
@@ -32,39 +32,39 @@ public abstract class AggregateQualifierTypeEditor extends AbstractQualifierType
 		setLayout(layout);
 	}
 
-	public void setQualifier(EOQualifier qualifier) {
-		for (EOQualifierEditor editor : _editors) {
+	public void setQualifier(TBEnterpriseQualifier qualifier) {
+		for (TBFQualifierEditor editor : _editors) {
 			editor.dispose();
 		}
 		_editors.clear();
 
-		List<EOQualifier> qualifiers;
+		List<TBEnterpriseQualifier> qualifiers;
 		if (qualifier instanceof EOAggregateQualifier) {
 			EOAggregateQualifier andQualifier = (EOAggregateQualifier) qualifier;
 			qualifiers = andQualifier.getQualifiers();
 		} else {
-			qualifiers = new LinkedList<EOQualifier>();
+			qualifiers = new LinkedList<TBEnterpriseQualifier>();
 			qualifiers.add(qualifier);
 		}
 		if (qualifiers.size() == 1) {
 			qualifiers.add(new EOTruePredicate());
 		}
-		for (EOQualifier childQualifier : qualifiers) {
-			EOQualifierEditor childEditor = createEditor();
+		for (TBEnterpriseQualifier childQualifier : qualifiers) {
+			TBFQualifierEditor childEditor = createEditor();
 			childEditor.setQualifier(childQualifier);
 			_editors.add(childEditor);
 		}
 	}
 
-	public EOQualifier getQualifier() {
-		List<EOQualifier> qualifiers = new LinkedList<EOQualifier>();
-		for (EOQualifierEditor editor : _editors) {
-			EOQualifier childQualifier = editor.getQualifier();
+	public TBEnterpriseQualifier getQualifier() {
+		List<TBEnterpriseQualifier> qualifiers = new LinkedList<TBEnterpriseQualifier>();
+		for (TBFQualifierEditor editor : _editors) {
+			TBEnterpriseQualifier childQualifier = editor.getQualifier();
 			if (childQualifier != null) {
 				qualifiers.add(childQualifier);
 			}
 		}
-		EOQualifier qualifier;
+		TBEnterpriseQualifier qualifier;
 		if (qualifiers.isEmpty()) {
 			qualifier = null;
 		} else if (qualifiers.size() == 1) {
@@ -77,32 +77,32 @@ public abstract class AggregateQualifierTypeEditor extends AbstractQualifierType
 		return qualifier;
 	}
 
-	protected EOQualifierEditor createEditor() {
-		EOQualifierEditor childEditor = new EOQualifierEditor(this, SWT.NONE);
+	protected TBFQualifierEditor createEditor() {
+		TBFQualifierEditor childEditor = new TBFQualifierEditor(this, SWT.NONE);
 		childEditor.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		childEditor.setQualifierEditorListener(this);
 		return childEditor;
 	}
 
-	public void qualifierAddedAbove(EOQualifierEditor editor) {
+	public void qualifierAddedAbove(TBFQualifierEditor editor) {
 		int index = _editors.indexOf(editor);
-		EOQualifierEditor newEditor = createEditor();
+		TBFQualifierEditor newEditor = createEditor();
 		_editors.add(index, newEditor);
 		newEditor.moveAbove(editor);
 		layout(true, true);
 		getParent().layout(true, true);
 	}
 
-	public void qualifierAddedBelow(EOQualifierEditor editor) {
+	public void qualifierAddedBelow(TBFQualifierEditor editor) {
 		int index = _editors.indexOf(editor);
-		EOQualifierEditor newEditor = createEditor();
+		TBFQualifierEditor newEditor = createEditor();
 		_editors.add(index + 1, newEditor);
 		newEditor.moveBelow(editor);
 		layout(true, true);
 		getParent().layout(true, true);
 	}
 
-	public void qualifierRemoved(EOQualifierEditor editor) {
+	public void qualifierRemoved(TBFQualifierEditor editor) {
 		_editors.remove(editor);
 		editor.dispose();
 

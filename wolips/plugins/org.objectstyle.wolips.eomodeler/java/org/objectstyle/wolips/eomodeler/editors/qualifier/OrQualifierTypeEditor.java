@@ -5,7 +5,7 @@ package org.objectstyle.wolips.eomodeler.editors.qualifier;
 
 import org.eclipse.swt.widgets.Composite;
 import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOAggregateQualifier;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOOrQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseOrQualifier;
 
 public class OrQualifierTypeEditor extends AggregateQualifierTypeEditor {
 	public OrQualifierTypeEditor(Composite parent, int style) {
@@ -14,6 +14,6 @@ public class OrQualifierTypeEditor extends AggregateQualifierTypeEditor {
 
 	@Override
 	protected EOAggregateQualifier createQualifier() {
-		return new EOOrQualifier();
+		return new TBEnterpriseOrQualifier();
 	}
 }

@@ -55,15 +55,15 @@ public final class EODataSourceFactory {
 		/* Static Factory class. Cannot instantiate */
 	}
 
-	public static EODataSource createDataSourceFromMap(
+	public static TBEnterpriseDataSource createDataSourceFromMap(
 			final EOModelMap dataSourceMap, final EOModelGroup modelGroup) {
-		EODataSource dataSource = null;
+		TBEnterpriseDataSource dataSource = null;
 		if (dataSourceMap != null) {
 			String className = dataSourceMap.getString("class", true);
-			if ("EODatabaseDataSource".equals(className)) {
-				dataSource = new EODatabaseDataSource(modelGroup);
-			} else if ("EODetailDataSource".equals(className)) {
-				dataSource = new EODetailDataSource(modelGroup);
+			if ("TBEnterpriseDatabaseDataSource".equals(className)) {
+				dataSource = new TBEnterpriseDatabaseDataSource(modelGroup);
+			} else if ("TBEnterpriseDetailDataSource".equals(className)) {
+				dataSource = new TBEnterpriseDetailDataSource(modelGroup);
 			} else {
 				throw new IllegalArgumentException(
 						"Unknown datasource className '" + className + "'.");

@@ -33,6 +33,8 @@ public abstract class AbstractEOClassLoader implements IEOClassLoaderFactory {
 			if (wosqlJarUrl != null) {
 				classpathSet.add(wosqlJarUrl);
 			}
+			
+			// We don't use these for TBLips
 			URL wo53sqlJarUrl = bundle.getEntry("/lib/EOFSQLUtils53.jar");
 			if (wo53sqlJarUrl != null) {
 				classpathSet.add(wo53sqlJarUrl);

@@ -5,10 +5,10 @@ package org.objectstyle.wolips.eomodeler.editors.qualifier;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseQualifier;
 
 public class ExpressionQualifierType implements IQualifierType {
-	public boolean isTypeFor(EOQualifier qualifier) {
+	public boolean isTypeFor(TBEnterpriseQualifier qualifier) {
 		return true;
 	}
 
@@ -16,7 +16,7 @@ public class ExpressionQualifierType implements IQualifierType {
 		return "Expression";
 	}
 
-	public void setQualifier(EOQualifier qualifier) {
+	public void setQualifier(TBEnterpriseQualifier qualifier) {
 		// DO NOTHING
 	}
 

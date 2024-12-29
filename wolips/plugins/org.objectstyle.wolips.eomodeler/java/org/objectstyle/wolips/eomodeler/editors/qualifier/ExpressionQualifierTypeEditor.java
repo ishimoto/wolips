@@ -7,8 +7,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.objectstyle.wolips.eomodeler.core.model.EOQualifierFactory;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseQualifierFactory;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseQualifier;
 import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOTruePredicate;
 
 public class ExpressionQualifierTypeEditor extends AbstractQualifierTypeEditor {
@@ -22,12 +22,12 @@ public class ExpressionQualifierTypeEditor extends AbstractQualifierTypeEditor {
 		_expressionText = new Text(this, SWT.BORDER);
 	}
 
-	public void setQualifier(EOQualifier qualifier) {
+	public void setQualifier(TBEnterpriseQualifier qualifier) {
 		String qualifierString;
 		if (qualifier instanceof EOTruePredicate) {
 			qualifierString = "";
 		} else {
-			qualifierString = EOQualifierFactory.toString(qualifier);
+			qualifierString = TBEnterpriseQualifierFactory.toString(qualifier);
 		}
 		if (qualifierString == null) {
 			qualifierString = "";
@@ -35,8 +35,8 @@ public class ExpressionQualifierTypeEditor extends AbstractQualifierTypeEditor {
 		_expressionText.setText(qualifierString);
 	}
 
-	public EOQualifier getQualifier() {
-		EOQualifier qualifier = EOQualifierFactory.fromString(_expressionText.getText());
+	public TBEnterpriseQualifier getQualifier() {
+		TBEnterpriseQualifier qualifier = TBEnterpriseQualifierFactory.fromString(_expressionText.getText());
 		if (qualifier == null) {
 			qualifier = new EOTruePredicate();
 		}

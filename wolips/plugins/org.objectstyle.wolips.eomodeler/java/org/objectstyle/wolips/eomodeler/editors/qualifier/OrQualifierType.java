@@ -5,19 +5,19 @@ package org.objectstyle.wolips.eomodeler.editors.qualifier;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOOrQualifier;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseOrQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseQualifier;
 
 public class OrQualifierType implements IQualifierType {
 	public String getDisplayString() {
 		return "Or";
 	}
 
-	public boolean isTypeFor(EOQualifier qualifier) {
-		return qualifier instanceof EOOrQualifier;
+	public boolean isTypeFor(TBEnterpriseQualifier qualifier) {
+		return qualifier instanceof TBEnterpriseOrQualifier;
 	}
 
-	public void setQualifier(EOQualifier qualifier) {
+	public void setQualifier(TBEnterpriseQualifier qualifier) {
 		// DO NOTHING
 	}
 

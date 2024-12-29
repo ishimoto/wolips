@@ -278,7 +278,7 @@ public class GenerateSQLDialog extends Dialog {
 			public void run() {
 				generateSql(flags, selectedDatabaseConfig, runInEntityModeler);
 			}
-		}, "Generate SQL");
+		}, "Generate SQL...");
 		generateSqlThread.start();
 	}
 

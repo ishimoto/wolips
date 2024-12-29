@@ -121,8 +121,8 @@ public class WOPackageExplorerPart extends PackageExplorerPart {
 	
 	private void makeActions() {
 		renameAction = new RenameWOComponentAction(this.getSite()); 
-		renameAction.setText("Rename WOComponent..."); 
-		renameAction.setToolTipText("Rename WOComponent"); 
+		renameAction.setText("Rename TBComponent..."); 
+		renameAction.setToolTipText("Rename TBComponent"); 
 		renameAction.setEnabled(false);
 	}
 	

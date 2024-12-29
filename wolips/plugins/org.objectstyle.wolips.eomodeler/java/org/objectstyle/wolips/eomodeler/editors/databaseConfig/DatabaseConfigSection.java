@@ -25,7 +25,7 @@ import org.objectstyle.wolips.eomodeler.Messages;
 import org.objectstyle.wolips.eomodeler.core.model.EODatabaseConfig;
 import org.objectstyle.wolips.eomodeler.core.model.EOModel;
 import org.objectstyle.wolips.eomodeler.editors.entity.EOEntityLabelProvider;
-import org.objectstyle.wolips.eomodeler.editors.entity.EOPrototypeEntityListContentProvider;
+import org.objectstyle.wolips.eomodeler.editors.entity.TBPrototypeEntityListContentProvider;
 import org.objectstyle.wolips.eomodeler.utils.ComboViewerBinding;
 import org.objectstyle.wolips.eomodeler.utils.FormUtils;
 import org.objectstyle.wolips.eomodeler.utils.StringLabelProvider;
@@ -94,7 +94,7 @@ public class DatabaseConfigSection extends AbstractPropertySection {
 
 		getWidgetFactory().createCLabel(topForm, Messages.getString("EODatabaseConfig." + EODatabaseConfig.PROTOTYPE), SWT.NONE);
 		_prototypeComboViewer = new ComboViewer(topForm, SWT.READ_ONLY);
-		_prototypeComboViewer.setContentProvider(new EOPrototypeEntityListContentProvider(true));
+		_prototypeComboViewer.setContentProvider(new TBPrototypeEntityListContentProvider(true));
 		_prototypeComboViewer.setLabelProvider(new EOEntityLabelProvider());
 		_prototypeComboViewer.getCombo().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
@@ -236,8 +236,10 @@ public class DatabaseConfigSection extends AbstractPropertySection {
 				//BeansObservables.observeValue(getDatabaseConfig(), EODatabaseConfig.DEPLOYMENT_PROFILE),
 				BeanProperties.value(EODatabaseConfig.DEPLOYMENT_PROFILE).observe(getDatabaseConfig()),
 				null, null);
+
+		
 		_prototypeComboViewer.setInput(getDatabaseConfig());
-		_prototypeBinding = new ComboViewerBinding(_prototypeComboViewer, getDatabaseConfig(), EODatabaseConfig.PROTOTYPE, null, null, EOPrototypeEntityListContentProvider.BLANK_ENTITY);
+		_prototypeBinding = new ComboViewerBinding(_prototypeComboViewer, getDatabaseConfig(), EODatabaseConfig.PROTOTYPE, null, null, TBPrototypeEntityListContentProvider.BLANK_ENTITY);
 		_adaptorNameComboViewer.setInput(getDatabaseConfig());
 		_adaptorNameBinding = new ComboViewerBinding(_adaptorNameComboViewer, getDatabaseConfig(), EODatabaseConfig.ADAPTOR_NAME, null, null, null);
 		// _adaptorNameComboViewer.getCombo().addModifyListener(_adaptorNameBinding);

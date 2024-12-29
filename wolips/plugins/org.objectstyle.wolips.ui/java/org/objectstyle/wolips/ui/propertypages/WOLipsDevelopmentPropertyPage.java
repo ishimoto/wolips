@@ -77,7 +77,7 @@ public class WOLipsDevelopmentPropertyPage extends WOLipsPropertyPage {
 
 	private static final String PROJECT_KIND_TITLE = "Bundle Settings";
 
-	private static final String WO_NATURE_TITLE = "WebObjects Project";
+	private static final String WO_NATURE_TITLE = "TreasureBoat Project";
 
 	private static final String WO_IS_FRAMEWORK_TITLE = "Framework";
 

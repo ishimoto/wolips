@@ -14,11 +14,11 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.objectstyle.wolips.eomodeler.core.model.EOQualifierFactory;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseQualifierFactory;
 import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOAggregateQualifier;
 import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOKeyComparisonQualifier;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOKeyValueQualifier;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseKeyValueQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseQualifier;
 import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOTruePredicate;
 
 public class KeyValueQualifierTypeEditor extends AbstractQualifierTypeEditor {
@@ -48,37 +48,37 @@ public class KeyValueQualifierTypeEditor extends AbstractQualifierTypeEditor {
 				if (element == null) {
 					text = "";
 				} else {
-					text = ((EOQualifier.Comparison) element).getDisplayName();
+					text = ((TBEnterpriseQualifier.Comparison) element).getDisplayName();
 				}
 				return text;
 			}
 		});
-		_operatorCombo.add(new EOQualifier.Comparison("="));
-		_operatorCombo.add(new EOQualifier.Comparison("<>", "!="));
-		_operatorCombo.add(new EOQualifier.Comparison("<"));
-		_operatorCombo.add(new EOQualifier.Comparison("<="));
-		_operatorCombo.add(new EOQualifier.Comparison(">"));
-		_operatorCombo.add(new EOQualifier.Comparison(">="));
-		_operatorCombo.add(new EOQualifier.Comparison("contains"));
-		_operatorCombo.add(new EOQualifier.Comparison("like"));
-		_operatorCombo.add(new EOQualifier.Comparison("caseinsensitivelike", "like (any case)"));
+		_operatorCombo.add(new TBEnterpriseQualifier.Comparison("="));
+		_operatorCombo.add(new TBEnterpriseQualifier.Comparison("<>", "!="));
+		_operatorCombo.add(new TBEnterpriseQualifier.Comparison("<"));
+		_operatorCombo.add(new TBEnterpriseQualifier.Comparison("<="));
+		_operatorCombo.add(new TBEnterpriseQualifier.Comparison(">"));
+		_operatorCombo.add(new TBEnterpriseQualifier.Comparison(">="));
+		_operatorCombo.add(new TBEnterpriseQualifier.Comparison("contains"));
+		_operatorCombo.add(new TBEnterpriseQualifier.Comparison("like"));
+		_operatorCombo.add(new TBEnterpriseQualifier.Comparison("caseinsensitivelike", "like (any case)"));
 		_operatorCombo.getCombo().setLayoutData(new GridData());
 
 		_valueText = new Text(this, SWT.BORDER);
 		_valueText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	}
 
-	public void setQualifier(EOQualifier qualifier) {
-		EOQualifier finalQualifier = qualifier;
+	public void setQualifier(TBEnterpriseQualifier qualifier) {
+		TBEnterpriseQualifier finalQualifier = qualifier;
 		if (finalQualifier instanceof EOAggregateQualifier) {
-			List<EOQualifier> qualifiers = ((EOAggregateQualifier) finalQualifier).getQualifiers();
+			List<TBEnterpriseQualifier> qualifiers = ((EOAggregateQualifier) finalQualifier).getQualifiers();
 			if (!qualifiers.isEmpty()) {
 				finalQualifier = qualifiers.get(0);
 			}
 		}
 
-		if (finalQualifier instanceof EOKeyValueQualifier) {
-			EOKeyValueQualifier kvQualifier = (EOKeyValueQualifier) finalQualifier;
+		if (finalQualifier instanceof TBEnterpriseKeyValueQualifier) {
+			TBEnterpriseKeyValueQualifier kvQualifier = (TBEnterpriseKeyValueQualifier) finalQualifier;
 			_key = kvQualifier.getKey();
 			_operatorCombo.setSelection(new StructuredSelection(kvQualifier.getComparison()));
 			String valueStr;
@@ -105,14 +105,14 @@ public class KeyValueQualifierTypeEditor extends AbstractQualifierTypeEditor {
 		}
 	}
 
-	public EOQualifier getQualifier() {
-		EOQualifier qualifier;
+	public TBEnterpriseQualifier getQualifier() {
+		TBEnterpriseQualifier qualifier;
 		if (_key == null) {
 			qualifier = null;
 		} else {
-			EOQualifier.Comparison comparison = (EOQualifier.Comparison) ((IStructuredSelection) _operatorCombo.getSelection()).getFirstElement();
+			TBEnterpriseQualifier.Comparison comparison = (TBEnterpriseQualifier.Comparison) ((IStructuredSelection) _operatorCombo.getSelection()).getFirstElement();
 			String value = _valueText.getText();
-			qualifier = EOQualifierFactory.fromString(_key + " " + comparison + " " + value);
+			qualifier = TBEnterpriseQualifierFactory.fromString(_key + " " + comparison + " " + value);
 		}
 		if (qualifier == null) {
 			qualifier = new EOTruePredicate();

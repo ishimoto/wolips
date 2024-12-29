@@ -6,14 +6,14 @@ package org.objectstyle.wolips.eomodeler.editors.qualifier;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOKeyComparisonQualifier;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOKeyValueQualifier;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseKeyValueQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseQualifier;
 
 public class KeyValueQualifierType implements IQualifierType {
 	private String _key;
 
-	public boolean isTypeFor(EOQualifier qualifier) {
-		return qualifier instanceof EOKeyValueQualifier;
+	public boolean isTypeFor(TBEnterpriseQualifier qualifier) {
+		return qualifier instanceof TBEnterpriseKeyValueQualifier;
 	}
 
 	public void setKey(String key) {
@@ -32,9 +32,9 @@ public class KeyValueQualifierType implements IQualifierType {
 		return displayString;
 	}
 
-	public void setQualifier(EOQualifier qualifier) {
-		if (qualifier instanceof EOKeyValueQualifier) {
-			setKey(((EOKeyValueQualifier) qualifier).getKey());
+	public void setQualifier(TBEnterpriseQualifier qualifier) {
+		if (qualifier instanceof TBEnterpriseKeyValueQualifier) {
+			setKey(((TBEnterpriseKeyValueQualifier) qualifier).getKey());
 		} else if (qualifier instanceof EOKeyComparisonQualifier) {
 			setKey(((EOKeyComparisonQualifier) qualifier).getLeftKey());
 		} else {
