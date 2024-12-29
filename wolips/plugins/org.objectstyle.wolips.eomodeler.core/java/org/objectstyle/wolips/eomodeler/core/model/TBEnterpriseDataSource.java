@@ -17,10 +17,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgements normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -52,10 +52,10 @@ package org.objectstyle.wolips.eomodeler.core.model;
 import java.util.Set;
 
 
-public abstract class EODataSource {
+public abstract class TBEnterpriseDataSource {
   private EOModelGroup _modelGroup;
 
-  public EODataSource(final EOModelGroup modelGroup) {
+  public TBEnterpriseDataSource(final EOModelGroup modelGroup) {
     _modelGroup = modelGroup;
   }
 

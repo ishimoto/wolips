@@ -17,10 +17,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgements normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -52,15 +52,15 @@ package org.objectstyle.wolips.eomodeler.core.model;
 import java.util.Set;
 
 
-public class EODatabaseDataSource extends EODataSource {
+public class TBEnterpriseDatabaseDataSource extends TBEnterpriseDataSource {
 
   private final static String DEFAULT_EDITING_CONTEXT = "session.defaultEditingContext";
 
   private String _editingContext;
 
-  private EOFetchSpecification _fetchSpecification;
+  private TBEnterpriseFetchSpecification _fetchSpecification;
 
-  public EODatabaseDataSource(final EOModelGroup modelGroup) {
+  public TBEnterpriseDatabaseDataSource(final EOModelGroup modelGroup) {
     super(modelGroup);
     _editingContext = DEFAULT_EDITING_CONTEXT;
   }
@@ -72,7 +72,7 @@ public class EODatabaseDataSource extends EODataSource {
     String entityName = fspecMap.getString("entityName", true);
     if (getModelGroup().getEntityNamed(entityName) != null) {
     	if (fspecName == null) {
-    		_fetchSpecification = new EOFetchSpecification(null);
+    		_fetchSpecification = new TBEnterpriseFetchSpecification(null);
     		_fetchSpecification.loadFromMap(fspecMap, failures);
     		_fetchSpecification.setEntity(getModelGroup().getEntityNamed(entityName));
     	} else {
@@ -95,14 +95,14 @@ public class EODatabaseDataSource extends EODataSource {
     _editingContext = editingContext;
   }
 
-  public EOFetchSpecification getFetchSpecification() {
+  public TBEnterpriseFetchSpecification getFetchSpecification() {
     if (_fetchSpecification == null) {
-      _fetchSpecification = new EOFetchSpecification(null);
+      _fetchSpecification = new TBEnterpriseFetchSpecification(null);
     }
     return _fetchSpecification;
   }
 
-  public void setFetchSpecification(final EOFetchSpecification fetchSpecification) {
+  public void setFetchSpecification(final TBEnterpriseFetchSpecification fetchSpecification) {
     _fetchSpecification = fetchSpecification;
   }
 
@@ -116,7 +116,7 @@ public class EODatabaseDataSource extends EODataSource {
   @Override
   public EOModelMap toMap() {
     EOModelMap modelMap = new EOModelMap();
-    modelMap.setString("class", "EODatabaseDataSource", true);
+    modelMap.setString("class", "TBEnterpriseDatabaseDataSource", true);
     modelMap.setString("editingContext", _editingContext, true);
     if (_fetchSpecification != null) {
       modelMap.setMap("fetchSpecification", _fetchSpecification.toMap(), true);

@@ -1,17 +1,17 @@
 package org.objectstyle.wolips.eomodeler.core.model.qualifier;
 
-public class EONotQualifier extends EOQualifier {
-	private EOQualifier _qualifier;
+public class TBEnterpriseNotQualifier extends TBEnterpriseQualifier {
+	private TBEnterpriseQualifier _qualifier;
 
-	public EONotQualifier() {
+	public TBEnterpriseNotQualifier() {
 		// DO NOTHING
 	}
 
-	public EONotQualifier(EOQualifier qualifier) {
+	public TBEnterpriseNotQualifier(TBEnterpriseQualifier qualifier) {
 		_qualifier = qualifier;
 	}
 
-	public EOQualifier getQualifier() {
+	public TBEnterpriseQualifier getQualifier() {
 		return _qualifier;
 	}
 	@Override

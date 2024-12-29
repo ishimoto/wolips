@@ -17,10 +17,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgements normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -58,18 +58,18 @@ import java.util.Map;
 import java.util.Set;
 
 import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOAggregateQualifier;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOAndQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseAndQualifier;
 import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOKeyComparisonQualifier;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOKeyValueQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseKeyValueQualifier;
 import org.objectstyle.wolips.eomodeler.core.model.qualifier.EONamedQualifierVariable;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EONotQualifier;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOOrQualifier;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOQualifier;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOQualifierBinding;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOQualifierParser;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOQualifierVariable;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseNotQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseOrQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseQualifierBinding;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseQualifierParser;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseQualifierVariable;
 
-public class EOQualifierFactory {
+public class TBEnterpriseQualifierFactory {
 	private static class SelectorMap {
 		private String _methodName;
 
@@ -118,16 +118,16 @@ public class EOQualifierFactory {
 		_selectorMaps.add(new SelectorMap("likeIgnoreCase:", "caseInsensitiveLike"));
 	}
 
-	public static EOQualifier fromString(String qualifierString) {
+	public static TBEnterpriseQualifier fromString(String qualifierString) {
 		try {
-			EOQualifier qualifier = new EOQualifierParser().parseQualifier(qualifierString);
+			TBEnterpriseQualifier qualifier = new TBEnterpriseQualifierParser().parseQualifier(qualifierString);
 			return qualifier;
 		} catch (ParseException e) {
 			throw new RuntimeException("Failed to parse qualfier.", e);
 		}
 	}
 
-	public static String toString(EOQualifier qualifier) {
+	public static String toString(TBEnterpriseQualifier qualifier) {
 		String qualifierString;
 		if (qualifier == null) {
 			qualifierString = null;
@@ -155,26 +155,26 @@ public class EOQualifierFactory {
 		return operatorName;
 	}
 
-	public static EOQualifier createQualifierFromQualifierMap(EOModelMap qualifierMap) {
-		EOQualifier qualifier = null;
+	public static TBEnterpriseQualifier createQualifierFromQualifierMap(EOModelMap qualifierMap) {
+		TBEnterpriseQualifier qualifier = null;
 		if (qualifierMap != null) {
 			String className = qualifierMap.getString("class", true);
-			if ("EOAndQualifier".equals(className) || "com.webobjects.eocontrol.EOAndQualifier".equals(className)) {
-				qualifier = new EOAndQualifier(EOQualifierFactory.createQualifiersFromQualifierMaps(qualifierMap.getList("qualifiers")));
-			} else if ("EOOrQualifier".equals(className) || "com.webobjects.eocontrol.EOOrQualifier".equals(className)) {
-				qualifier = new EOOrQualifier(EOQualifierFactory.createQualifiersFromQualifierMaps(qualifierMap.getList("qualifiers")));
-			} else if ("EONotQualifier".equals(className) || "com.webobjects.eocontrol.EONotQualifier".equals(className)) {
-				qualifier = new EONotQualifier(EOQualifierFactory.createQualifierFromQualifierMap(new EOModelMap(qualifierMap.getMap("qualifier"))));
-			} else if ("EOKeyValueQualifier".equals(className) || "com.webobjects.eocontrol.EOKeyValueQualifier".equals(className)) {
+			if ("TBEnterpriseAndQualifier".equals(className) || "org.treasureboat.enterprise.qualifiers.TBEnterpriseAndQualifier".equals(className)) {
+				qualifier = new TBEnterpriseAndQualifier(TBEnterpriseQualifierFactory.createQualifiersFromQualifierMaps(qualifierMap.getList("qualifiers")));
+			} else if ("TBEnterpriseOrQualifier".equals(className) || "org.treasureboat.enterprise.qualifiers.TBEnterpriseOrQualifier".equals(className)) {
+				qualifier = new TBEnterpriseOrQualifier(TBEnterpriseQualifierFactory.createQualifiersFromQualifierMaps(qualifierMap.getList("qualifiers")));
+			} else if ("TBEnterpriseNotQualifier".equals(className) || "org.treasureboat.enterprise.qualifiers.TBEnterpriseNotQualifier".equals(className)) {
+				qualifier = new TBEnterpriseNotQualifier(TBEnterpriseQualifierFactory.createQualifierFromQualifierMap(new EOModelMap(qualifierMap.getMap("qualifier"))));
+			} else if ("TBEnterpriseKeyValueQualifier".equals(className) || "org.treasureboat.enterprise.qualifiers.TBEnterpriseKeyValueQualifier".equals(className)) {
 				String key = qualifierMap.getString("key", true);
-				Object value = EOQualifierFactory.createValue(qualifierMap.get("value"));
-				String selectorName = EOQualifierFactory.operatorNameForMethodNamed(qualifierMap.getString("selectorName", true));
-				qualifier = EOQualifierFactory.createKeyValueExpression(key, selectorName, value);
+				Object value = TBEnterpriseQualifierFactory.createValue(qualifierMap.get("value"));
+				String selectorName = TBEnterpriseQualifierFactory.operatorNameForMethodNamed(qualifierMap.getString("selectorName", true));
+				qualifier = TBEnterpriseQualifierFactory.createKeyValueExpression(key, selectorName, value);
 			} else if ("EOKeyComparisonQualifier".equals(className) || "com.webobjects.eocontrol.EOKeyComparisonQualifier".equals(className)) {
 				String leftKey = qualifierMap.getString("leftKey", true);
 				String rightKey = qualifierMap.getString("rightKey", true);
-				String selectorName = EOQualifierFactory.operatorNameForMethodNamed(qualifierMap.getString("selectorName", true));
-				qualifier = EOQualifierFactory.createKeyComparisonExpression(leftKey, selectorName, rightKey);
+				String selectorName = TBEnterpriseQualifierFactory.operatorNameForMethodNamed(qualifierMap.getString("selectorName", true));
+				qualifier = TBEnterpriseQualifierFactory.createKeyComparisonExpression(leftKey, selectorName, rightKey);
 			} else {
 				throw new IllegalArgumentException("Unknown qualifier className '" + className + "'.");
 			}
@@ -182,13 +182,13 @@ public class EOQualifierFactory {
 		return qualifier;
 	}
 
-	private static EOQualifier createKeyValueExpression(String key, String selectorName, Object value) {
-		EOQualifier qualifier = new EOKeyValueQualifier(key, selectorName, value);
+	private static TBEnterpriseQualifier createKeyValueExpression(String key, String selectorName, Object value) {
+		TBEnterpriseQualifier qualifier = new TBEnterpriseKeyValueQualifier(key, selectorName, value);
 		return qualifier;
 	}
 
-	private static EOQualifier createKeyComparisonExpression(String leftKey, String selectorName, String rightKey) {
-		EOQualifier qualifier = new EOKeyComparisonQualifier(leftKey, selectorName, rightKey);
+	private static TBEnterpriseQualifier createKeyComparisonExpression(String leftKey, String selectorName, String rightKey) {
+		TBEnterpriseQualifier qualifier = new EOKeyComparisonQualifier(leftKey, selectorName, rightKey);
 		return qualifier;
 	}
 
@@ -199,7 +199,7 @@ public class EOQualifierFactory {
 			String valueClass = valueMap.getString("class", true);
 			if ("EONull".equals(valueClass) || "com.webobjects.eocontrol.EONull".equals(valueClass)) {
 				value = null;
-			} else if ("EOQualifierVariable".equals(valueClass) || "com.webobjects.eocontrol.EOQualifierVariable".equals(valueClass)) {
+			} else if ("TBEnterpriseQualifierVariable".equals(valueClass) || "org.treasureboat.enterprise.qualifiers.TBEnterpriseQualifierVariable".equals(valueClass)) {
 				String variableKey = valueMap.getString("_key", true);
 				// Fix up previously broken _key's
 				if (variableKey.startsWith("$")) {
@@ -220,7 +220,7 @@ public class EOQualifierFactory {
 					}
 				}
 			} else {
-				throw new IllegalArgumentException("Unknown EOKeyValueQualifier value class " + valueClass);
+				throw new IllegalArgumentException("Unknown TBEnterpriseKeyValueQualifier value class " + valueClass);
 			}
 		} else {
 			value = _rawValue;
@@ -228,11 +228,11 @@ public class EOQualifierFactory {
 		return value;
 	}
 
-	private static Collection<EOQualifier> createQualifiersFromQualifierMaps(Collection<Map<Object, Object>> _qualifiers) {
-		List<EOQualifier> qualifiers = new LinkedList<EOQualifier>();
+	private static Collection<TBEnterpriseQualifier> createQualifiersFromQualifierMaps(Collection<Map<Object, Object>> _qualifiers) {
+		List<TBEnterpriseQualifier> qualifiers = new LinkedList<TBEnterpriseQualifier>();
 		if (_qualifiers != null) {
 			for (Map<Object, Object> qualifierMap : _qualifiers) {
-				EOQualifier exp = EOQualifierFactory.createQualifierFromQualifierMap(new EOModelMap(qualifierMap));
+				TBEnterpriseQualifier exp = TBEnterpriseQualifierFactory.createQualifierFromQualifierMap(new EOModelMap(qualifierMap));
 				qualifiers.add(exp);
 			}
 		}
@@ -249,13 +249,13 @@ public class EOQualifierFactory {
 			EOModelMap map = new EOModelMap();
 			String name = ((EONamedQualifierVariable) value).getName();
 			map.setString("_key", name, true);
-			map.setString("class", "EOQualifierVariable", false);
+			map.setString("class", "TBEnterpriseQualifierVariable", false);
 			qualifierValue = map;
-		} else if (value instanceof EOQualifierVariable) {
+		} else if (value instanceof TBEnterpriseQualifierVariable) {
 			EOModelMap map = new EOModelMap();
-			String name = ((EOQualifierVariable) value).getName();
+			String name = ((TBEnterpriseQualifierVariable) value).getName();
 			map.setString("_key", name, true);
-			map.setString("class", "EOQualifierVariable", false);
+			map.setString("class", "TBEnterpriseQualifierVariable", false);
 			qualifierValue = map;
 		} else if (value instanceof Number) {
 			EOModelMap map = new EOModelMap();
@@ -283,21 +283,21 @@ public class EOQualifierFactory {
 		map.setString("class", "EOKeyComparisonQualifier", false);
 		map.setString("leftKey", leftKey, false);
 		map.setString("rightKey", rightKey, false);
-		EOQualifier.Comparison comparison = qualifier.getComparison();
-		String selectorName = (comparison == null) ? null : EOQualifierFactory.methodNameForOperatorNamed(comparison.getName());
+		TBEnterpriseQualifier.Comparison comparison = qualifier.getComparison();
+		String selectorName = (comparison == null) ? null : TBEnterpriseQualifierFactory.methodNameForOperatorNamed(comparison.getName());
 		map.setString("selectorName", selectorName, false);
 		return map;
 	}
 
-	private static EOModelMap createQualifierMapFromKeyValueQualifier(EOKeyValueQualifier qualifier) {
+	private static EOModelMap createQualifierMapFromKeyValueQualifier(TBEnterpriseKeyValueQualifier qualifier) {
 		String key = qualifier.getKey();
 		Object value = qualifier.getValue();
 		EOModelMap map = new EOModelMap();
-		map.setString("class", "EOKeyValueQualifier", false);
+		map.setString("class", "TBEnterpriseKeyValueQualifier", false);
 		Object processedValue = createQualifierValue(value);
 		map.setString("key", key, false);
-		EOQualifier.Comparison comparison = qualifier.getComparison();
-		String selectorName = (comparison == null) ? null : EOQualifierFactory.methodNameForOperatorNamed(comparison.getName());
+		TBEnterpriseQualifier.Comparison comparison = qualifier.getComparison();
+		String selectorName = (comparison == null) ? null : TBEnterpriseQualifierFactory.methodNameForOperatorNamed(comparison.getName());
 		map.setString("selectorName", selectorName, false);
 		map.put("value", processedValue);
 		return map;
@@ -305,30 +305,30 @@ public class EOQualifierFactory {
 
 	private static List<EOModelMap> createQualifierMapsFromAggregateQualifier(EOAggregateQualifier aggregateQualifier) {
 		List<EOModelMap> qualifierMaps = new LinkedList<EOModelMap>();
-		for (EOQualifier qualifier : aggregateQualifier.getQualifiers()) {
-			qualifierMaps.add(EOQualifierFactory.createQualifierMapFromQualifier(qualifier));
+		for (TBEnterpriseQualifier qualifier : aggregateQualifier.getQualifiers()) {
+			qualifierMaps.add(TBEnterpriseQualifierFactory.createQualifierMapFromQualifier(qualifier));
 		}
 		return qualifierMaps;
 	}
 
-	public static EOModelMap createQualifierMapFromQualifier(EOQualifier qualifier) {
+	public static EOModelMap createQualifierMapFromQualifier(TBEnterpriseQualifier qualifier) {
 		EOModelMap map;
-		if (qualifier instanceof EOKeyValueQualifier) {
-			map = EOQualifierFactory.createQualifierMapFromKeyValueQualifier((EOKeyValueQualifier) qualifier);
+		if (qualifier instanceof TBEnterpriseKeyValueQualifier) {
+			map = TBEnterpriseQualifierFactory.createQualifierMapFromKeyValueQualifier((TBEnterpriseKeyValueQualifier) qualifier);
 		} else if (qualifier instanceof EOKeyComparisonQualifier) {
-			map = EOQualifierFactory.createQualifierMapFromKeyComparisonQualifier((EOKeyComparisonQualifier) qualifier);
-		} else if (qualifier instanceof EOAndQualifier) {
+			map = TBEnterpriseQualifierFactory.createQualifierMapFromKeyComparisonQualifier((EOKeyComparisonQualifier) qualifier);
+		} else if (qualifier instanceof TBEnterpriseAndQualifier) {
 			map = new EOModelMap();
-			map.setString("class", "EOAndQualifier", false);
-			map.setList("qualifiers", createQualifierMapsFromAggregateQualifier((EOAndQualifier) qualifier), true);
-		} else if (qualifier instanceof EOOrQualifier) {
+			map.setString("class", "TBEnterpriseAndQualifier", false);
+			map.setList("qualifiers", createQualifierMapsFromAggregateQualifier((TBEnterpriseAndQualifier) qualifier), true);
+		} else if (qualifier instanceof TBEnterpriseOrQualifier) {
 			map = new EOModelMap();
-			map.setString("class", "EOOrQualifier", false);
-			map.setList("qualifiers", createQualifierMapsFromAggregateQualifier((EOOrQualifier) qualifier), true);
-		} else if (qualifier instanceof EONotQualifier) {
+			map.setString("class", "TBEnterpriseOrQualifier", false);
+			map.setList("qualifiers", createQualifierMapsFromAggregateQualifier((TBEnterpriseOrQualifier) qualifier), true);
+		} else if (qualifier instanceof TBEnterpriseNotQualifier) {
 			map = new EOModelMap();
-			map.setString("class", "EONotQualifier", false);
-			map.setMap("qualifier", createQualifierMapFromQualifier(((EONotQualifier) qualifier).getQualifier()), true);
+			map.setString("class", "TBEnterpriseNotQualifier", false);
+			map.setMap("qualifier", createQualifierMapFromQualifier(((TBEnterpriseNotQualifier) qualifier).getQualifier()), true);
 		} else {
 			throw new IllegalArgumentException("Unknown qualifier " + qualifier + ".");
 		}
@@ -336,23 +336,23 @@ public class EOQualifierFactory {
 	}
 
 	public static Set<String> getQualifierKeysFromQualifierString(String qualifierString) {
-		EOQualifier qualifier = EOQualifierFactory.fromString(qualifierString);
-		return EOQualifierFactory.getQualifierKeysFromQualifier(qualifier);
+		TBEnterpriseQualifier qualifier = TBEnterpriseQualifierFactory.fromString(qualifierString);
+		return TBEnterpriseQualifierFactory.getQualifierKeysFromQualifier(qualifier);
 	}
 
-	public static Set<String> getQualifierKeysFromQualifier(EOQualifier expression) {
+	public static Set<String> getQualifierKeysFromQualifier(TBEnterpriseQualifier expression) {
 		Set<String> keys = new HashSet<String>();
 		try {
-			EOQualifierFactory.fillInQualifierKeysFromQualifier(expression, keys);
+			TBEnterpriseQualifierFactory.fillInQualifierKeysFromQualifier(expression, keys);
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 		return keys;
 	}
 
-	public static void fillInQualifierKeysFromQualifier(EOQualifier qualifier, Set<String> keys) {
-		if (qualifier instanceof EOKeyValueQualifier) {
-			String key = ((EOKeyValueQualifier) qualifier).getKey();
+	public static void fillInQualifierKeysFromQualifier(TBEnterpriseQualifier qualifier, Set<String> keys) {
+		if (qualifier instanceof TBEnterpriseKeyValueQualifier) {
+			String key = ((TBEnterpriseKeyValueQualifier) qualifier).getKey();
 			keys.add(key);
 		} else if (qualifier instanceof EOKeyComparisonQualifier) {
 			String leftKey = ((EOKeyComparisonQualifier) qualifier).getLeftKey();
@@ -360,26 +360,26 @@ public class EOQualifierFactory {
 			String rightKey = ((EOKeyComparisonQualifier) qualifier).getRightKey();
 			keys.add(rightKey);
 		} else if (qualifier instanceof EOAggregateQualifier) {
-			for (EOQualifier childQualifier : ((EOAggregateQualifier) qualifier).getQualifiers()) {
-				EOQualifierFactory.fillInQualifierKeysFromQualifier(childQualifier, keys);
+			for (TBEnterpriseQualifier childQualifier : ((EOAggregateQualifier) qualifier).getQualifiers()) {
+				TBEnterpriseQualifierFactory.fillInQualifierKeysFromQualifier(childQualifier, keys);
 			}
-		} else if (qualifier instanceof EONotQualifier) {
-			EOQualifierFactory.fillInQualifierKeysFromQualifier(((EONotQualifier) qualifier).getQualifier(), keys);
+		} else if (qualifier instanceof TBEnterpriseNotQualifier) {
+			TBEnterpriseQualifierFactory.fillInQualifierKeysFromQualifier(((TBEnterpriseNotQualifier) qualifier).getQualifier(), keys);
 		} else {
 			throw new IllegalArgumentException("Unknown expression " + qualifier + ".");
 		}
 	}
 
-	public static List<EOQualifierBinding> getQualifierBindingsFromQualifierString(EOEntity entity, String qualifierString) {
-		EOQualifier qualifier = EOQualifierFactory.fromString(qualifierString);
-		return EOQualifierFactory.getQualifierBindingsFromQualifier(entity, qualifier);
+	public static List<TBEnterpriseQualifierBinding> getQualifierBindingsFromQualifierString(EOEntity entity, String qualifierString) {
+		TBEnterpriseQualifier qualifier = TBEnterpriseQualifierFactory.fromString(qualifierString);
+		return TBEnterpriseQualifierFactory.getQualifierBindingsFromQualifier(entity, qualifier);
 	}
 
-	public static List<EOQualifierBinding> getQualifierBindingsFromQualifier(EOEntity entity, EOQualifier qualifier) {
-		List<EOQualifierBinding> bindings = new LinkedList<EOQualifierBinding>();
+	public static List<TBEnterpriseQualifierBinding> getQualifierBindingsFromQualifier(EOEntity entity, TBEnterpriseQualifier qualifier) {
+		List<TBEnterpriseQualifierBinding> bindings = new LinkedList<TBEnterpriseQualifierBinding>();
 		try {
 			if (qualifier != null) {
-				EOQualifierFactory.fillInQualifierBindingsFromQualifier(entity, qualifier, bindings);
+				TBEnterpriseQualifierFactory.fillInQualifierBindingsFromQualifier(entity, qualifier, bindings);
 			}
 		} catch (Throwable t) {
 			t.printStackTrace();
@@ -387,23 +387,23 @@ public class EOQualifierFactory {
 		return bindings;
 	}
 
-	public static void fillInQualifierBindingsFromQualifier(EOEntity entity, EOQualifier qualifier, List<EOQualifierBinding> bindings) {
-		if (qualifier instanceof EOKeyValueQualifier) {
-			String key = ((EOKeyValueQualifier) qualifier).getKey();
-			Object value = ((EOKeyValueQualifier) qualifier).getValue();
+	public static void fillInQualifierBindingsFromQualifier(EOEntity entity, TBEnterpriseQualifier qualifier, List<TBEnterpriseQualifierBinding> bindings) {
+		if (qualifier instanceof TBEnterpriseKeyValueQualifier) {
+			String key = ((TBEnterpriseKeyValueQualifier) qualifier).getKey();
+			Object value = ((TBEnterpriseKeyValueQualifier) qualifier).getValue();
 			if (value instanceof EONamedQualifierVariable) {
 				String bindingName = ((EONamedQualifierVariable) value).getName();
-				EOQualifierBinding binding = new EOQualifierBinding(entity, bindingName, key);
+				TBEnterpriseQualifierBinding binding = new TBEnterpriseQualifierBinding(entity, bindingName, key);
 				bindings.add(binding);
 			}
 		} else if (qualifier instanceof EOKeyComparisonQualifier) {
 			// DO NOTHING
 		} else if (qualifier instanceof EOAggregateQualifier) {
-			for (EOQualifier aggregatedQualifier : ((EOAggregateQualifier) qualifier).getQualifiers()) {
-				EOQualifierFactory.fillInQualifierBindingsFromQualifier(entity, aggregatedQualifier, bindings);
+			for (TBEnterpriseQualifier aggregatedQualifier : ((EOAggregateQualifier) qualifier).getQualifiers()) {
+				TBEnterpriseQualifierFactory.fillInQualifierBindingsFromQualifier(entity, aggregatedQualifier, bindings);
 			}
-		} else if (qualifier instanceof EONotQualifier) {
-			EOQualifierFactory.fillInQualifierBindingsFromQualifier(entity, ((EONotQualifier) qualifier).getQualifier(), bindings);
+		} else if (qualifier instanceof TBEnterpriseNotQualifier) {
+			TBEnterpriseQualifierFactory.fillInQualifierBindingsFromQualifier(entity, ((TBEnterpriseNotQualifier) qualifier).getQualifier(), bindings);
 		} else {
 			throw new IllegalArgumentException("Unknown qualifier '" + qualifier + "'.");
 		}

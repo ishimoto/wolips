@@ -1,6 +1,6 @@
 package org.objectstyle.wolips.eomodeler.core.model.qualifier;
 
-public abstract class EOQualifier {
+public abstract class TBEnterpriseQualifier {
 	public static class Comparison {
 		private String _name;
 
@@ -29,7 +29,7 @@ public abstract class EOQualifier {
 		}
 
 		public boolean equals(Object obj) {
-			return obj instanceof EOQualifier.Comparison && ((EOQualifier.Comparison) obj)._name.equals(_name);
+			return obj instanceof TBEnterpriseQualifier.Comparison && ((TBEnterpriseQualifier.Comparison) obj)._name.equals(_name);
 		}
 
 		public String toString() {

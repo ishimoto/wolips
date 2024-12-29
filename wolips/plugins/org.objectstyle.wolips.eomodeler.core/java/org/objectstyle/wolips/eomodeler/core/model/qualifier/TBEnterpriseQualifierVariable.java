@@ -1,9 +1,9 @@
 package org.objectstyle.wolips.eomodeler.core.model.qualifier;
 
-public class EOQualifierVariable {
+public class TBEnterpriseQualifierVariable {
 	private String _name;
 
-	public EOQualifierVariable(String name) {
+	public TBEnterpriseQualifierVariable(String name) {
 		_name = name;
 	}
 	

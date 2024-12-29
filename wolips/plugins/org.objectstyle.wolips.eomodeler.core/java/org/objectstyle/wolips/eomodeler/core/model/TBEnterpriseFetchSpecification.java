@@ -17,10 +17,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgements normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -63,10 +63,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.objectstyle.wolips.baseforplugins.util.StringUtils;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOQualifier;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOQualifierBinding;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseQualifierBinding;
 
-public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> implements IEOEntityRelative, ISortableEOModelObject, PropertyChangeListener {
+public class TBEnterpriseFetchSpecification extends UserInfoableEOModelObject<EOEntity> implements IEOEntityRelative, ISortableEOModelObject, PropertyChangeListener {
 	public static final String NAME = "name";
 
 	public static final String SORT_ORDERING = "sortOrdering";
@@ -131,9 +131,9 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 
 	private Boolean myUsesDistinct;
 
-	private List<EOSortOrdering> mySortOrderings;
+	private List<TBEnterpriseSortOrdering> mySortOrderings;
 
-	private EOQualifier myQualifier;
+	private TBEnterpriseQualifier myQualifier;
 
 	private String myQualifierString;
 
@@ -145,36 +145,36 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 
 	private EOStoredProcedure myStoredProcedure;
 
-	public EOFetchSpecification(String _name) {
+	public TBEnterpriseFetchSpecification(String _name) {
 		myName = _name;
-		myClass = "EOFetchSpecification";
-		mySortOrderings = new LinkedList<EOSortOrdering>();
+		myClass = "TBEnterpriseFetchSpecification";
+		mySortOrderings = new LinkedList<TBEnterpriseSortOrdering>();
 		myFetchSpecMap = new EOModelMap();
 		myPrefetchingRelationshipKeyPaths = new TreeSet<String>();
 	}
 
-	public List<EOQualifierBinding> getAllBindings() {
-		return EOQualifierFactory.getQualifierBindingsFromQualifier(getEntity(), getQualifier());
+	public List<TBEnterpriseQualifierBinding> getAllBindings() {
+		return TBEnterpriseQualifierFactory.getQualifierBindingsFromQualifier(getEntity(), getQualifier());
 	}
 
-	public Set<EOQualifierBinding> getDistinctBindings() {
-		Map<String, EOQualifierBinding> bindings = new HashMap<String, EOQualifierBinding>();
-		for (EOQualifierBinding binding : getAllBindings()) {
+	public Set<TBEnterpriseQualifierBinding> getDistinctBindings() {
+		Map<String, TBEnterpriseQualifierBinding> bindings = new HashMap<String, TBEnterpriseQualifierBinding>();
+		for (TBEnterpriseQualifierBinding binding : getAllBindings()) {
 			if (!bindings.containsKey(binding.getName())) {
 				bindings.put(binding.getName(), binding);
 			}
 		}
-		return new PropertyListSet<EOQualifierBinding>(bindings.values());
+		return new PropertyListSet<TBEnterpriseQualifierBinding>(bindings.values());
 	}
 
-	public Set<EOQualifierBinding> getQualifierOrderDistinctBindings() {
-		LinkedHashMap<String, EOQualifierBinding> bindings = new LinkedHashMap<String, EOQualifierBinding>();
-		for (EOQualifierBinding binding : getAllBindings()) {
+	public Set<TBEnterpriseQualifierBinding> getQualifierOrderDistinctBindings() {
+		LinkedHashMap<String, TBEnterpriseQualifierBinding> bindings = new LinkedHashMap<String, TBEnterpriseQualifierBinding>();
+		for (TBEnterpriseQualifierBinding binding : getAllBindings()) {
 			if (!bindings.containsKey(binding.getName())) {
 				bindings.put(binding.getName(), binding);
 			}
 		}
-		return new LinkedHashSet<EOQualifierBinding>(bindings.values());
+		return new LinkedHashSet<TBEnterpriseQualifierBinding>(bindings.values());
 	}
 
 	public Set getReferenceFailures() {
@@ -187,8 +187,8 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 
 	public void propertyChange(PropertyChangeEvent _event) {
 		Object source = _event.getSource();
-		if (source instanceof EOSortOrdering) {
-			firePropertyChange(EOFetchSpecification.SORT_ORDERING, null, source);
+		if (source instanceof TBEnterpriseSortOrdering) {
+			firePropertyChange(TBEnterpriseFetchSpecification.SORT_ORDERING, null, source);
 		}
 	}
 
@@ -204,8 +204,8 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 //
 //	public boolean equals(Object _obj) {
 //		boolean equals = false;
-//		if (_obj instanceof EOFetchSpecification) {
-//			EOFetchSpecification fetchSpec = (EOFetchSpecification) _obj;
+//		if (_obj instanceof TBEnterpriseFetchSpecification) {
+//			TBEnterpriseFetchSpecification fetchSpec = (TBEnterpriseFetchSpecification) _obj;
 //			equals = (fetchSpec == this) || (ComparisonUtils.equals(fetchSpec.myEntity, myEntity) && ComparisonUtils.equals(fetchSpec.myName, myName));
 //		}
 //		return equals;
@@ -222,7 +222,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 		String oldName = myName;
 		myName = _name;
 		if (_fireEvents) {
-			firePropertyChange(EOFetchSpecification.NAME, oldName, myName);
+			firePropertyChange(TBEnterpriseFetchSpecification.NAME, oldName, myName);
 		}
 	}
 
@@ -250,51 +250,51 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 		return name;
 	}
 
-	public void addSortOrdering(EOSortOrdering _sortOrdering, boolean _fireEvents) {
+	public void addSortOrdering(TBEnterpriseSortOrdering _sortOrdering, boolean _fireEvents) {
 		if (_fireEvents) {
-			List<EOSortOrdering> oldSortOrderings = mySortOrderings;
-			mySortOrderings = new LinkedList<EOSortOrdering>(mySortOrderings);
+			List<TBEnterpriseSortOrdering> oldSortOrderings = mySortOrderings;
+			mySortOrderings = new LinkedList<TBEnterpriseSortOrdering>(mySortOrderings);
 			mySortOrderings.add(_sortOrdering);
-			firePropertyChange(EOFetchSpecification.SORT_ORDERINGS, oldSortOrderings, mySortOrderings);
+			firePropertyChange(TBEnterpriseFetchSpecification.SORT_ORDERINGS, oldSortOrderings, mySortOrderings);
 		} else {
 			mySortOrderings.add(_sortOrdering);
 		}
 		_sortOrdering.addPropertyChangeListener(this);
 	}
 
-	public void removeSortOrdering(EOSortOrdering _sortOrdering, boolean _fireEvents) {
+	public void removeSortOrdering(TBEnterpriseSortOrdering _sortOrdering, boolean _fireEvents) {
 		if (_fireEvents) {
-			List<EOSortOrdering> oldSortOrderings = mySortOrderings;
-			mySortOrderings = new LinkedList<EOSortOrdering>(mySortOrderings);
+			List<TBEnterpriseSortOrdering> oldSortOrderings = mySortOrderings;
+			mySortOrderings = new LinkedList<TBEnterpriseSortOrdering>(mySortOrderings);
 			mySortOrderings.remove(_sortOrdering);
-			firePropertyChange(EOFetchSpecification.SORT_ORDERINGS, oldSortOrderings, mySortOrderings);
+			firePropertyChange(TBEnterpriseFetchSpecification.SORT_ORDERINGS, oldSortOrderings, mySortOrderings);
 		} else {
 			mySortOrderings.remove(_sortOrdering);
 		}
 		_sortOrdering.removePropertyChangeListener(this);
 	}
 
-	public void setSortOrderings(List<EOSortOrdering> _sortOrderings, boolean _fireEvents) {
+	public void setSortOrderings(List<TBEnterpriseSortOrdering> _sortOrderings, boolean _fireEvents) {
 		if (_fireEvents) {
-			List<EOSortOrdering> oldSortOrderings = mySortOrderings;
+			List<TBEnterpriseSortOrdering> oldSortOrderings = mySortOrderings;
 			if (oldSortOrderings != null) {
-				for (EOSortOrdering sortOrdering : oldSortOrderings) {
+				for (TBEnterpriseSortOrdering sortOrdering : oldSortOrderings) {
 					sortOrdering.removePropertyChangeListener(this);
 				}
 			}
 			mySortOrderings = _sortOrderings;
 			if (mySortOrderings != null) {
-				for (EOSortOrdering sortOrdering : mySortOrderings) {
+				for (TBEnterpriseSortOrdering sortOrdering : mySortOrderings) {
 					sortOrdering.addPropertyChangeListener(this);
 				}
 			}
-			firePropertyChange(EOFetchSpecification.SORT_ORDERINGS, oldSortOrderings, mySortOrderings);
+			firePropertyChange(TBEnterpriseFetchSpecification.SORT_ORDERINGS, oldSortOrderings, mySortOrderings);
 		} else {
 			mySortOrderings = _sortOrderings;
 		}
 	}
 
-	public List<EOSortOrdering> getSortOrderings() {
+	public List<TBEnterpriseSortOrdering> getSortOrderings() {
 		return mySortOrderings;
 	}
 
@@ -314,7 +314,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 		Boolean oldSharesObjects = mySharesObjects;
 		mySharesObjects = _sharesObjects;
 		if (_fireEvents) {
-			firePropertyChange(EOFetchSpecification.SHARES_OBJECTS, oldSharesObjects, mySharesObjects);
+			firePropertyChange(TBEnterpriseFetchSpecification.SHARES_OBJECTS, oldSharesObjects, mySharesObjects);
 		}
 	}
 
@@ -346,7 +346,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 		if (_customQueryExpression != null || myCustomQueryExpression != null) {
 			String oldCustomQueryExpression = myCustomQueryExpression;
 			myCustomQueryExpression = _customQueryExpression;
-			firePropertyChange(EOFetchSpecification.CUSTOM_QUERY_EXPRESSION, oldCustomQueryExpression, myCustomQueryExpression);
+			firePropertyChange(TBEnterpriseFetchSpecification.CUSTOM_QUERY_EXPRESSION, oldCustomQueryExpression, myCustomQueryExpression);
 		}
 	}
 
@@ -361,7 +361,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 		if (_storedProcedure != null || myStoredProcedure != null) {
 			EOStoredProcedure oldStoredProcedure = myStoredProcedure;
 			myStoredProcedure = _storedProcedure;
-			firePropertyChange(EOFetchSpecification.STORED_PROCEDURE, oldStoredProcedure, myStoredProcedure);
+			firePropertyChange(TBEnterpriseFetchSpecification.STORED_PROCEDURE, oldStoredProcedure, myStoredProcedure);
 		}
 	}
 
@@ -369,20 +369,20 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 		return myStoredProcedure;
 	}
 
-	public void setQualifier(EOQualifier _qualifier) {
+	public void setQualifier(TBEnterpriseQualifier _qualifier) {
 		setQualifier(_qualifier, true);
 	}
 
-	public void setQualifier(EOQualifier _qualifier, boolean updateQualifierString) {
-		EOQualifier oldQualifier = myQualifier;
+	public void setQualifier(TBEnterpriseQualifier _qualifier, boolean updateQualifierString) {
+		TBEnterpriseQualifier oldQualifier = myQualifier;
 		myQualifier = _qualifier;
-		firePropertyChange(EOFetchSpecification.QUALIFIER, oldQualifier, myQualifier);
+		firePropertyChange(TBEnterpriseFetchSpecification.QUALIFIER, oldQualifier, myQualifier);
 		if (updateQualifierString) {
-			setQualifierString(EOQualifierFactory.toString(myQualifier), false);
+			setQualifierString(TBEnterpriseQualifierFactory.toString(myQualifier), false);
 		}
 	}
 
-	public EOQualifier getQualifier() {
+	public TBEnterpriseQualifier getQualifier() {
 		return myQualifier;
 	}
 
@@ -395,7 +395,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 		myQualifierString = _qualifierString;
 		if (updateQualifier) {
 			try {
-				EOQualifier qualifier = EOQualifierFactory.fromString(_qualifierString);
+				TBEnterpriseQualifier qualifier = TBEnterpriseQualifierFactory.fromString(_qualifierString);
 				setQualifier(qualifier, false);
 			} catch (RuntimeException e) {
 				e.printStackTrace();
@@ -403,11 +403,11 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 				throw e;
 			}
 			finally {
-				firePropertyChange(EOFetchSpecification.QUALIFIER_STRING, oldQualifierString, myQualifierString);
+				firePropertyChange(TBEnterpriseFetchSpecification.QUALIFIER_STRING, oldQualifierString, myQualifierString);
 			}
 		}
 		else {
-			firePropertyChange(EOFetchSpecification.QUALIFIER_STRING, oldQualifierString, myQualifierString);
+			firePropertyChange(TBEnterpriseFetchSpecification.QUALIFIER_STRING, oldQualifierString, myQualifierString);
 		}
 	}
 
@@ -418,7 +418,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 	public void setEntity(EOEntity _entity) {
 		EOEntity oldEntity = myEntity;
 		_setEntity(_entity);
-		firePropertyChange(EOFetchSpecification.ENTITY, oldEntity, myEntity);
+		firePropertyChange(TBEnterpriseFetchSpecification.ENTITY, oldEntity, myEntity);
 	}
 
 	public EOEntity getEntity() {
@@ -436,7 +436,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 	public void setDeep(Boolean _deep) {
 		Boolean oldDeep = myDeep;
 		myDeep = _deep;
-		firePropertyChange(EOFetchSpecification.DEEP, oldDeep, myDeep);
+		firePropertyChange(TBEnterpriseFetchSpecification.DEEP, oldDeep, myDeep);
 	}
 
 	public Integer getFetchLimit() {
@@ -446,7 +446,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 	public void setFetchLimit(Integer _fetchLimit) {
 		Integer oldFetchLimit = myFetchLimit;
 		myFetchLimit = _fetchLimit;
-		firePropertyChange(EOFetchSpecification.FETCH_LIMIT, oldFetchLimit, myFetchLimit);
+		firePropertyChange(TBEnterpriseFetchSpecification.FETCH_LIMIT, oldFetchLimit, myFetchLimit);
 	}
 
 	public Boolean isLocksObjects() {
@@ -460,7 +460,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 	public void setLocksObjects(Boolean _locksObjects) {
 		Boolean oldLocksObjects = myLocksObjects;
 		myLocksObjects = _locksObjects;
-		firePropertyChange(EOFetchSpecification.LOCKS_OBJECTS, oldLocksObjects, myLocksObjects);
+		firePropertyChange(TBEnterpriseFetchSpecification.LOCKS_OBJECTS, oldLocksObjects, myLocksObjects);
 	}
 
 	public Collection<String> getPrefetchingRelationshipKeyPaths() {
@@ -475,7 +475,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 				myPrefetchingRelationshipKeyPaths.addAll(oldPrefetchingRelationshipKeyPaths);
 			}
 			myPrefetchingRelationshipKeyPaths.add(_prefetchingRelationshipKeyPath);
-			firePropertyChange(EOFetchSpecification.PREFETCHING_RELATIONSHIP_KEY_PATHS, oldPrefetchingRelationshipKeyPaths, myPrefetchingRelationshipKeyPaths);
+			firePropertyChange(TBEnterpriseFetchSpecification.PREFETCHING_RELATIONSHIP_KEY_PATHS, oldPrefetchingRelationshipKeyPaths, myPrefetchingRelationshipKeyPaths);
 		} else {
 			myPrefetchingRelationshipKeyPaths.add(_prefetchingRelationshipKeyPath);
 		}
@@ -489,7 +489,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 				myPrefetchingRelationshipKeyPaths.addAll(oldPrefetchingRelationshipKeyPaths);
 				myPrefetchingRelationshipKeyPaths.remove(_prefetchingRelationshipKeyPath);
 			}
-			firePropertyChange(EOFetchSpecification.PREFETCHING_RELATIONSHIP_KEY_PATHS, oldPrefetchingRelationshipKeyPaths, myPrefetchingRelationshipKeyPaths);
+			firePropertyChange(TBEnterpriseFetchSpecification.PREFETCHING_RELATIONSHIP_KEY_PATHS, oldPrefetchingRelationshipKeyPaths, myPrefetchingRelationshipKeyPaths);
 		} else {
 			myPrefetchingRelationshipKeyPaths.remove(_prefetchingRelationshipKeyPath);
 		}
@@ -498,13 +498,13 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 	public void fetchEnterpriseObjects() {
 		Set<String> oldRawRowKeyPaths = myRawRowKeyPaths;
 		myRawRowKeyPaths = null;
-		firePropertyChange(EOFetchSpecification.RAW_ROW_KEY_PATHS, oldRawRowKeyPaths, myRawRowKeyPaths);
+		firePropertyChange(TBEnterpriseFetchSpecification.RAW_ROW_KEY_PATHS, oldRawRowKeyPaths, myRawRowKeyPaths);
 	}
 
 	public void fetchAllAttributesAsRawRows() {
 		Set<String> oldRawRowKeyPaths = myRawRowKeyPaths;
 		myRawRowKeyPaths = new TreeSet<String>();
-		firePropertyChange(EOFetchSpecification.RAW_ROW_KEY_PATHS, oldRawRowKeyPaths, myRawRowKeyPaths);
+		firePropertyChange(TBEnterpriseFetchSpecification.RAW_ROW_KEY_PATHS, oldRawRowKeyPaths, myRawRowKeyPaths);
 	}
 
 	public void fetchSpecificAttributesAsRawRows() {
@@ -535,7 +535,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 				myRawRowKeyPaths.addAll(oldRawRowKeyPaths);
 			}
 			myRawRowKeyPaths.add(_rawRowKeyPath);
-			firePropertyChange(EOFetchSpecification.RAW_ROW_KEY_PATHS, oldRawRowKeyPaths, myRawRowKeyPaths);
+			firePropertyChange(TBEnterpriseFetchSpecification.RAW_ROW_KEY_PATHS, oldRawRowKeyPaths, myRawRowKeyPaths);
 		} else {
 			myRawRowKeyPaths.add(_rawRowKeyPath);
 		}
@@ -549,7 +549,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 				myRawRowKeyPaths.addAll(oldRawRowKeyPaths);
 				myRawRowKeyPaths.remove(_rawRowKeyPath);
 			}
-			firePropertyChange(EOFetchSpecification.RAW_ROW_KEY_PATHS, oldRawRowKeyPaths, myRawRowKeyPaths);
+			firePropertyChange(TBEnterpriseFetchSpecification.RAW_ROW_KEY_PATHS, oldRawRowKeyPaths, myRawRowKeyPaths);
 		} else {
 			myRawRowKeyPaths.remove(_rawRowKeyPath);
 		}
@@ -566,7 +566,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 	public void setPromptsAfterFetchLimit(Boolean _promptsAfterFetchLimit) {
 		Boolean oldPromptsAfterFetchLimit = myPromptsAfterFetchLimit;
 		myPromptsAfterFetchLimit = _promptsAfterFetchLimit;
-		firePropertyChange(EOFetchSpecification.PROMPTS_AFTER_FETCH_LIMIT, oldPromptsAfterFetchLimit, myPromptsAfterFetchLimit);
+		firePropertyChange(TBEnterpriseFetchSpecification.PROMPTS_AFTER_FETCH_LIMIT, oldPromptsAfterFetchLimit, myPromptsAfterFetchLimit);
 	}
 
 	public Collection<String> getRawRowKeyPaths() {
@@ -575,7 +575,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 
 	public void setRawRowKeyPaths(Set<String> _rawRowKeyPaths) {
 		myRawRowKeyPaths = _rawRowKeyPaths;
-		firePropertyChange(EOFetchSpecification.RAW_ROW_KEY_PATHS, null, null);
+		firePropertyChange(TBEnterpriseFetchSpecification.RAW_ROW_KEY_PATHS, null, null);
 	}
 
 	public Boolean isRefreshesRefetchedObjects() {
@@ -589,7 +589,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 	public void setRefreshesRefetchedObjects(Boolean _refreshesRefetchedObjects) {
 		Boolean oldRefreshesRefetchedObjects = myRefreshesRefetchedObjects;
 		myRefreshesRefetchedObjects = _refreshesRefetchedObjects;
-		firePropertyChange(EOFetchSpecification.REFRESHES_REFETCHED_OBJECTS, oldRefreshesRefetchedObjects, myRefreshesRefetchedObjects);
+		firePropertyChange(TBEnterpriseFetchSpecification.REFRESHES_REFETCHED_OBJECTS, oldRefreshesRefetchedObjects, myRefreshesRefetchedObjects);
 	}
 
 	public Boolean isRequiresAllQualifierBindingVariables() {
@@ -603,7 +603,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 	public void setRequiresAllQualifierBindingVariables(Boolean _requiresAllQualifierBindingVariables) {
 		Boolean oldRequiresAllQualifierBindingVariables = myRequiresAllQualifierBindingVariables;
 		myRequiresAllQualifierBindingVariables = _requiresAllQualifierBindingVariables;
-		firePropertyChange(EOFetchSpecification.REQUIRES_ALL_QUALIFIER_BINDING_VARIABLES, oldRequiresAllQualifierBindingVariables, myRequiresAllQualifierBindingVariables);
+		firePropertyChange(TBEnterpriseFetchSpecification.REQUIRES_ALL_QUALIFIER_BINDING_VARIABLES, oldRequiresAllQualifierBindingVariables, myRequiresAllQualifierBindingVariables);
 	}
 
 	public Boolean isUsesDistinct() {
@@ -617,7 +617,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 	public void setUsesDistinct(Boolean _usesDistinct) {
 		Boolean oldUsesDistinct = myUsesDistinct;
 		myUsesDistinct = _usesDistinct;
-		firePropertyChange(EOFetchSpecification.USES_DISTINCT, oldUsesDistinct, myUsesDistinct);
+		firePropertyChange(TBEnterpriseFetchSpecification.USES_DISTINCT, oldUsesDistinct, myUsesDistinct);
 	}
 
 	@SuppressWarnings("unused")
@@ -633,8 +633,8 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 
 		Map qualifierMap = _map.getMap("qualifier");
 		if (qualifierMap != null) {
-			myQualifier = EOQualifierFactory.createQualifierFromQualifierMap(new EOModelMap(qualifierMap));
-			myQualifierString = EOQualifierFactory.toString(myQualifier);
+			myQualifier = TBEnterpriseQualifierFactory.createQualifierFromQualifierMap(new EOModelMap(qualifierMap));
+			myQualifierString = TBEnterpriseQualifierFactory.toString(myQualifier);
 		}
 		myRawRowKeyPaths = _map.getSet("rawRowKeyPaths", true);
 		myRefreshesRefetchedObjects = _map.getBoolean("refreshesRefetchedObjects");
@@ -646,7 +646,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 		if (sortOrderings != null) {
 			for (Map originalSortOrderingMap : sortOrderings) {
 				EOModelMap sortOrderingMap = new EOModelMap(originalSortOrderingMap);
-				EOSortOrdering sortOrdering = new EOSortOrdering();
+				TBEnterpriseSortOrdering sortOrdering = new TBEnterpriseSortOrdering();
 				sortOrdering.loadFromMap(sortOrderingMap);
 				addSortOrdering(sortOrdering, false);
 			}
@@ -676,7 +676,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 		if (myQualifier == null) {
 			fetchSpecMap.setMap("qualifier", null, true);
 		} else {
-			fetchSpecMap.setMap("qualifier", EOQualifierFactory.createQualifierMapFromQualifier(myQualifier), true);
+			fetchSpecMap.setMap("qualifier", TBEnterpriseQualifierFactory.createQualifierMapFromQualifier(myQualifier), true);
 		}
 		if (myRawRowKeyPaths != null && myRawRowKeyPaths.equals(myFetchSpecMap.get("rawRowKeyPaths"))) {
 			fetchSpecMap.setSet("rawRowKeyPaths", (Set) myFetchSpecMap.get("rawRowKeyPaths"), false);
@@ -689,7 +689,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 		writeUserInfo(fetchSpecMap);
 
 		List<Map> sortOrderings = new LinkedList<Map>();
-		for (EOSortOrdering sortOrdering : mySortOrderings) {
+		for (TBEnterpriseSortOrdering sortOrdering : mySortOrderings) {
 			EOModelMap sortOrderingMap = sortOrdering.toMap();
 			sortOrderings.add(sortOrderingMap);
 		}
@@ -730,7 +730,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 		if (myQualifierString != null && myQualifierString.length() > 0 && myQualifier == null) {
 			String reason;
 			try {
-				EOQualifierFactory.fromString(myQualifierString);
+				TBEnterpriseQualifierFactory.fromString(myQualifierString);
 				reason = "Unknown failure.";
 			} catch (Throwable t) {
 				reason = StringUtils.getErrorMessage(t);
@@ -739,7 +739,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 		}
 		else if (myQualifier != null) {
 			EOEntity entity = getEntity();
-			Set<String> qualifierKeys = EOQualifierFactory.getQualifierKeysFromQualifier(myQualifier);
+			Set<String> qualifierKeys = TBEnterpriseQualifierFactory.getQualifierKeysFromQualifier(myQualifier);
 			for (String qualifierKey : qualifierKeys) {
 				AbstractEOAttributePath definitionPath = entity.resolveKeyPath(qualifierKey);
 				if (definitionPath == null || !definitionPath.isValid()) {
@@ -748,7 +748,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 			}
 		}
 
-		for (EOSortOrdering sortOrdering : mySortOrderings) {
+		for (TBEnterpriseSortOrdering sortOrdering : mySortOrderings) {
 			sortOrdering.verify(_failures);
 		}
 
@@ -765,8 +765,8 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 	}
 
 	@Override
-	public EOFetchSpecification _cloneModelObject() {
-		EOFetchSpecification fetchSpec = new EOFetchSpecification(myName);
+	public TBEnterpriseFetchSpecification _cloneModelObject() {
+		TBEnterpriseFetchSpecification fetchSpec = new TBEnterpriseFetchSpecification(myName);
 		fetchSpec.myClass = myClass;
 		fetchSpec.myFetchLimit = myFetchLimit;
 		fetchSpec.myDeep = myDeep;
@@ -785,7 +785,7 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 		fetchSpec.myUsesDistinct = myUsesDistinct;
 		fetchSpec.mySortOrderings.addAll(mySortOrderings);
 		if (myQualifier != null) {
-			fetchSpec.myQualifier = EOQualifierFactory.createQualifierFromQualifierMap(EOQualifierFactory.createQualifierMapFromQualifier(myQualifier));
+			fetchSpec.myQualifier = TBEnterpriseQualifierFactory.createQualifierFromQualifierMap(TBEnterpriseQualifierFactory.createQualifierMapFromQualifier(myQualifier));
 		}
 		fetchSpec.mySharesObjects = mySharesObjects;
 		_cloneUserInfoInto(fetchSpec);
@@ -813,6 +813,6 @@ public class EOFetchSpecification extends UserInfoableEOModelObject<EOEntity> im
 	}
 
 	public String toString() {
-		return "[EOFetchSpecification: name = " + myName + "]";
+		return "[TBEnterpriseFetchSpecification: name = " + myName + "]";
 	}
 }

@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public class EOQualifierParser {
+public class TBEnterpriseQualifierParser {
 	private static final int NONE = 0;
 
 	private static final int IN_SINGLE_QUOTE = 1;
@@ -43,32 +43,32 @@ public class EOQualifierParser {
 	private int _tokenNum;
 
 	static {
-		EOQualifierParser.OPERATORS = new HashSet<String>();
-		EOQualifierParser.OPERATORS.add("=");
-		EOQualifierParser.OPERATORS.add(">");
-		EOQualifierParser.OPERATORS.add("<");
-		EOQualifierParser.OPERATORS.add("==");
-		EOQualifierParser.OPERATORS.add(">=");
-		EOQualifierParser.OPERATORS.add("<=");
-		EOQualifierParser.OPERATORS.add("<>");
-		EOQualifierParser.OPERATORS.add("contains");
-		EOQualifierParser.OPERATORS.add("like");
-		EOQualifierParser.OPERATORS.add("caseinsensitivelike");
+		TBEnterpriseQualifierParser.OPERATORS = new HashSet<String>();
+		TBEnterpriseQualifierParser.OPERATORS.add("=");
+		TBEnterpriseQualifierParser.OPERATORS.add(">");
+		TBEnterpriseQualifierParser.OPERATORS.add("<");
+		TBEnterpriseQualifierParser.OPERATORS.add("==");
+		TBEnterpriseQualifierParser.OPERATORS.add(">=");
+		TBEnterpriseQualifierParser.OPERATORS.add("<=");
+		TBEnterpriseQualifierParser.OPERATORS.add("<>");
+		TBEnterpriseQualifierParser.OPERATORS.add("contains");
+		TBEnterpriseQualifierParser.OPERATORS.add("like");
+		TBEnterpriseQualifierParser.OPERATORS.add("caseinsensitivelike");
 
-		EOQualifierParser.SELECTORS = new HashSet<String>();
-		EOQualifierParser.SELECTORS.add("isEqualTo");
-		EOQualifierParser.SELECTORS.add("isNotEqualTo");
-		EOQualifierParser.SELECTORS.add("isLessThan");
-		EOQualifierParser.SELECTORS.add("isGreaterThan");
-		EOQualifierParser.SELECTORS.add("isLessThanOrEqualTo");
-		EOQualifierParser.SELECTORS.add("isGreaterThanOrEqualTo");
-		EOQualifierParser.SELECTORS.add("doesContain");
-		EOQualifierParser.SELECTORS.add("isLike");
-		EOQualifierParser.SELECTORS.add("isCaseInsensitiveLike");
+		TBEnterpriseQualifierParser.SELECTORS = new HashSet<String>();
+		TBEnterpriseQualifierParser.SELECTORS.add("isEqualTo");
+		TBEnterpriseQualifierParser.SELECTORS.add("isNotEqualTo");
+		TBEnterpriseQualifierParser.SELECTORS.add("isLessThan");
+		TBEnterpriseQualifierParser.SELECTORS.add("isGreaterThan");
+		TBEnterpriseQualifierParser.SELECTORS.add("isLessThanOrEqualTo");
+		TBEnterpriseQualifierParser.SELECTORS.add("isGreaterThanOrEqualTo");
+		TBEnterpriseQualifierParser.SELECTORS.add("doesContain");
+		TBEnterpriseQualifierParser.SELECTORS.add("isLike");
+		TBEnterpriseQualifierParser.SELECTORS.add("isCaseInsensitiveLike");
 	}
 
 	protected String caseCorrectedSelectorName(String possibleSelector) {
-		for (String selector : EOQualifierParser.SELECTORS) {
+		for (String selector : TBEnterpriseQualifierParser.SELECTORS) {
 			if (selector.equalsIgnoreCase(possibleSelector)) {
 				return selector;
 			}
@@ -77,7 +77,7 @@ public class EOQualifierParser {
 	}
 
 	protected String caseCorrectedOperatorName(String possibleOperator) {
-		for (String operator : EOQualifierParser.OPERATORS) {
+		for (String operator : TBEnterpriseQualifierParser.OPERATORS) {
 			if (operator.equalsIgnoreCase(possibleOperator)) {
 				return operator;
 			}
@@ -85,7 +85,7 @@ public class EOQualifierParser {
 		return null;
 	}
 
-	public synchronized EOQualifier parseQualifier(String qualifierString) throws ParseException {
+	public synchronized TBEnterpriseQualifier parseQualifier(String qualifierString) throws ParseException {
 		_tokens = new LinkedList<Token>();
 		_qualifierString = qualifierString;
 		_length = _qualifierString.length();
@@ -94,12 +94,12 @@ public class EOQualifierParser {
 		_tokenNum = 0;
 
 		tokenize(false);
-		EOQualifier qualifier = qualifierForTokens(0, true);
+		TBEnterpriseQualifier qualifier = qualifierForTokens(0, true);
 		return qualifier;
 	}
 
-	protected EOQualifier qualifierForTokens(int depth, boolean allowAggregateQualifiers) throws ParseException {
-		EOQualifier lqualifier = null;
+	protected TBEnterpriseQualifier qualifierForTokens(int depth, boolean allowAggregateQualifiers) throws ParseException {
+		TBEnterpriseQualifier lqualifier = null;
 		Token lvalue = popToken();
 		if (lvalue instanceof OpenParenToken) {
 			lqualifier = qualifierForTokens(depth + 1, true);
@@ -109,20 +109,20 @@ public class EOQualifierParser {
 			} else {
 				Token operator = popToken();
 				if (operator instanceof OperatorToken || operator instanceof KeywordToken) {
-					EOQualifier.Comparison selector = new EOQualifier.Comparison(operator.getValue());
+					TBEnterpriseQualifier.Comparison selector = new TBEnterpriseQualifier.Comparison(operator.getValue());
 					Token rvalue = popToken();
 					if (rvalue instanceof NamedVariableToken) {
-						lqualifier = new EOKeyValueQualifier(lvalue.getValue(), selector, new EONamedQualifierVariable(rvalue.getValue()));
+						lqualifier = new TBEnterpriseKeyValueQualifier(lvalue.getValue(), selector, new EONamedQualifierVariable(rvalue.getValue()));
 					} else if (rvalue instanceof VariableToken || rvalue instanceof NamedVariableToken) {
-						lqualifier = new EOKeyValueQualifier(lvalue.getValue(), selector, new EOQualifierVariable(rvalue.getValue()));
+						lqualifier = new TBEnterpriseKeyValueQualifier(lvalue.getValue(), selector, new TBEnterpriseQualifierVariable(rvalue.getValue()));
 					} else if (rvalue instanceof NumberToken) {
-						lqualifier = new EOKeyValueQualifier(lvalue.getValue(), selector, ((NumberToken) rvalue).toNumber());
+						lqualifier = new TBEnterpriseKeyValueQualifier(lvalue.getValue(), selector, ((NumberToken) rvalue).toNumber());
 					} else if (rvalue instanceof LiteralToken) {
 						String value = rvalue.getValue();
 						if (value != null) {
 							value = value.replaceAll("\\\\(.)", "$1");
 						}
-						lqualifier = new EOKeyValueQualifier(lvalue.getValue(), selector, value);
+						lqualifier = new TBEnterpriseKeyValueQualifier(lvalue.getValue(), selector, value);
 					} else if (rvalue instanceof KeywordToken || rvalue instanceof KeypathToken) {
 						lqualifier = new EOKeyComparisonQualifier(lvalue.getValue(), selector, rvalue.getValue());
 					} else if (rvalue == null) {
@@ -137,12 +137,12 @@ public class EOQualifierParser {
 				}
 			}
 		} else if (lvalue instanceof NotToken) {
-			lqualifier = new EONotQualifier(qualifierForTokens(depth + 1, false));
+			lqualifier = new TBEnterpriseNotQualifier(qualifierForTokens(depth + 1, false));
 		} else if (lvalue != null) {
 			throw new ParseException("Invalid token " + lvalue + " at offset " + lvalue.getOffset() + ".", lvalue.getOffset());
 		}
 
-		EOQualifier qualifier;
+		TBEnterpriseQualifier qualifier;
 		if (lvalue == null) {
 			qualifier = null;
 		} else {
@@ -159,17 +159,17 @@ public class EOQualifierParser {
 				qualifier = lqualifier;
 				pushToken(nextToken);
 			} else if (nextToken instanceof AndToken) {
-				EOQualifier rqualifier = qualifierForTokens(depth, true);
+				TBEnterpriseQualifier rqualifier = qualifierForTokens(depth, true);
 				if (rqualifier == null) {
 					throw new ParseException("'and' requires a second qualifier at offset " + nextToken.getOffset() + ".", nextToken.getOffset());
 				}
-				qualifier = new EOAndQualifier(lqualifier, rqualifier);
+				qualifier = new TBEnterpriseAndQualifier(lqualifier, rqualifier);
 			} else if (nextToken instanceof OrToken) {
-				EOQualifier rqualifier = qualifierForTokens(depth, true);
+				TBEnterpriseQualifier rqualifier = qualifierForTokens(depth, true);
 				if (rqualifier == null) {
 					throw new ParseException("'or' requires a second qualifier at offset " + nextToken.getOffset() + ".", nextToken.getOffset());
 				}
-				qualifier = new EOOrQualifier(lqualifier, rqualifier);
+				qualifier = new TBEnterpriseOrQualifier(lqualifier, rqualifier);
 			} else {
 				throw new ParseException("Illegal token " + nextToken + " at offset " + nextToken.getOffset() + ".", nextToken.getOffset());
 			}
@@ -195,47 +195,47 @@ public class EOQualifierParser {
 	protected void tokenize(boolean parentInParen) throws ParseException {
 		int groupStartOffset = _offset;
 		boolean inParen = parentInParen;
-		int state = EOQualifierParser.NONE;
+		int state = TBEnterpriseQualifierParser.NONE;
 		_tokenStartOffset = -1;
-		int previousState = EOQualifierParser.NONE;
+		int previousState = TBEnterpriseQualifierParser.NONE;
 		while (_offset < _length) {
 			char ch = _qualifierString.charAt(_offset++);
-			if (state == EOQualifierParser.ESCAPED) {
+			if (state == TBEnterpriseQualifierParser.ESCAPED) {
 				state = previousState;
 			} else if (ch == '\\') {
-				if (state == EOQualifierParser.IN_DOUBLE_QUOTE || state == EOQualifierParser.IN_SINGLE_QUOTE) {
+				if (state == TBEnterpriseQualifierParser.IN_DOUBLE_QUOTE || state == TBEnterpriseQualifierParser.IN_SINGLE_QUOTE) {
 					previousState = state;
-					state = EOQualifierParser.ESCAPED;
+					state = TBEnterpriseQualifierParser.ESCAPED;
 				} else {
 					throw new ParseException("Backslash in invalid state " + state + " at offset " + _offset + ".", _offset);
 				}
 			} else if (ch == '"') {
-				if (state == EOQualifierParser.IN_DOUBLE_QUOTE) {
+				if (state == TBEnterpriseQualifierParser.IN_DOUBLE_QUOTE) {
 					endPendingToken(state);
-					state = EOQualifierParser.NONE;
-				} else if (state == EOQualifierParser.IN_SINGLE_QUOTE) {
+					state = TBEnterpriseQualifierParser.NONE;
+				} else if (state == TBEnterpriseQualifierParser.IN_SINGLE_QUOTE) {
 					// ignore
 				} else {
 					endPendingToken(state);
 					_tokenStartOffset = _offset + 1;
-					state = EOQualifierParser.IN_DOUBLE_QUOTE;
+					state = TBEnterpriseQualifierParser.IN_DOUBLE_QUOTE;
 				}
 			} else if (ch == '\'') {
-				if (state == EOQualifierParser.IN_SINGLE_QUOTE) {
+				if (state == TBEnterpriseQualifierParser.IN_SINGLE_QUOTE) {
 					endPendingToken(state);
-					state = EOQualifierParser.NONE;
-				} else if (state == EOQualifierParser.IN_DOUBLE_QUOTE) {
+					state = TBEnterpriseQualifierParser.NONE;
+				} else if (state == TBEnterpriseQualifierParser.IN_DOUBLE_QUOTE) {
 					// ignore
 				} else {
 					endPendingToken(state);
 					_tokenStartOffset = _offset + 1;
-					state = EOQualifierParser.IN_SINGLE_QUOTE;
+					state = TBEnterpriseQualifierParser.IN_SINGLE_QUOTE;
 				}
-			} else if (state != EOQualifierParser.IN_SINGLE_QUOTE && state != EOQualifierParser.IN_DOUBLE_QUOTE) {
-				if (state == EOQualifierParser.IN_VARIABLE) {
+			} else if (state != TBEnterpriseQualifierParser.IN_SINGLE_QUOTE && state != TBEnterpriseQualifierParser.IN_DOUBLE_QUOTE) {
+				if (state == TBEnterpriseQualifierParser.IN_VARIABLE) {
 					if (ch == 's' || ch == 'd' || ch == 'f' || ch == 'f' || ch == '@' || ch == 'K' || ch == '%') {
 						_tokens.add(new VariableToken(_offset - 2, "%" + ch));
-						state = EOQualifierParser.NONE;
+						state = TBEnterpriseQualifierParser.NONE;
 						_tokenStartOffset = -1;
 					} else {
 						throw new ParseException("Unknown variable %" + ch + " at offset " + (_offset - 1) + ".", (_offset - 1));
@@ -243,11 +243,11 @@ public class EOQualifierParser {
 				} else if (ch == '%') {
 					endPendingToken(state);
 					_tokenStartOffset = _offset;
-					state = EOQualifierParser.IN_VARIABLE;
+					state = TBEnterpriseQualifierParser.IN_VARIABLE;
 				} else if (ch == '$') {
 					endPendingToken(state);
 					_tokenStartOffset = _offset;
-					state = EOQualifierParser.IN_BINDING_KEY;
+					state = TBEnterpriseQualifierParser.IN_BINDING_KEY;
 				} else if (ch == '(') {
 					endPendingToken(state);
 					_tokens.add(new OpenParenToken(_offset - 1));
@@ -258,51 +258,51 @@ public class EOQualifierParser {
 					}
 					endPendingToken(state);
 					_tokens.add(new CloseParenToken(_offset - 1));
-					state = EOQualifierParser.NONE;
+					state = TBEnterpriseQualifierParser.NONE;
 					inParen = false;
 					break;
 				} else if (Character.isWhitespace(ch)) {
 					endPendingToken(state);
-					state = EOQualifierParser.NONE;
+					state = TBEnterpriseQualifierParser.NONE;
 					// _tokens.add(new Whitespace(ch));
 				} else if (ch == '<' || ch == '>' || ch == '=') {
-					if (state != EOQualifierParser.IN_OPERATOR) {
+					if (state != TBEnterpriseQualifierParser.IN_OPERATOR) {
 						endPendingToken(state);
 						_tokenStartOffset = _offset;
-						state = EOQualifierParser.IN_OPERATOR;
+						state = TBEnterpriseQualifierParser.IN_OPERATOR;
 					}
 				} else if (Character.isJavaIdentifierStart(ch)) {
-					if (state == EOQualifierParser.IN_NUMBER) {
+					if (state == TBEnterpriseQualifierParser.IN_NUMBER) {
 						throw new ParseException("Unexpected character " + ch + " at offset " + (_offset - 1) + ".", (_offset - 1));
-					} else if (state == EOQualifierParser.IN_KEYWORD) {
+					} else if (state == TBEnterpriseQualifierParser.IN_KEYWORD) {
 						// IGNORE
-					} else if (state == EOQualifierParser.IN_BINDING_KEY) {
+					} else if (state == TBEnterpriseQualifierParser.IN_BINDING_KEY) {
 						// IGNORE
-					} else if (state == EOQualifierParser.IN_OPERATOR) {
+					} else if (state == TBEnterpriseQualifierParser.IN_OPERATOR) {
 						endPendingToken(state);
-						state = EOQualifierParser.IN_KEYWORD;
+						state = TBEnterpriseQualifierParser.IN_KEYWORD;
 						_tokenStartOffset = _offset;
-					} else if (state == EOQualifierParser.NONE) {
-						state = EOQualifierParser.IN_KEYWORD;
+					} else if (state == TBEnterpriseQualifierParser.NONE) {
+						state = TBEnterpriseQualifierParser.IN_KEYWORD;
 						_tokenStartOffset = _offset;
 					} else {
 						throw new ParseException("Unexpected character " + ch + " at offset " + (_offset - 1) + ".", (_offset - 1));
 					}
-				} else if ((Character.isJavaIdentifierPart(ch) || ch == '.') && (state == EOQualifierParser.IN_KEYWORD || state == EOQualifierParser.IN_BINDING_KEY)) {
+				} else if ((Character.isJavaIdentifierPart(ch) || ch == '.') && (state == TBEnterpriseQualifierParser.IN_KEYWORD || state == TBEnterpriseQualifierParser.IN_BINDING_KEY)) {
 					// OK
 				} else if (Character.isDigit(ch) || ch == '.' || ch == '-' || ch == ':') {
-					if (state == EOQualifierParser.IN_NUMBER) {
+					if (state == TBEnterpriseQualifierParser.IN_NUMBER) {
 						// IGNORE
-					} else if (state == EOQualifierParser.IN_KEYWORD) {
+					} else if (state == TBEnterpriseQualifierParser.IN_KEYWORD) {
 						// IGNORE
-					} else if (state == EOQualifierParser.IN_BINDING_KEY) {
+					} else if (state == TBEnterpriseQualifierParser.IN_BINDING_KEY) {
 						// IGNORE
-					} else if (state == EOQualifierParser.IN_OPERATOR) {
+					} else if (state == TBEnterpriseQualifierParser.IN_OPERATOR) {
 						endPendingToken(state);
-						state = EOQualifierParser.IN_NUMBER;
+						state = TBEnterpriseQualifierParser.IN_NUMBER;
 						_tokenStartOffset = _offset;
-					} else if (state == EOQualifierParser.NONE) {
-						state = EOQualifierParser.IN_NUMBER;
+					} else if (state == TBEnterpriseQualifierParser.NONE) {
+						state = TBEnterpriseQualifierParser.IN_NUMBER;
 						_tokenStartOffset = _offset;
 					} else {
 						throw new ParseException("Unexpected number " + ch + " at offset " + (_offset - 1) + ".", (_offset - 1));
@@ -313,19 +313,19 @@ public class EOQualifierParser {
 			}
 		}
 
-		if (state == EOQualifierParser.IN_SINGLE_QUOTE) {
+		if (state == TBEnterpriseQualifierParser.IN_SINGLE_QUOTE) {
 			throw new ParseException("Missing closing ' starting at offset " + _tokenStartOffset + ".", _tokenStartOffset);
-		} else if (state == EOQualifierParser.IN_DOUBLE_QUOTE) {
+		} else if (state == TBEnterpriseQualifierParser.IN_DOUBLE_QUOTE) {
 			throw new ParseException("Missing closing \" starting at offset " + _tokenStartOffset + ".", _tokenStartOffset);
-		} else if (state == EOQualifierParser.ESCAPED) {
+		} else if (state == TBEnterpriseQualifierParser.ESCAPED) {
 			throw new ParseException("Backslash found without escaped character at offset " + (_offset - 1) + ".", (_offset - 1));
-		} else if (state == EOQualifierParser.IN_VARIABLE) {
+		} else if (state == TBEnterpriseQualifierParser.IN_VARIABLE) {
 			throw new ParseException("Percent found without variable character at offset " + (_offset - 1) + ".", (_offset - 1));
 		} else if (inParen) {
 			throw new ParseException("Missing closing paren starting at offset " + groupStartOffset + ".", groupStartOffset);
 		}
 
-		if (state == EOQualifierParser.IN_KEYWORD || state == EOQualifierParser.IN_NUMBER || state == EOQualifierParser.IN_BINDING_KEY) {
+		if (state == TBEnterpriseQualifierParser.IN_KEYWORD || state == TBEnterpriseQualifierParser.IN_NUMBER || state == TBEnterpriseQualifierParser.IN_BINDING_KEY) {
 			_offset++;
 		}
 
@@ -337,30 +337,30 @@ public class EOQualifierParser {
 			int startOffset = _tokenStartOffset - 1;
 			String value = _qualifierString.substring(startOffset, _offset - 1);
 			Token token;
-			if (state == EOQualifierParser.IN_DOUBLE_QUOTE || state == EOQualifierParser.IN_SINGLE_QUOTE) {
+			if (state == TBEnterpriseQualifierParser.IN_DOUBLE_QUOTE || state == TBEnterpriseQualifierParser.IN_SINGLE_QUOTE) {
 				token = new LiteralToken(_tokenStartOffset - 1, value);
-			} else if (state == EOQualifierParser.IN_OPERATOR) {
+			} else if (state == TBEnterpriseQualifierParser.IN_OPERATOR) {
 				String operator = caseCorrectedOperatorName(value);
 				if (operator != null) {
 					token = new OperatorToken(startOffset, value);
 				} else {
 					throw new ParseException("Unknown operator " + value + " at offset " + (_tokenStartOffset - 1) + ".", _tokenStartOffset - 1);
 				}
-			} else if (state == EOQualifierParser.IN_NUMBER) {
+			} else if (state == TBEnterpriseQualifierParser.IN_NUMBER) {
 				token = new NumberToken(startOffset, value);
-			} else if (state == EOQualifierParser.IN_BINDING_KEY) {
+			} else if (state == TBEnterpriseQualifierParser.IN_BINDING_KEY) {
 				if (value == null || value.length() == 0) {
 					throw new ParseException("A variable has no name at offset " + (_tokenStartOffset - 1) + ".", _tokenStartOffset - 1);
 				}
 				token = new NamedVariableToken(startOffset, value.substring(1));
-			} else if (state == EOQualifierParser.IN_KEYWORD) {
+			} else if (state == TBEnterpriseQualifierParser.IN_KEYWORD) {
 				String operator = caseCorrectedOperatorName(value);
 				String selector = caseCorrectedSelectorName(value);
 				if (operator != null) {
 					token = new OperatorToken(startOffset, operator);
 				} else if (selector != null) {
 					token = new SelectorToken(startOffset, selector);
-				} else if (EOQualifierParser.OPERATORS.contains(value.toLowerCase())) {
+				} else if (TBEnterpriseQualifierParser.OPERATORS.contains(value.toLowerCase())) {
 					token = new OperatorToken(startOffset, value);
 				} else if (value.equalsIgnoreCase("and")) {
 					token = new AndToken(startOffset);
@@ -563,19 +563,19 @@ public class EOQualifierParser {
 
 	public static void main(String[] args) {
 		try {
-			EOQualifierParser parser = new EOQualifierParser();
-			// EOQualifier q = parser.parseQualifier("this is \"mike'\"");
-			// EOQualifier q = parser.parseQualifier("name = %@ and
+			TBEnterpriseQualifierParser parser = new TBEnterpriseQualifierParser();
+			// TBFQualifier q = parser.parseQualifier("this is \"mike'\"");
+			// TBFQualifier q = parser.parseQualifier("name = %@ and
 			// person.firstName == \"mi\\ke\" and age = 5");
-			// EOQualifier q = parser.parseQualifier("not name = %@ or (age like
+			// TBFQualifier q = parser.parseQualifier("not name = %@ or (age like
 			// 'Test*') and (age like 'T?est') and person.firstName == \"mi'ke\"
 			// and (lastName caseinsensitiveLike 'schrag' or (age = 5))
 			// or(age>10) and (name<0.10) or (somevar isAnagramOf: 'test')");
-			// System.out.println("EOQualifierParser.main: " + q);
-			EOQualifier q1 = parser.parseQualifier("a = b and not (status = $notStatus) and voucherID = $voucherID");
-			System.out.println("EOQualifierParser.main: " + q1);
-			//EOQualifier q = parser.parseQualifier("status = $status and not (status = $notStatus) and voucherID = $voucherID");
-			//System.out.println("EOQualifierParser.main: " + q);
+			// System.out.println("TBFQualifierParser.main: " + q);
+			TBEnterpriseQualifier q1 = parser.parseQualifier("a = b and not (status = $notStatus) and voucherID = $voucherID");
+			System.out.println("TBFQualifierParser.main: " + q1);
+			//TBFQualifier q = parser.parseQualifier("status = $status and not (status = $notStatus) and voucherID = $voucherID");
+			//System.out.println("TBFQualifierParser.main: " + q);
 		} catch (Throwable t) {
 			t.printStackTrace(System.out);
 		}

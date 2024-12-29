@@ -1,6 +1,7 @@
 /*
  * ====================================================================
  * 
+ * The TreasureBoat Organization Software License, Version 1.0
  * The ObjectStyle Group Software License, Version 1.0
  * 
  * Copyright (c) 2006 The ObjectStyle Group and individual authors of the
@@ -17,10 +18,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgements normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -52,11 +53,11 @@ package org.objectstyle.wolips.eomodeler.core.model;
 import java.util.Set;
 
 
-public class EODetailDataSource extends EODataSource {
+public class TBEnterpriseDetailDataSource extends TBEnterpriseDataSource {
   private String _detailKey;
   private String _masterClass;
 
-  public EODetailDataSource(final EOModelGroup modelGroup) {
+  public TBEnterpriseDetailDataSource(final EOModelGroup modelGroup) {
     super(modelGroup);
   }
 
@@ -79,19 +80,19 @@ public class EODetailDataSource extends EODataSource {
   @Override
   public void loadFromMap(final EOModelMap map, final Set<EOModelVerificationFailure> failures) {
     String className = map.getString("class", true);
-    if ("EODetailDataSource".equals(className)) {
+    if ("TBEnterpriseDetailDataSource".equals(className)) {
       _detailKey = map.getString("detailKey", true);
       _masterClass = map.getString("masterClassDescription", true);
     }
     else {
-      throw new IllegalArgumentException("Unmatched className '" + className + "' for class EODetailDataSource.");
+      throw new IllegalArgumentException("Unmatched className '" + className + "' for class TBEnterpriseDetailDataSource.");
     }
   }
 
   @Override
   public EOModelMap toMap() {
     EOModelMap modelMap = new EOModelMap();
-    modelMap.setString("class", "EODetailDataSource", true);
+    modelMap.setString("class", "TBEnterpriseDetailDataSource", true);
     modelMap.setString("detailKey", _detailKey, true);
     modelMap.setString("masterClassDescription", _masterClass, true);
     return modelMap;

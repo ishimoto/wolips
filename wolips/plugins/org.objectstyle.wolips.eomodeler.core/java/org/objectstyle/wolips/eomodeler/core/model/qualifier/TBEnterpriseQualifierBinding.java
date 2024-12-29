@@ -5,19 +5,19 @@ import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
 import org.objectstyle.wolips.eomodeler.core.model.ISortableEOModelObject;
 
 /**
- * EOQualifierBindings represents the binding of a $qualifierVariable to a
+ * TBEnterpriseQualifierBindings represents the binding of a $qualifierVariable to a
  * particular keypath of an entity.
  * 
  * @author mschrag
  */
-public class EOQualifierBinding implements ISortableEOModelObject {
+public class TBEnterpriseQualifierBinding implements ISortableEOModelObject {
 	private EOEntity _entity;
 
 	private String _name;
 
 	private String _keyPath;
 
-	public EOQualifierBinding(EOEntity entity, String name, String keyPath) {
+	public TBEnterpriseQualifierBinding(EOEntity entity, String name, String keyPath) {
 		_entity = entity;
 		_name = name;
 		_keyPath = keyPath;
@@ -52,6 +52,6 @@ public class EOQualifierBinding implements ISortableEOModelObject {
 	}
 
 	public String toString() {
-		return "[EOQualifierBinding: " + _keyPath + " = $" + _name + "]";
+		return "[TBEnterpriseQualifierBinding: " + _keyPath + " = $" + _name + "]";
 	}
 }

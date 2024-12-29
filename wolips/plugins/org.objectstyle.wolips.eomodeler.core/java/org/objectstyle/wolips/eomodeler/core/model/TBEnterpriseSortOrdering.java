@@ -17,10 +17,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgements normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -54,7 +54,9 @@ import java.util.Set;
 
 import org.objectstyle.wolips.baseforplugins.util.StringUtils;
 
-public class EOSortOrdering extends EOModelObject<EOFetchSpecification> {
+
+// TODO:  Do we need to change this to TBEnterpriseSortOrdering
+public class TBEnterpriseSortOrdering extends EOModelObject<TBEnterpriseFetchSpecification> {
 	public static final String SELECTOR_ASCENDING = "compareAscending";
 
 	public static final String SELECTOR_DESCENDING = "compareDescending";
@@ -75,11 +77,11 @@ public class EOSortOrdering extends EOModelObject<EOFetchSpecification> {
 
 	private String mySelectorName;
 
-	public EOSortOrdering() {
-		mySelectorName = EOSortOrdering.SELECTOR_ASCENDING;
+	public TBEnterpriseSortOrdering() {
+		mySelectorName = TBEnterpriseSortOrdering.SELECTOR_ASCENDING;
 	}
 
-	public EOSortOrdering(String _key, String _selectorName) {
+	public TBEnterpriseSortOrdering(String _key, String _selectorName) {
 		myKey = _key;
 		mySelectorName = _selectorName;
 	}
@@ -95,7 +97,7 @@ public class EOSortOrdering extends EOModelObject<EOFetchSpecification> {
 	public void setKey(String _key) {
 		String oldKey = myKey;
 		myKey = _key;
-		firePropertyChange(EOSortOrdering.KEY, oldKey, myKey);
+		firePropertyChange(TBEnterpriseSortOrdering.KEY, oldKey, myKey);
 	}
 
 	public String getKey() {
@@ -105,7 +107,7 @@ public class EOSortOrdering extends EOModelObject<EOFetchSpecification> {
 	public void setSelectorName(String _selectorName) {
 		String oldSelectorName = mySelectorName;
 		mySelectorName = _selectorName;
-		firePropertyChange(EOSortOrdering.SELECTOR_NAME, oldSelectorName, mySelectorName);
+		firePropertyChange(TBEnterpriseSortOrdering.SELECTOR_NAME, oldSelectorName, mySelectorName);
 	}
 
 	public String getSelectorName() {
@@ -115,51 +117,51 @@ public class EOSortOrdering extends EOModelObject<EOFetchSpecification> {
 	public void setAscending(boolean _ascending) {
 		String oldSelectorName = mySelectorName;
 		Boolean oldAscending = Boolean.valueOf(isAscending());
-		if (StringUtils.isSelectorNameEqual(EOSortOrdering.SELECTOR_ASCENDING, mySelectorName) || StringUtils.isSelectorNameEqual(EOSortOrdering.SELECTOR_DESCENDING, mySelectorName)) {
-			mySelectorName = (_ascending) ? EOSortOrdering.SELECTOR_ASCENDING : EOSortOrdering.SELECTOR_DESCENDING;
-		} else if (StringUtils.isSelectorNameEqual(EOSortOrdering.SELECTOR_CASE_INSENSITIVE_ASCENDING, mySelectorName) || StringUtils.isSelectorNameEqual(EOSortOrdering.SELECTOR_CASE_INSENSITIVE_DESCENDING, mySelectorName)) {
-			mySelectorName = (_ascending) ? EOSortOrdering.SELECTOR_CASE_INSENSITIVE_ASCENDING : EOSortOrdering.SELECTOR_CASE_INSENSITIVE_DESCENDING;
+		if (StringUtils.isSelectorNameEqual(TBEnterpriseSortOrdering.SELECTOR_ASCENDING, mySelectorName) || StringUtils.isSelectorNameEqual(TBEnterpriseSortOrdering.SELECTOR_DESCENDING, mySelectorName)) {
+			mySelectorName = (_ascending) ? TBEnterpriseSortOrdering.SELECTOR_ASCENDING : TBEnterpriseSortOrdering.SELECTOR_DESCENDING;
+		} else if (StringUtils.isSelectorNameEqual(TBEnterpriseSortOrdering.SELECTOR_CASE_INSENSITIVE_ASCENDING, mySelectorName) || StringUtils.isSelectorNameEqual(TBEnterpriseSortOrdering.SELECTOR_CASE_INSENSITIVE_DESCENDING, mySelectorName)) {
+			mySelectorName = (_ascending) ? TBEnterpriseSortOrdering.SELECTOR_CASE_INSENSITIVE_ASCENDING : TBEnterpriseSortOrdering.SELECTOR_CASE_INSENSITIVE_DESCENDING;
 		} else {
-			mySelectorName = EOSortOrdering.SELECTOR_ASCENDING;
+			mySelectorName = TBEnterpriseSortOrdering.SELECTOR_ASCENDING;
 		}
-		firePropertyChange(EOSortOrdering.ASCENDING, oldAscending, Boolean.valueOf(isAscending()));
-		firePropertyChange(EOSortOrdering.SELECTOR_NAME, oldSelectorName, mySelectorName);
+		firePropertyChange(TBEnterpriseSortOrdering.ASCENDING, oldAscending, Boolean.valueOf(isAscending()));
+		firePropertyChange(TBEnterpriseSortOrdering.SELECTOR_NAME, oldSelectorName, mySelectorName);
 	}
 
 	public boolean isAscending() {
-		return (StringUtils.isSelectorNameEqual(EOSortOrdering.SELECTOR_ASCENDING, mySelectorName) || StringUtils.isSelectorNameEqual(EOSortOrdering.SELECTOR_CASE_INSENSITIVE_ASCENDING, mySelectorName));
+		return (StringUtils.isSelectorNameEqual(TBEnterpriseSortOrdering.SELECTOR_ASCENDING, mySelectorName) || StringUtils.isSelectorNameEqual(TBEnterpriseSortOrdering.SELECTOR_CASE_INSENSITIVE_ASCENDING, mySelectorName));
 	}
 
 	public void setCaseInsensitive(boolean _caseInsensitive) {
 		String oldSelectorName = mySelectorName;
 		Boolean oldCaseInsensitive = Boolean.valueOf(isCaseInsensitive());
-		if (StringUtils.isSelectorNameEqual(EOSortOrdering.SELECTOR_ASCENDING, mySelectorName) || StringUtils.isSelectorNameEqual(EOSortOrdering.SELECTOR_CASE_INSENSITIVE_ASCENDING, mySelectorName)) {
-			mySelectorName = (_caseInsensitive) ? EOSortOrdering.SELECTOR_CASE_INSENSITIVE_ASCENDING : EOSortOrdering.SELECTOR_ASCENDING;
-		} else if (StringUtils.isSelectorNameEqual(EOSortOrdering.SELECTOR_DESCENDING, mySelectorName) || StringUtils.isSelectorNameEqual(EOSortOrdering.SELECTOR_CASE_INSENSITIVE_DESCENDING, mySelectorName)) {
-			mySelectorName = (_caseInsensitive) ? EOSortOrdering.SELECTOR_CASE_INSENSITIVE_DESCENDING : EOSortOrdering.SELECTOR_DESCENDING;
+		if (StringUtils.isSelectorNameEqual(TBEnterpriseSortOrdering.SELECTOR_ASCENDING, mySelectorName) || StringUtils.isSelectorNameEqual(TBEnterpriseSortOrdering.SELECTOR_CASE_INSENSITIVE_ASCENDING, mySelectorName)) {
+			mySelectorName = (_caseInsensitive) ? TBEnterpriseSortOrdering.SELECTOR_CASE_INSENSITIVE_ASCENDING : TBEnterpriseSortOrdering.SELECTOR_ASCENDING;
+		} else if (StringUtils.isSelectorNameEqual(TBEnterpriseSortOrdering.SELECTOR_DESCENDING, mySelectorName) || StringUtils.isSelectorNameEqual(TBEnterpriseSortOrdering.SELECTOR_CASE_INSENSITIVE_DESCENDING, mySelectorName)) {
+			mySelectorName = (_caseInsensitive) ? TBEnterpriseSortOrdering.SELECTOR_CASE_INSENSITIVE_DESCENDING : TBEnterpriseSortOrdering.SELECTOR_DESCENDING;
 		} else {
-			mySelectorName = EOSortOrdering.SELECTOR_ASCENDING;
+			mySelectorName = TBEnterpriseSortOrdering.SELECTOR_ASCENDING;
 		}
-		firePropertyChange(EOSortOrdering.CASE_INSENSITIVE, oldCaseInsensitive, Boolean.valueOf(isCaseInsensitive()));
-		firePropertyChange(EOSortOrdering.SELECTOR_NAME, oldSelectorName, mySelectorName);
+		firePropertyChange(TBEnterpriseSortOrdering.CASE_INSENSITIVE, oldCaseInsensitive, Boolean.valueOf(isCaseInsensitive()));
+		firePropertyChange(TBEnterpriseSortOrdering.SELECTOR_NAME, oldSelectorName, mySelectorName);
 	}
 
 	public boolean isCaseInsensitive() {
-		return (StringUtils.isSelectorNameEqual(EOSortOrdering.SELECTOR_CASE_INSENSITIVE_ASCENDING, mySelectorName) || StringUtils.isSelectorNameEqual(EOSortOrdering.SELECTOR_CASE_INSENSITIVE_DESCENDING, mySelectorName));
+		return (StringUtils.isSelectorNameEqual(TBEnterpriseSortOrdering.SELECTOR_CASE_INSENSITIVE_ASCENDING, mySelectorName) || StringUtils.isSelectorNameEqual(TBEnterpriseSortOrdering.SELECTOR_CASE_INSENSITIVE_DESCENDING, mySelectorName));
 	}
 
 	public void loadFromMap(EOModelMap _map) {
 		myKey = _map.getString("key", true);
 		mySelectorName = _map.getString("selectorName", true);
 		// MS: Fix for accidental setting of selector name
-		if (EOSortOrdering.ASCENDING.equals(mySelectorName)) {
-			mySelectorName = EOSortOrdering.SELECTOR_ASCENDING;
+		if (TBEnterpriseSortOrdering.ASCENDING.equals(mySelectorName)) {
+			mySelectorName = TBEnterpriseSortOrdering.SELECTOR_ASCENDING;
 		}
 	}
 
 	public EOModelMap toMap() {
 		EOModelMap sortOrderingMap = new EOModelMap();
-		sortOrderingMap.setString("class", "EOSortOrdering", true);
+		sortOrderingMap.setString("class", "TBEnterpriseSortOrdering", true);
 		sortOrderingMap.setString("key", myKey, true);
 		sortOrderingMap.setString("selectorName", mySelectorName, true);
 		return sortOrderingMap;
@@ -176,23 +178,23 @@ public class EOSortOrdering extends EOModelObject<EOFetchSpecification> {
 	}
 	
 	@Override
-	public EOSortOrdering _cloneModelObject() {
-		EOSortOrdering cloneSortOrdering = new EOSortOrdering(myKey, mySelectorName);
+	public TBEnterpriseSortOrdering _cloneModelObject() {
+		TBEnterpriseSortOrdering cloneSortOrdering = new TBEnterpriseSortOrdering(myKey, mySelectorName);
 		return cloneSortOrdering;
 	}
 	
 	@Override
-	public Class<EOFetchSpecification> _getModelParentType() {
-		return EOFetchSpecification.class;
+	public Class<TBEnterpriseFetchSpecification> _getModelParentType() {
+		return TBEnterpriseFetchSpecification.class;
 	}
 	
 	@Override
-	public EOFetchSpecification _getModelParent() {
+	public TBEnterpriseFetchSpecification _getModelParent() {
 		return null;
 	}
 
 	@Override
-	public void _addToModelParent(EOFetchSpecification modelParent, boolean findUniqueName, Set<EOModelVerificationFailure> failures) {
+	public void _addToModelParent(TBEnterpriseFetchSpecification modelParent, boolean findUniqueName, Set<EOModelVerificationFailure> failures) {
 		// DO NOTHING
 	}
 
@@ -202,6 +204,6 @@ public class EOSortOrdering extends EOModelObject<EOFetchSpecification> {
 	}
 
 	public String getFullyQualifiedName() {
-		return "EOSortOrdering:" + myKey;
+		return "TBEnterpriseSortOrdering:" + myKey;
 	}
 }

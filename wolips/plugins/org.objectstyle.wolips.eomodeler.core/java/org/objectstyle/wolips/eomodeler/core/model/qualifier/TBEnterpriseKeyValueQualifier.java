@@ -1,21 +1,21 @@
 package org.objectstyle.wolips.eomodeler.core.model.qualifier;
 
-public class EOKeyValueQualifier extends EOQualifier {
+public class TBEnterpriseKeyValueQualifier extends TBEnterpriseQualifier {
 	private String _key;
 
-	private EOQualifier.Comparison _comparison;
+	private TBEnterpriseQualifier.Comparison _comparison;
 
 	private Object _value;
 
-	public EOKeyValueQualifier() {
+	public TBEnterpriseKeyValueQualifier() {
 		// DO NOTHING
 	}
 
-	public EOKeyValueQualifier(String key, String comparison, Object value) {
-		this(key, new EOQualifier.Comparison(comparison), value);
+	public TBEnterpriseKeyValueQualifier(String key, String comparison, Object value) {
+		this(key, new TBEnterpriseQualifier.Comparison(comparison), value);
 	}
 
-	public EOKeyValueQualifier(String key, EOQualifier.Comparison comparison, Object value) {
+	public TBEnterpriseKeyValueQualifier(String key, TBEnterpriseQualifier.Comparison comparison, Object value) {
 		_key = key;
 		_comparison = comparison;
 		_value = value;
@@ -25,7 +25,7 @@ public class EOKeyValueQualifier extends EOQualifier {
 		return _key;
 	}
 
-	public EOQualifier.Comparison getComparison() {
+	public TBEnterpriseQualifier.Comparison getComparison() {
 		return _comparison;
 	}
 
