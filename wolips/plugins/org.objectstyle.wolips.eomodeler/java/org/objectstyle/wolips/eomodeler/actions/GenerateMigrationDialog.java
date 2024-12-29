@@ -95,8 +95,8 @@ public class GenerateMigrationDialog extends Dialog {
 
 		_migrationText = new Text(control, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY | SWT.V_SCROLL);
 		GridData sqlTextData = new GridData(GridData.FILL_BOTH);
-		sqlTextData.heightHint = 300;
-		sqlTextData.widthHint = 700;
+		sqlTextData.heightHint = 500;
+		sqlTextData.widthHint = 900;
 		sqlTextData.verticalIndent = 10;
 		sqlTextData.horizontalSpan = 2;
 		_migrationText.setLayoutData(sqlTextData);

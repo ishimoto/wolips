@@ -111,31 +111,25 @@ public class ComponentEditorInput extends MultiEditorInput implements IPersistab
 		int inputNum = 0;
 		IFile htmlFile = null;
 		IFile wodFile = null;
-		IFile wooFile = null;
 		for (int i = 0; i < folder.length; i++) {
 			IFolder currentFolder = folder[i];
 			htmlFile = LocalizedComponentsLocateResult.getHtml(currentFolder);
 			if (htmlFile == null) {
 				htmlFile = currentFolder.getFile(localizedComponentsLocateResult.getName() + ".html");
 			}
+			
 			wodFile = LocalizedComponentsLocateResult.getWod(currentFolder);
 			if (wodFile == null) {
 				wodFile = currentFolder.getFile(localizedComponentsLocateResult.getName() + ".wod");
 			}
-			wooFile = LocalizedComponentsLocateResult.getWoo(currentFolder);
-			if (wooFile == null) {
-				wooFile = currentFolder.getFile(localizedComponentsLocateResult.getName() + ".woo");
-			}
+			
 			allIds[inputNum] = EditorsPlugin.HTMLEditorID;
 			allInput[inputNum] = new ComponentEditorFileEditorInput(htmlFile);
 			allComponentInput[inputNum] = allInput[inputNum];
 			inputNum++;
+						
 			allIds[inputNum] = EditorsPlugin.WodEditorID;
 			allInput[inputNum] = new ComponentEditorFileEditorInput(wodFile);
-			allComponentInput[inputNum] = allInput[inputNum];
-			inputNum++;
-			allIds[inputNum] = EditorsPlugin.WooEditorID;
-			allInput[inputNum] = new ComponentEditorFileEditorInput(wooFile);
 			allComponentInput[inputNum] = allInput[inputNum];
 			inputNum++;
 		}

@@ -7,10 +7,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.objectstyle.wolips.eomodeler.core.model.qualifier.EOQualifier;
+import org.objectstyle.wolips.eomodeler.core.model.qualifier.TBEnterpriseQualifier;
 
 public class EmptyQualifierTypeEditor extends AbstractQualifierTypeEditor {
-	private EOQualifier _qualifier;
+	private TBEnterpriseQualifier _qualifier;
 
 	public EmptyQualifierTypeEditor(Composite parent, int style) {
 		super(parent, style);
@@ -19,11 +19,11 @@ public class EmptyQualifierTypeEditor extends AbstractQualifierTypeEditor {
 		label.setText("Empty");
 	}
 
-	public void setQualifier(EOQualifier qualifier) {
+	public void setQualifier(TBEnterpriseQualifier qualifier) {
 		_qualifier = qualifier;
 	}
 
-	public EOQualifier getQualifier() {
+	public TBEnterpriseQualifier getQualifier() {
 		return _qualifier;
 	}
 }

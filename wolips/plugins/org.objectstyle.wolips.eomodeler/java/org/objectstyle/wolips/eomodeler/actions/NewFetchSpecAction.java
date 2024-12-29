@@ -53,27 +53,27 @@ import java.util.Set;
 
 import org.objectstyle.wolips.eomodeler.Messages;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
-import org.objectstyle.wolips.eomodeler.core.model.EOFetchSpecification;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseFetchSpecification;
 import org.objectstyle.wolips.eomodeler.core.model.EOModelException;
 import org.objectstyle.wolips.eomodeler.core.model.EOModelVerificationFailure;
 
-public class NewFetchSpecAction extends AbstractNewObjectAction<EOEntity, EOFetchSpecification> {
+public class NewFetchSpecAction extends AbstractNewObjectAction<EOEntity, TBEnterpriseFetchSpecification> {
 	public NewFetchSpecAction() {
-		super(EOEntity.class, Messages.getString("EOFetchSpecification.newName"));
+		super(EOEntity.class, Messages.getString("TBEnterpriseFetchSpecification.newName"));
 	}
 
 	@Override
-	protected EOFetchSpecification createChild(EOEntity parent, Set<EOModelVerificationFailure> failures) throws EOModelException {
-		return parent.addBlankFetchSpec(Messages.getString("EOFetchSpecification.newName"));
+	protected TBEnterpriseFetchSpecification createChild(EOEntity parent, Set<EOModelVerificationFailure> failures) throws EOModelException {
+		return parent.addBlankFetchSpec(Messages.getString("TBEnterpriseFetchSpecification.newName"));
 	}
 
 	@Override
 	protected String getNoSelectionMessage() {
-		return Messages.getString("EOFetchSpec.noEntitySelectedMessage");
+		return Messages.getString("TBEnterpriseFetchSpec.noEntitySelectedMessage");
 	}
 
 	@Override
 	protected String getNoSelectionTitle() {
-		return Messages.getString("EOFetchSpec.noEntitySelectedTitle");
+		return Messages.getString("TBEnterpriseFetchSpec.noEntitySelectedTitle");
 	}
 }

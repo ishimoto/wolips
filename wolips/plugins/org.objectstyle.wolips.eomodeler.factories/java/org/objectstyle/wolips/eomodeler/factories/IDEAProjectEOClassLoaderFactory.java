@@ -57,7 +57,7 @@ public class IDEAProjectEOClassLoaderFactory extends AbstractEOClassLoader {
 							if (rootUrlStr.startsWith("jar://")) {
 								rootUrlStr = rootUrlStr.replaceFirst("^jar://", "");
 								rootUrlStr = rootUrlStr.replaceFirst("!/$", "");
-								rootUrl = new File(rootUrlStr).getCanonicalFile().toURL();
+								rootUrl = new File(rootUrlStr).getCanonicalFile().toURI().toURL();
 							}
 							else {
 								rootUrl = new URL(rootUrlStr);

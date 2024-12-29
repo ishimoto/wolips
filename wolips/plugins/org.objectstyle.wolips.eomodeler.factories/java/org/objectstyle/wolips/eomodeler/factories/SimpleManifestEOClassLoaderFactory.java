@@ -40,17 +40,17 @@ public class SimpleManifestEOClassLoaderFactory extends AbstractEOClassLoader {
 			if (searchFolder.getName().endsWith(".framework")) {
 				File javaFolder = new File(searchFolder, "Resources/Java");
 				if (javaFolder.exists()) {
-					classpathUrls.add(javaFolder.toURL());
+					classpathUrls.add(javaFolder.toURI().toURL());
 					File[] jarFiles = javaFolder.listFiles();
 					for (File jarFile : jarFiles) {
 						if (jarFile.getName().toLowerCase().endsWith(".jar")) {
 							System.out.println("SimpleManifestEOClassLoaderFactory.fillInClasspathURLs:   jar = " + jarFile);
-							classpathUrls.add(jarFile.toURL());
+							classpathUrls.add(jarFile.toURI().toURL());
 						}
 					}
 				}
 			} else {
-				classpathUrls.add(searchFolder.toURL());
+				classpathUrls.add(searchFolder.toURI().toURL());
 			}
 		}
 	}

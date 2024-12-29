@@ -108,7 +108,7 @@ public class LogicalStructureProvider extends LogicalStructure implements ILogic
 			logicalStructureTypes[0] = fetchSpecificationLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		// subclass of EOQualifier
+		// subclass of TBFQualifier
 		supported = this.isSuperclassOfValue("com.webobjects.directtoweb.BooleanQualifier", value);
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
@@ -116,15 +116,15 @@ public class LogicalStructureProvider extends LogicalStructure implements ILogic
 			logicalStructureTypes[0] = booleanQualifierLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		// subclass of EOQualifier
 		supported = this.isSuperclassOfValue("com.webobjects.eocontrol.EOAndQualifier", value);
+		// subclass of TBFQualifier
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
 			EOQualifierLogicalStructureType andLogicalStructureType = new EOAndQualifierLogicalStructureType(value);
 			logicalStructureTypes[0] = andLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		// subclass of EOQualifier
+		// subclass of TBFQualifier
 		supported = this.isSuperclassOfValue("com.webobjects.eocontrol.EOKeyComparisonQualifier", value);
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
@@ -132,31 +132,31 @@ public class LogicalStructureProvider extends LogicalStructure implements ILogic
 			logicalStructureTypes[0] = keyComparisonQualifierLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		// subclass of EOQualifier
 		supported = this.isSuperclassOfValue("com.webobjects.eocontrol.EOKeyValueQualifier", value);
+		// subclass of TBFQualifier
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
 			EOKeyValueQualifierLogicalStructureType keyValueQualifierLogicalStructureType = new EOKeyValueQualifierLogicalStructureType(value);
 			logicalStructureTypes[0] = keyValueQualifierLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		// subclass of EOQualifier
 		supported = this.isSuperclassOfValue("com.webobjects.eocontrol.EONotQualifier", value);
+		// subclass of TBFQualifier
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
 			EONotQualifierLogicalStructureType notQualifierLogicalStructureType = new EONotQualifierLogicalStructureType(value);
 			logicalStructureTypes[0] = notQualifierLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		// subclass of EOQualifier
 		supported = this.isSuperclassOfValue("com.webobjects.eocontrol.EOOrQualifier", value);
+		// subclass of TBFQualifier
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
 			EOOrQualifierLogicalStructureType orQualifierLogicalStructureType = new EOOrQualifierLogicalStructureType(value);
 			logicalStructureTypes[0] = orQualifierLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		// subclass of EOQualifier
+		// subclass of TBFQualifier
 		supported = this.isSuperclassOfValue("com.webobjects.eocontrol.EOSQLQualifier", value);
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
@@ -164,7 +164,7 @@ public class LogicalStructureProvider extends LogicalStructure implements ILogic
 			logicalStructureTypes[0] = sqLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		// subclass of EOQualifier
+		// subclass of TBFQualifier
 		supported = this.isSuperclassOfValue("com.webobjects.directtoweb.NonNullQualifier", value);
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
@@ -172,8 +172,8 @@ public class LogicalStructureProvider extends LogicalStructure implements ILogic
 			logicalStructureTypes[0] = nonNullQualifierLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		// make sure that eoqualifier is after all subclasses of eoqualifier
 		supported = this.isSuperclassOfValue("com.webobjects.eocontrol.EOQualifier", value);
+		// make sure that tbfqualifier is after all subclasses of TBFQualifier
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
 			EOQualifierLogicalStructureType eoQualifierLogicalStructureType = new EOQualifierLogicalStructureType(value);

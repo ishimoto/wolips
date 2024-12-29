@@ -130,9 +130,7 @@ public class WOIncrementalBuilder extends AbstractIncrementalProjectBuilder {
 			return;
 		}
 		getLogger().debug("<incremental build>");
-		
-		final SubMonitor subProgressMonitor = SubMonitor.convert(progressMonitor, "building WebObjects layout ...", 100);
-		
+		final SubMonitor subProgressMonitor = SubMonitor.convert(progressMonitor, "building TreasureBoat layout ...", 100);
 		try {
 			ProjectAdapter project = this.getProject().getAdapter(ProjectAdapter.class);
 			boolean fullBuild = (kind == IncrementalProjectBuilder.FULL_BUILD || kind == IncrementalProjectBuilder.CLEAN_BUILD || patternsetDeltaVisitor().isFullBuildRequired());
@@ -213,7 +211,7 @@ public class WOIncrementalBuilder extends AbstractIncrementalProjectBuilder {
 				jarBuild(delta, subProgressMonitor, getProject());
 				getLogger().debug("copying classes took: " + (System.currentTimeMillis() - t0) + " ms");
 				subProgressMonitor.done();
-			}
+		
 		} catch (Exception up) {
 			getLogger().log(up);
 			throw up;

@@ -74,6 +74,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.objectstyle.wolips.baseforplugins.util.URLUtils;
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.objectstyle.wolips.core.resources.types.project.IProjectPatternsets;
 import org.objectstyle.wolips.eogenerator.core.model.EOGeneratorModel;
 import org.objectstyle.wolips.eogenerator.core.model.EOModelReference;
@@ -100,7 +101,7 @@ public class EclipseEOModelGroupFactory implements IEOModelGroupFactory {
 					// If you double-clicked on a model, make sure we shove it into the modelgroup, just in case it wasn't in a matching folder
 					File modelGroupEclipseResourceFile = modelGroupEclipseResource.getLocation().toFile();
 					if (modelGroupEclipseResourceFile != null && EOModelGroup.getModelNameForFile(modelGroupEclipseResourceFile) != null) {
-						modelGroup.loadModelFromURL(modelGroupEclipseResourceFile.toURL(), failures, skipOnDuplicates, progressMonitor);
+						modelGroup.loadModelFromURL(modelGroupEclipseResourceFile.toURI().toURL(), failures, skipOnDuplicates, progressMonitor);
 					}
 
 					// modelGroup.resolve(failures);
@@ -110,7 +111,7 @@ public class EclipseEOModelGroupFactory implements IEOModelGroupFactory {
 			else if (modelGroupResource instanceof URL) {
 				File modelURLFile = URLUtils.cheatAndTurnIntoFile((URL)modelGroupResource);
 				if (modelURLFile != null) {
-					URL jarResourcesURL = new URL("jar:" + modelURLFile.toURL() + "!/Resources");
+					URL jarResourcesURL = new URL("jar:" + modelURLFile.toURI().toURL() +  "!/" +TBLipsConstants.FOLDER_RESOURCES);
 					if (URLUtils.exists(jarResourcesURL)) {
 						modelGroup.loadModelsFromURL(jarResourcesURL, 1, failures, skipOnDuplicates, progressMonitor);
 					}
@@ -119,7 +120,7 @@ public class EclipseEOModelGroupFactory implements IEOModelGroupFactory {
 			else if (modelGroupResource instanceof URI) {
 				File modelURIFile = URLUtils.cheatAndTurnIntoFile((URI)modelGroupResource);
 				if (modelURIFile != null) {
-					URL jarResourcesURL = new URL("jar:" + modelURIFile.toURL() + "!/Resources");
+					URL jarResourcesURL = new URL("jar:" + modelURIFile.toURI().toURL() +  "!/" +TBLipsConstants.FOLDER_RESOURCES);
 					if (URLUtils.exists(jarResourcesURL)) {
 						modelGroup.loadModelsFromURL(jarResourcesURL, 1, failures, skipOnDuplicates, progressMonitor);
 					}
@@ -204,12 +205,12 @@ public class EclipseEOModelGroupFactory implements IEOModelGroupFactory {
 							File resourcesFolder = frameworkPath.append("Resources").toFile();
 							if (!searchedResources.contains(resourcesFolder) && resourcesFolder.exists()) {
 								searchedResources.add(resourcesFolder);
-								modelGroup.loadModelsFromURL(resourcesFolder.toURL(), 1, failures, skipOnDuplicates, progressMonitor);
+								modelGroup.loadModelsFromURL(resourcesFolder.toURI().toURL(), 1, failures, skipOnDuplicates, progressMonitor);
 							}
 						}
 						
 						for (IPath jarPath : jarPaths) {
-							URL jarResourcesURL = new URL("jar:" + jarPath.toFile().toURL() + "!/Resources");
+							URL jarResourcesURL = new URL("jar:" + jarPath.toFile().toURI().toURL() + "!/" +TBLipsConstants.FOLDER_RESOURCES);
 							if (!searchedResources.contains(jarResourcesURL) && URLUtils.exists(jarResourcesURL)) {
 								modelGroup.loadModelsFromURL(jarResourcesURL, 1, failures, skipOnDuplicates, progressMonitor);
 							}
@@ -251,9 +252,9 @@ public class EclipseEOModelGroupFactory implements IEOModelGroupFactory {
 				modelFolder = new File(project.getLocation().toFile(), modelPath);
 			}
 			if (model == null) {
-				modelGroup.setEditingModelURL(modelFolder.toURL());
+				modelGroup.setEditingModelURL(modelFolder.toURI().toURL());
 			}
-			EOModel modelGroupModel = modelGroup.loadModelFromURL(modelFolder.toURL(), failures, skipOnDuplicates, progressMonitor);
+			EOModel modelGroupModel = modelGroup.loadModelFromURL(modelFolder.toURI().toURL(), failures, skipOnDuplicates, progressMonitor);
 			if (model == null) {
 				model = modelGroupModel;
 			}
@@ -320,7 +321,7 @@ public class EclipseEOModelGroupFactory implements IEOModelGroupFactory {
 						_progressMonitor.setTaskName("Scanning " + resource.getName() + " ...");
 						File resourceFile = resource.getLocation().toFile();
 						if (!_searchedResources.contains(resourceFile) && "eomodeld".equals(resource.getFileExtension())) {
-							_modelGroup.loadModelFromURL(resourceFile.toURL(), _failures, _skipOnDuplicates, _progressMonitor);
+							_modelGroup.loadModelFromURL(resourceFile.toURI().toURL(), _failures, _skipOnDuplicates, _progressMonitor);
 							return false;
 						}
 					}

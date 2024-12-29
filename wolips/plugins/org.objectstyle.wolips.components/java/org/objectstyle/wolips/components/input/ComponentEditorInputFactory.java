@@ -65,8 +65,6 @@ public class ComponentEditorInputFactory implements IElementFactory {
 
 	private static final String TAG_DISPLAY_API_PART_ON_REVEAL = "api";
 
-	private static final String TAG_DISPLAY_WOO_PART_ON_REVEAL = "woo";
-
 	public static final String ID_FACTORY = ComponentEditorInputFactory.class.getName();
 
 	public ComponentEditorInputFactory() {
@@ -104,8 +102,6 @@ public class ComponentEditorInputFactory implements IElementFactory {
 			componentEditorInput.setDisplayHtmlPartOnReveal(true);
 		} else if (memento.getString(TAG_DISPLAY_WOD_PART_ON_REVEAL) != null) {
 			componentEditorInput.setDisplayWodPartOnReveal(true);
-		} else if (memento.getString(TAG_DISPLAY_WOO_PART_ON_REVEAL) != null) {
-			componentEditorInput.setDisplayWooPartOnReveal(true);
 		} else {
 			componentEditorInput.setDisplayHtmlPartOnReveal(true);
 		}
@@ -130,8 +126,6 @@ public class ComponentEditorInputFactory implements IElementFactory {
 			memento.putString(TAG_DISPLAY_API_PART_ON_REVEAL, "true");
 		} else if (input.isDisplayWodPartOnReveal()) {
 			memento.putString(TAG_DISPLAY_WOD_PART_ON_REVEAL, "true");
-		} else if (input.isDisplayWooPartOnReveal()) {
-			memento.putString(TAG_DISPLAY_WOO_PART_ON_REVEAL, "true");
 		}
 		if (input.isDisplayHtmlPartOnReveal()) {
 			memento.putString(TAG_DISPLAY_HTML_PART_ON_REVEAL, "true");

@@ -25,8 +25,7 @@ import org.eclipse.swt.widgets.TableItem;
 //import org.eclipse.ui.internal.dnd.IDropTarget2;
 import org.objectstyle.wolips.bindings.wod.BindingValueKey;
 
-// IDropTarget2 does not exists anymore?! (it only dragFinished(boolean)).
-public class BindingsDragHandler implements DragSourceListener, /* IDropTarget2, */ PaintListener, DropTargetListener {
+public class BindingsDragHandler implements DragSourceListener, PaintListener, DropTargetListener {
 	private static final int endpointSize = 3;
 
 	private WOBrowserColumn _browserColumn;

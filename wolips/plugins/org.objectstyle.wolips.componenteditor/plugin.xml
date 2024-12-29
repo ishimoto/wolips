@@ -9,7 +9,7 @@
             class="org.objectstyle.wolips.componenteditor.part.ComponentEditor"
             contributorClass="org.objectstyle.wolips.componenteditor.contributor.ComponentEditorContributor"
             default="true"
-            extensions="wod,html,api,woo"
+            extensions="wod,html,api"
             icon="icons/ComponentEditor.png"
             id="org.objectstyle.wolips.componenteditor.ComponentEditor"
             matchingStrategy="org.objectstyle.wolips.componenteditor.launcher.ComponentEditorMatchingStrategy"
@@ -23,9 +23,6 @@
 			<contentTypeBinding
                contentTypeId="org.objectstyle.wolips.editors.wod"
             /> 
-			<contentTypeBinding
-               contentTypeId="org.objectstyle.wolips.editors.woo"
-            />
       </editor>
    </extension>
    
