@@ -1,9 +1,9 @@
 package org.objectstyle.wolips.eomodeler.core.model.qualifier;
 
-public class EOKeyComparisonQualifier extends EOQualifier {
+public class EOKeyComparisonQualifier extends TBEnterpriseQualifier {
 	private String _leftKey;
 
-	private EOQualifier.Comparison _comparison;
+	private TBEnterpriseQualifier.Comparison _comparison;
 
 	private String _rightKey;
 
@@ -12,10 +12,10 @@ public class EOKeyComparisonQualifier extends EOQualifier {
 	}
 
 	public EOKeyComparisonQualifier(String leftKey, String comparison, String rightKey) {
-		this(leftKey, new EOQualifier.Comparison(comparison), rightKey);
+		this(leftKey, new TBEnterpriseQualifier.Comparison(comparison), rightKey);
 	}
 
-	public EOKeyComparisonQualifier(String leftKey, EOQualifier.Comparison comparison, String rightKey) {
+	public EOKeyComparisonQualifier(String leftKey, TBEnterpriseQualifier.Comparison comparison, String rightKey) {
 		_leftKey = leftKey;
 		_comparison = comparison;
 		_rightKey = rightKey;
@@ -25,7 +25,7 @@ public class EOKeyComparisonQualifier extends EOQualifier {
 		return _leftKey;
 	}
 
-	public EOQualifier.Comparison getComparison() {
+	public TBEnterpriseQualifier.Comparison getComparison() {
 		return _comparison;
 	}
 

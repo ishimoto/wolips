@@ -136,7 +136,7 @@ public class EOStoredProcedure extends UserInfoableEOModelObject<EOModel> implem
 					referenceFailures.add(new EOStoredProcedureEntityReferenceFailure(entity, this, EOEntity.FETCH_ALL_PROCEDURE));
 				}
 
-				for (EOFetchSpecification fetchSpec : entity.getFetchSpecs()) {
+				for (TBEnterpriseFetchSpecification fetchSpec : entity.getFetchSpecs()) {
 					if (fetchSpec.getStoredProcedure() == this) {
 						referenceFailures.add(new EOStoredProcedureFetchSpecReferenceFailure(fetchSpec, this));
 					}
