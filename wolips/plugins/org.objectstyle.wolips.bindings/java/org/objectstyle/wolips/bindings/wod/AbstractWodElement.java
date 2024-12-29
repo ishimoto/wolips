@@ -211,7 +211,7 @@ public abstract class AbstractWodElement implements IWodElement, Comparable<IWod
   public String getTagName() {
     String tagName;
     if (_tagName == null) {
-      tagName = "wo:" + getElementType();
+      tagName = "tb:" + getElementType(); // "wo:"
     }
     else {
       tagName = _tagName;
@@ -286,7 +286,8 @@ public abstract class AbstractWodElement implements IWodElement, Comparable<IWod
     if (!PreferenceConstants.IGNORE.equals(wodMissingComponentSeverity)) {
     	IType elementType = BindingReflectionUtils.findElementType(javaProject, elementTypeName, false, typeCache);
 	    if (elementType == null || (!elementType.getElementName().equals(elementTypeName) && !elementType.getFullyQualifiedName().equals(elementTypeName))) {
-	      problems.add(new WodElementProblem(this, "The class for '" + elementTypeName + "' is either missing or does not extend WOElement.", getElementTypePosition(), lineNumber, PreferenceConstants.WARNING.equals(wodMissingComponentSeverity)));
+	    	// XXX SOMETHING is happening here pdy
+	      problems.add(new WodElementProblem(this, "The class for '" + elementTypeName + "' is either missing or does not extend TBElement.", getElementTypePosition(), lineNumber, PreferenceConstants.WARNING.equals(wodMissingComponentSeverity)));
 	    }
 	    else {
 	    	String wodApiProblemSeverity = Activator.getDefault().getPluginPreferences().getString(PreferenceConstants.WOD_API_PROBLEMS_SEVERITY_KEY);

@@ -42,7 +42,7 @@ public class AddActionOperation extends JavaModelOperation {
     boolean useGenerics = JavaModelUtil.is50OrHigher(componentType.getJavaProject());
     String simpleTypeName = Signature.getSimpleName(keyType);
     
-    boolean loadPage = !"WOComponent".equals(simpleTypeName) && !"WOActionResults".equals(simpleTypeName);
+    boolean loadPage = !"TBComponent".equals(simpleTypeName) && !"ITBWActionResults".equals(simpleTypeName);
     
     StringBuffer sourceBuffer = new StringBuffer();
     sourceBuffer.append("public " + simpleTypeName + " " + actionMethodName + "() {\n");

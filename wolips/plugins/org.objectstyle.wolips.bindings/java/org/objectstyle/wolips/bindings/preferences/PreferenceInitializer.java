@@ -58,83 +58,84 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     IPreferenceStore prefs = Activator.getDefault().getPreferenceStore();
 
     List<TagShortcut> tagShortcuts = new ArrayList<TagShortcut>();
-    tagShortcuts.add(new TagShortcut("localized", "ERXLocalizedString")); // not in 5.4
-    tagShortcuts.add(new TagShortcut("not", "WOConditional"));
-    tagShortcuts.add(new TagShortcut("else", "ERXElse"));
-    tagShortcuts.add(new TagShortcut("if", "WOConditional"));
-    tagShortcuts.add(new TagShortcut("conditional", "WOConditional"));
-    tagShortcuts.add(new TagShortcut("condition", "WOConditional")); // not in 5.4
-    tagShortcuts.add(new TagShortcut("foreach", "WORepetition"));
-    tagShortcuts.add(new TagShortcut("repeat", "WORepetition"));
-    tagShortcuts.add(new TagShortcut("repetition", "WORepetition"));
-    tagShortcuts.add(new TagShortcut("loop", "WORepetition")); // not in 5.4
-    tagShortcuts.add(new TagShortcut("content", "WOComponentContent"));
-    tagShortcuts.add(new TagShortcut("componentContent", "WOComponentContent"));
-    tagShortcuts.add(new TagShortcut("str", "WOString")); // not in 5.4
-    tagShortcuts.add(new TagShortcut("string", "WOString"));
-    tagShortcuts.add(new TagShortcut("switchComponent", "WOSwitchComponent"));
-    tagShortcuts.add(new TagShortcut("switch", "WOSwitchComponent"));
-    tagShortcuts.add(new TagShortcut("XMLNode", "WOXMLNode"));
-    tagShortcuts.add(new TagShortcut("nestedList", "WONestedList"));
-    tagShortcuts.add(new TagShortcut("param", "WOParam"));
-    tagShortcuts.add(new TagShortcut("applet", "WOApplet"));
-    tagShortcuts.add(new TagShortcut("quickTime", "WOQuickTime"));
-    tagShortcuts.add(new TagShortcut("commentString", "WOHTMLCommentString"));
-    tagShortcuts.add(new TagShortcut("comment", "WOHTMLCommentString"));
-    tagShortcuts.add(new TagShortcut("noContentElement", "WONoContentElement"));
-    tagShortcuts.add(new TagShortcut("noContent", "WONoContentElement"));
-    tagShortcuts.add(new TagShortcut("body", "WOBody"));
-    tagShortcuts.add(new TagShortcut("embeddedObject", "WOEmbeddedObject"));
-    tagShortcuts.add(new TagShortcut("embedded", "WOEmbeddedObject"));
-    tagShortcuts.add(new TagShortcut("frame", "WOFrame"));
-    tagShortcuts.add(new TagShortcut("image", "WOImage"));
-    tagShortcuts.add(new TagShortcut("img", "WOImage")); // not in 5.4
-    tagShortcuts.add(new TagShortcut("form", "WOForm"));
-    tagShortcuts.add(new TagShortcut("javaScript", "WOJavaScript"));
-    tagShortcuts.add(new TagShortcut("VBScript", "WOVBScript"));
-    tagShortcuts.add(new TagShortcut("resourceURL", "WOResourceURL"));
-    tagShortcuts.add(new TagShortcut("genericElement", "WOGenericElement"));
-    tagShortcuts.add(new TagShortcut("element", "WOGenericElement"));
-    tagShortcuts.add(new TagShortcut("genericContainer", "WOGenericContainer"));
-    tagShortcuts.add(new TagShortcut("container", "WOGenericContainer"));
-    tagShortcuts.add(new TagShortcut("activeImage", "WOActiveImage"));
-    tagShortcuts.add(new TagShortcut("checkBox", "WOCheckBox"));
-    tagShortcuts.add(new TagShortcut("checkbox", "WOCheckBox")); // not in 5.4 (5.4 is case insensitive)
-    tagShortcuts.add(new TagShortcut("fileUpload", "WOFileUpload"));
-    tagShortcuts.add(new TagShortcut("upload", "WOFileUpload"));
-    tagShortcuts.add(new TagShortcut("hiddenField", "WOHiddenField"));
-    tagShortcuts.add(new TagShortcut("hidden", "WOHiddenField")); // not in 5.4
-    tagShortcuts.add(new TagShortcut("imageButton", "WOImageButton"));
-    tagShortcuts.add(new TagShortcut("inputList", "WOInputList"));
-    tagShortcuts.add(new TagShortcut("browser", "WOBrowser"));
-    tagShortcuts.add(new TagShortcut("checkBoxList", "WOCheckBoxList"));
-    tagShortcuts.add(new TagShortcut("popUpButton", "WOPopUpButton"));
-    tagShortcuts.add(new TagShortcut("select", "WOPopUpButton")); // not in 5.4
-    tagShortcuts.add(new TagShortcut("radioButtonList", "WORadioButtonList"));
-    tagShortcuts.add(new TagShortcut("passwordField", "WOPasswordField"));
-    tagShortcuts.add(new TagShortcut("password", "WOPasswordField"));
-    tagShortcuts.add(new TagShortcut("radioButton", "WORadioButton"));
-    tagShortcuts.add(new TagShortcut("radio", "WORadioButton"));
-    tagShortcuts.add(new TagShortcut("resetButton", "WOResetButton"));
-    tagShortcuts.add(new TagShortcut("reset", "WOResetButton"));
-    tagShortcuts.add(new TagShortcut("submitButton", "WOSubmitButton"));
-    tagShortcuts.add(new TagShortcut("submit", "WOSubmitButton"));
-    tagShortcuts.add(new TagShortcut("text", "WOText"));
-    tagShortcuts.add(new TagShortcut("textField", "WOTextField"));
-    tagShortcuts.add(new TagShortcut("textfield", "WOTextField")); // not in 5.4 (5.4 is case insensitive)
-    tagShortcuts.add(new TagShortcut("search", "WOSearchField"));
-    tagShortcuts.add(new TagShortcut("searchfield", "WOSearchField"));
-    tagShortcuts.add(new TagShortcut("hyperlink", "WOHyperlink"));
-    tagShortcuts.add(new TagShortcut("link", "WOHyperlink"));
-    tagShortcuts.add(new TagShortcut("actionURL", "WOActionURL"));
+    
+    tagShortcuts.add(new TagShortcut("localized", "TBWLocalizedString"));
+    tagShortcuts.add(new TagShortcut("not", "TBConditional"));
+    tagShortcuts.add(new TagShortcut("else", "TBElse"));
+    tagShortcuts.add(new TagShortcut("if", "TBConditional"));
+    tagShortcuts.add(new TagShortcut("conditional", "TBConditional"));
+    tagShortcuts.add(new TagShortcut("condition", "TBConditional"));
+    tagShortcuts.add(new TagShortcut("foreach", "TBRepetition"));
+    tagShortcuts.add(new TagShortcut("repeat", "TBRepetition"));
+    tagShortcuts.add(new TagShortcut("repetition", "TBRepetition"));
+    tagShortcuts.add(new TagShortcut("loop", "TBRepetition"));
+    tagShortcuts.add(new TagShortcut("content", "TBComponentContent"));
+    tagShortcuts.add(new TagShortcut("componentContent", "TBComponentContent"));
+    tagShortcuts.add(new TagShortcut("str", "TBString"));
+    tagShortcuts.add(new TagShortcut("string", "TBString"));
+    tagShortcuts.add(new TagShortcut("switchComponent", "TBSwitchComponent"));
+    tagShortcuts.add(new TagShortcut("switch", "TBSwitchComponent"));
+    tagShortcuts.add(new TagShortcut("XMLNode", "TBXMLNode"));
+    tagShortcuts.add(new TagShortcut("param", "TBParam"));
+    tagShortcuts.add(new TagShortcut("noContentElement", "TBNoContentElement"));
+    tagShortcuts.add(new TagShortcut("noContent", "TBNoContentElement"));
+    tagShortcuts.add(new TagShortcut("body", "TBBody"));
+    tagShortcuts.add(new TagShortcut("embeddedObject", "TBEmbeddedObject"));
+    tagShortcuts.add(new TagShortcut("embedded", "TBEmbeddedObject"));
+    tagShortcuts.add(new TagShortcut("frame", "TBFrame"));
+    tagShortcuts.add(new TagShortcut("image", "TBImage"));
+    tagShortcuts.add(new TagShortcut("img", "TBImage"));
+    tagShortcuts.add(new TagShortcut("form", "TBForm"));
+    tagShortcuts.add(new TagShortcut("javaScript", "TBJavaScript"));
+    tagShortcuts.add(new TagShortcut("resourceURL", "TBResourceURL"));
+    tagShortcuts.add(new TagShortcut("genericElement", "TBGenericElement"));
+    tagShortcuts.add(new TagShortcut("element", "TBGenericElement"));
+    tagShortcuts.add(new TagShortcut("genericContainer", "TBGenericContainer"));
+    tagShortcuts.add(new TagShortcut("container", "TBGenericContainer"));
+    tagShortcuts.add(new TagShortcut("activeImage", "TBActiveImage"));
+    tagShortcuts.add(new TagShortcut("checkBox", "TBCheckBox"));
+    tagShortcuts.add(new TagShortcut("checkbox", "TBCheckBox"));
+    tagShortcuts.add(new TagShortcut("fileUpload", "TBFileUpload"));
+    tagShortcuts.add(new TagShortcut("upload", "TBFileUpload"));
+    tagShortcuts.add(new TagShortcut("hiddenField", "TBHiddenField"));
+    tagShortcuts.add(new TagShortcut("hidden", "TBHiddenField"));
+    tagShortcuts.add(new TagShortcut("imageButton", "TBImageButton"));
+    tagShortcuts.add(new TagShortcut("browser", "TBBrowser"));
+    tagShortcuts.add(new TagShortcut("popUpButton", "TBPopUp"));
+    tagShortcuts.add(new TagShortcut("select", "TBPopUp")); 
+    tagShortcuts.add(new TagShortcut("passwordField", "TBPasswordField"));
+    tagShortcuts.add(new TagShortcut("password", "TBPasswordField"));
+    tagShortcuts.add(new TagShortcut("radioButton", "TBRadioButton"));
+    tagShortcuts.add(new TagShortcut("radio", "TBRadioButton"));
+    tagShortcuts.add(new TagShortcut("resetButton", "TBResetButton"));
+    tagShortcuts.add(new TagShortcut("reset", "TBResetButton"));
+    tagShortcuts.add(new TagShortcut("submitButton", "TBSubmitButton"));
+    tagShortcuts.add(new TagShortcut("submit", "TBSubmitButton"));
+    tagShortcuts.add(new TagShortcut("text", "TBText"));
+    tagShortcuts.add(new TagShortcut("textField", "TBTextField"));
+    tagShortcuts.add(new TagShortcut("textfield", "TBTextField"));
+    tagShortcuts.add(new TagShortcut("search", "TBSearchField"));
+    tagShortcuts.add(new TagShortcut("searchfield", "TBSearchField"));
+    tagShortcuts.add(new TagShortcut("hyperlink", "TBHyperlink"));
+    tagShortcuts.add(new TagShortcut("link", "TBHyperlink"));
+    tagShortcuts.add(new TagShortcut("actionURL", "TBActionURL"));
+    tagShortcuts.add(new TagShortcut("map", "TBMap"));
+    tagShortcuts.add(new TagShortcut("ajaxUC", "JQAjaxUpdateContainer"));
+    tagShortcuts.add(new TagShortcut("ajaxHyperlink", "JQAjaxHyperlink"));
+
     prefs.setDefault(PreferenceConstants.TAG_SHORTCUTS_KEY, TagShortcut.toPreferenceString(tagShortcuts));
 
     List<BindingValidationRule> validationRules = new ArrayList<BindingValidationRule>();
     validationRules.add(new BindingValidationRule(".*", "^session\\.localizer\\..*"));
+    validationRules.add(new BindingValidationRule(".*", "^localizer\\..*"));
+    
+    validationRules.add(new BindingValidationRule(".*", "^sangria\\..*"));
     validationRules.add(new BindingValidationRule(".*", "^d2wContext\\..*"));
     validationRules.add(new BindingValidationRule(".*", "^localContext\\..*"));
-    validationRules.add(new BindingValidationRule(".*", "^localizer\\..*"));
+
     validationRules.add(new BindingValidationRule(".*", "^nonCachingContext\\..*"));
+    
+    validationRules.add(new BindingValidationRule(".*", "^cmsContext\\..*"));
     prefs.setDefault(PreferenceConstants.BINDING_VALIDATION_RULES_KEY, BindingValidationRule.toPreferenceString(validationRules));
 
     prefs.setDefault(PreferenceConstants.USE_INLINE_BINDINGS_KEY, false);
@@ -142,7 +143,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     prefs.setDefault(PreferenceConstants.VALIDATE_TEMPLATES_KEY, true);
     prefs.setDefault(PreferenceConstants.VALIDATE_TEMPLATES_ON_BUILD_KEY, true);
     prefs.setDefault(PreferenceConstants.VALIDATE_BINDING_VALUES, true);
-    prefs.setDefault(PreferenceConstants.VALIDATE_WOO_ENCODINGS_KEY, true);
+//    prefs.setDefault(PreferenceConstants.VALIDATE_WOO_ENCODINGS_KEY, true);
 
     prefs.setDefault(PreferenceConstants.INVALID_OGNL_SEVERITY_KEY, PreferenceConstants.WARNING);
     prefs.setDefault(PreferenceConstants.MISSING_COLLECTION_SEVERITY_KEY, PreferenceConstants.WARNING);

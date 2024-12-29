@@ -80,28 +80,28 @@ import org.objectstyle.wolips.debug.logicalstructure.type.foundation.NSSelectorL
 public class LogicalStructureProvider extends LogicalStructure implements ILogicalStructureProvider {
 
 	public ILogicalStructureType[] getLogicalStructureTypes(IValue value) {
-		boolean supported = this.isSuperclassOfValue("com.webobjects.eocontrol.EOCustomObject", value);
+		boolean supported = this.isSuperclassOfValue("org.treasureboat.enterprise.eof.TBEnterpriseCustomObject", value);
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
 			EOCustomObjectLogicalStructureType customObjectLogicalStructureType = new EOCustomObjectLogicalStructureType(value);
 			logicalStructureTypes[0] = customObjectLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		supported = this.isSuperclassOfValue("com.webobjects.eocontrol.EOEditingContext", value);
+		supported = this.isSuperclassOfValue("org.treasureboat.enterprise.eof.ec.TBEnterpriseEditingContext", value);
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
 			EOEditingContextLogicalStructureType editingContextLogicalStructureType = new EOEditingContextLogicalStructureType(value);
 			logicalStructureTypes[0] = editingContextLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		supported = this.isSuperclassOfValue("com.webobjects.eocontrol.EOSortOrdering", value);
+		supported = this.isSuperclassOfValue("org.treasureboat.enterprise.eof.TBEnterpriseSortOrdering", value);
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
 			EOSortOrderingLogicalStructureType sortOrderingLogicalStructureType = new EOSortOrderingLogicalStructureType(value);
 			logicalStructureTypes[0] = sortOrderingLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		supported = this.isSuperclassOfValue("com.webobjects.eocontrol.EOFetchSpecification", value);
+		supported = this.isSuperclassOfValue("org.treasureboat.enterprise.eof.fetch.TBEnterpriseFetchSpecification", value);
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
 			EOFetchSpecificationLogicalStructureType fetchSpecificationLogicalStructureType = new EOFetchSpecificationLogicalStructureType(value);
@@ -116,8 +116,8 @@ public class LogicalStructureProvider extends LogicalStructure implements ILogic
 			logicalStructureTypes[0] = booleanQualifierLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		supported = this.isSuperclassOfValue("com.webobjects.eocontrol.EOAndQualifier", value);
 		// subclass of TBFQualifier
+		supported = this.isSuperclassOfValue("org.treasureboat.enterprise.qualifiers.TBEnterpriseAndQualifier", value);
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
 			EOQualifierLogicalStructureType andLogicalStructureType = new EOAndQualifierLogicalStructureType(value);
@@ -132,24 +132,24 @@ public class LogicalStructureProvider extends LogicalStructure implements ILogic
 			logicalStructureTypes[0] = keyComparisonQualifierLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		supported = this.isSuperclassOfValue("com.webobjects.eocontrol.EOKeyValueQualifier", value);
 		// subclass of TBFQualifier
+		supported = this.isSuperclassOfValue("org.treasureboat.enterprise.qualifiers.TBEnterpriseKeyValueQualifier", value);
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
 			EOKeyValueQualifierLogicalStructureType keyValueQualifierLogicalStructureType = new EOKeyValueQualifierLogicalStructureType(value);
 			logicalStructureTypes[0] = keyValueQualifierLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		supported = this.isSuperclassOfValue("com.webobjects.eocontrol.EONotQualifier", value);
 		// subclass of TBFQualifier
+		supported = this.isSuperclassOfValue("org.treasureboat.enterprise.qualifiers.TBEnterpriseNotQualifier", value);
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
 			EONotQualifierLogicalStructureType notQualifierLogicalStructureType = new EONotQualifierLogicalStructureType(value);
 			logicalStructureTypes[0] = notQualifierLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		supported = this.isSuperclassOfValue("com.webobjects.eocontrol.EOOrQualifier", value);
 		// subclass of TBFQualifier
+		supported = this.isSuperclassOfValue("org.treasureboat.enterprise.qualifiers.TBEnterpriseOrQualifier", value);
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
 			EOOrQualifierLogicalStructureType orQualifierLogicalStructureType = new EOOrQualifierLogicalStructureType(value);
@@ -172,8 +172,8 @@ public class LogicalStructureProvider extends LogicalStructure implements ILogic
 			logicalStructureTypes[0] = nonNullQualifierLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		supported = this.isSuperclassOfValue("com.webobjects.eocontrol.EOQualifier", value);
 		// make sure that tbfqualifier is after all subclasses of TBFQualifier
+		supported = this.isSuperclassOfValue("org.treasureboat.enterprise.eof.qualifiers.TBEnterpriseQualifier", value);
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
 			EOQualifierLogicalStructureType eoQualifierLogicalStructureType = new EOQualifierLogicalStructureType(value);
@@ -194,7 +194,7 @@ public class LogicalStructureProvider extends LogicalStructure implements ILogic
 			logicalStructureTypes[0] = attributeLogicalStructureType;
 			return logicalStructureTypes;
 		}
-		supported = this.isSuperclassOfValue("com.webobjects.foundation.NSSelector", value);
+		supported = this.isSuperclassOfValue("org.treasureboat.foundation.TBFSelector", value);
 		if (supported) {
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
 			NSSelectorLogicalStructureType selectorLogicalStructureType = new NSSelectorLogicalStructureType(value);

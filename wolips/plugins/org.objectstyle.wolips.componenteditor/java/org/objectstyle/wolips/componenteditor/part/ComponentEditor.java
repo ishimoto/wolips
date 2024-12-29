@@ -73,6 +73,7 @@ import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.objectstyle.wolips.bindings.wod.IWodElement;
 import org.objectstyle.wolips.componenteditor.ComponenteditorPlugin;
 import org.objectstyle.wolips.components.input.ComponentEditorInput;
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.objectstyle.wolips.templateeditor.TemplateEditor;
 import org.objectstyle.wolips.templateeditor.TemplateSourceEditor;
 import org.objectstyle.wolips.wodclipse.core.completion.WodParserCache;
@@ -135,30 +136,23 @@ public class ComponentEditor extends ComponentEditorPart implements IGotoMarker,
 		IFile file = fileEditorInput.getFile();
 		String extension = file.getFileExtension();
 		ComponentEditorInput input = null;
-		if (extension.equals("html")) {
+		if (extension.equals(TBLipsConstants.HTML_EXTENSION_KEY)) {
 			try {
 				input = ComponentEditorInput.createWithDotHtml(file);
 			} catch (CoreException e) {
 				ComponenteditorPlugin.getDefault().log(e);
 			}
 		}
-		if (extension.equals("wod")) {
+		if (extension.equals(TBLipsConstants.WOD_EXTENSION_KEY)) {
 			try {
 				input = ComponentEditorInput.createWithDotWod(file);
 			} catch (CoreException e) {
 				ComponenteditorPlugin.getDefault().log(e);
 			}
 		}
-		if (extension.equals("api")) {
+		if (extension.equals(TBLipsConstants.API_EXTENSION_KEY)) {
 			try {
 				input = ComponentEditorInput.createWithDotApi(file);
-			} catch (CoreException e) {
-				ComponenteditorPlugin.getDefault().log(e);
-			}
-		}
-		if (extension.equals("woo")) {
-			try {
-				input = ComponentEditorInput.createWithDotWoo(file);
 			} catch (CoreException e) {
 				ComponenteditorPlugin.getDefault().log(e);
 			}
@@ -357,7 +351,7 @@ public class ComponentEditor extends ComponentEditorPart implements IGotoMarker,
 			}
 			componentName = name;
 		}
-		return componentName + " WOComponent";
+		return componentName + " TBComponent";
 	}
 
 	public Object getAdapter(Class adapter) {
@@ -388,11 +382,11 @@ public class ComponentEditor extends ComponentEditorPart implements IGotoMarker,
 			}
 			if (pathFromInputFile.equals(pathFromResource)) {
 				IEditorPart editorPart = null;
-				if (pathFromInputFile.getFileExtension().equals("html")) {
+				if (pathFromInputFile.getFileExtension().equals(TBLipsConstants.HTML_EXTENSION_KEY)) {
 					htmlWodTab().setHtmlActive();
 					editorPart = htmlWodTab().getActiveEmbeddedEditor();
 				}
-				if (pathFromInputFile.getFileExtension().equals("wod")) {
+				if (pathFromInputFile.getFileExtension().equals(TBLipsConstants.WOD_EXTENSION_KEY)) {
 					htmlWodTab().setWodActive();
 					editorPart = htmlWodTab().getActiveEmbeddedEditor();
 				}

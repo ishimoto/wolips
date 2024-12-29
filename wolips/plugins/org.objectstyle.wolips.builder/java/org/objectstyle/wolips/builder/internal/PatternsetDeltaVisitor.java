@@ -79,9 +79,6 @@ public class PatternsetDeltaVisitor extends DefaultDeltaVisitor {
 		if (resource.getType() == IResource.PROJECT) {
 			return true;
 		}
-		if (resource.getType() == IResource.FOLDER && ProjectPatternsets.ANT_FOLDER_NAME.equals(resource.getName())) {
-			return true;
-		}
 		if (ProjectPatternsets.EXTENSION.equals(resource.getFileExtension())) {
 			IProject iProject = resource.getProject();
 			IProjectPatternsets project = (IProjectPatternsets) iProject.getAdapter(IProjectPatternsets.class);

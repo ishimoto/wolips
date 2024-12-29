@@ -292,7 +292,7 @@ public abstract class AbstractWodBinding implements IWodBinding {
                 }
               }
             }
-            else if (bindingValueKeyPath.isWOComponent()) {
+            else if (bindingValueKeyPath.isTBComponent()) {
               if (!PreferenceConstants.IGNORE.equals(missingComponentSeverity)) {
                 String validKeyPath = bindingValueKeyPath.getValidKeyPath();
                 if (validKeyPath != null) {
@@ -305,15 +305,15 @@ public abstract class AbstractWodBinding implements IWodBinding {
                 }
               }
             }
-            else if (bindingValueKeyPath.isNSKeyValueCoding()) {
+            else if (bindingValueKeyPath.isTBFKeyValueCoding()) {
               if (!PreferenceConstants.IGNORE.equals(missingNSKVCSeverity)) {
                 String validKeyPath = bindingValueKeyPath.getValidKeyPath();
                 if (validKeyPath != null) {
                   if (validKeyPath.length() == 0) {
-                    problems.add(new WodBindingValueProblem(element, this, bindingName, "Unable to verify the key '" + bindingValueKeyPath.getInvalidKey() + "' because " + javaFileType.getElementName() + " implements NSKeyValueCoding", getValuePosition(), lineNumber, PreferenceConstants.WARNING.equals(missingNSKVCSeverity)));
+                    problems.add(new WodBindingValueProblem(element, this, bindingName, "Unable to verify the key '" + bindingValueKeyPath.getInvalidKey() + "' because " + javaFileType.getElementName() + " implements TBFKeyValueCoding", getValuePosition(), lineNumber, PreferenceConstants.WARNING.equals(missingNSKVCSeverity)));
                   }
                   else {
-                    problems.add(new WodBindingValueProblem(element, this, bindingName, "Unable to verify the key '" + bindingValueKeyPath.getInvalidKey() + "' because the keypath '" + validKeyPath + "' in " + javaFileType.getElementName() + " implements NSKeyValueCoding", getValuePosition(), lineNumber, PreferenceConstants.WARNING.equals(missingNSKVCSeverity)));
+                    problems.add(new WodBindingValueProblem(element, this, bindingName, "Unable to verify the key '" + bindingValueKeyPath.getInvalidKey() + "' because the keypath '" + validKeyPath + "' in " + javaFileType.getElementName() + " implements TBFKeyValueCoding", getValuePosition(), lineNumber, PreferenceConstants.WARNING.equals(missingNSKVCSeverity)));
                   }
                 }
               }

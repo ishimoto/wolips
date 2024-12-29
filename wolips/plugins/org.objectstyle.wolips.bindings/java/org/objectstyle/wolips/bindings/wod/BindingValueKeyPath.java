@@ -34,7 +34,7 @@ public class BindingValueKeyPath {
 
   private boolean _nsCollection;
 
-  private boolean _woComponent;
+  private boolean _tbComponent;
 
   private boolean _nsKVC;
 
@@ -129,7 +129,7 @@ public class BindingValueKeyPath {
         _ambiguous = false;
         _valid = true;
         _nsKVC = false;
-        _woComponent = false;
+        _tbComponent = false;
         _nsCollection = false;
       }
       else {
@@ -167,16 +167,16 @@ public class BindingValueKeyPath {
           }
           
           if (!keyAccessible) {
-            if (BindingReflectionUtils.isNSKeyValueCoding(currentType, cache) || "java.lang.Object".equals(currentType.getFullyQualifiedName())) {
+            if (BindingReflectionUtils.isTBFKeyValueCoding(currentType, cache) || "java.lang.Object".equals(currentType.getFullyQualifiedName())) {
               _nsKVC = true;
-              if (BindingReflectionUtils.isNSCollection(currentType, cache)) {
+              if (BindingReflectionUtils.isTBFCollection(currentType, cache)) {
                 _nsCollection = true;
                 _ambiguous = true;
                 invalidKeyNum = keyNum;
                 currentType = null;
               }
-              else if (BindingReflectionUtils.isWOComponent(currentType, cache)) {
-                _woComponent = true;
+              else if (BindingReflectionUtils.isTBComponent(currentType, cache)) {
+                _tbComponent = true;
                 _ambiguous = true;
                 invalidKeyNum = keyNum;
                 currentType = null;
@@ -230,11 +230,11 @@ public class BindingValueKeyPath {
     return _operator;
   }
 
-  public boolean isWOComponent() {
-    return _woComponent;
+  public boolean isTBComponent() {
+    return _tbComponent;
   }
 
-  public boolean isNSKeyValueCoding() {
+  public boolean isTBFKeyValueCoding() {
     return _nsKVC;
   }
 

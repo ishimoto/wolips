@@ -16,7 +16,7 @@ public class ValidationTestCase extends TestCase {
 		String api = 
 		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
 		"<wodefinitions>" +
-		"	<wo class=\"SPRegistrationErrorConditional\" wocomponentcontent=\"true\">" +
+		"	<wo class=\"SPRegistrationErrorConditional\" tbcomponentcontent=\"true\">" +
 		"		<binding name=\"attributeTypeName\"/>" +
 		"		<binding name=\"addressType\"/>" +
 		"		<binding name=\"key\"/>" +

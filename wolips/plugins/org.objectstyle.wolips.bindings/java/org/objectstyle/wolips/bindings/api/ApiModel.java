@@ -150,7 +150,7 @@ public class ApiModel {
     StringBuffer sb = new StringBuffer();
     sb.append("<?xml version = \"1.0\" encoding = \"UTF-8\" standalone = \"yes\"?>\n");
     sb.append("<wodefinitions>\n");
-    sb.append("    <wo wocomponentcontent = \"false\" class = \"" + name + "\">");
+    sb.append("    <wo tbcomponentcontent = \"false\" class = \"" + name + "\">");
     sb.append("    </wo>\n");
     sb.append("</wodefinitions>\n");
     return sb.toString();

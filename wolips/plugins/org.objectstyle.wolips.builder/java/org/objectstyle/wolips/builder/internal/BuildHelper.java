@@ -80,6 +80,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.objectstyle.wolips.baseforplugins.AbstractBaseActivator;
 import org.objectstyle.wolips.baseforplugins.util.FileUtilities;
 import org.objectstyle.wolips.builder.BuilderPlugin;
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.objectstyle.wolips.core.resources.types.project.ProjectAdapter;
 
 /**
@@ -553,7 +554,8 @@ public abstract class BuildHelper extends ResourceUtilities implements IResource
 			}
 
 			String parentName = res.getParent().getName();
-			if (parentName.endsWith(".wo") || parentName.endsWith(".eomodeld")) {
+//			if (parentName.endsWith(".wo") || parentName.endsWith(".eomodeld")) {
+			if (parentName.endsWith(TBLipsConstants.DOT_WO_EXTENSION_KEY) || parentName.endsWith(TBLipsConstants.DOT_EOMODELD_EXTENSION_KEY)) {
 				return (_appendSpecial(getResourceOutputPath(), res.getParent().getProjectRelativePath()).append(lastSegment));
 				// return
 				// (getResourceOutputPath().append(parentName).append(lastSegment));

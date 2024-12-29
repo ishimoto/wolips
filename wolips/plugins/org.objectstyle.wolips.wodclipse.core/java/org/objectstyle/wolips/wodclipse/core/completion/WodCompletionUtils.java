@@ -84,7 +84,7 @@ public class WodCompletionUtils {
   }
 
   public static void fillInElementTypeCompletionProposals(IJavaProject project, String token, int tokenOffset, int offset, Set<WodCompletionProposal> completionProposalsSet, boolean guessed, IProgressMonitor progressMonitor) throws JavaModelException {
-    // Lookup type names that extend WOElement based on the current partial
+    // Lookup type names that extend TBElement based on the current partial
     // token
     String partialToken = partialToken(token, tokenOffset, offset);
     if (partialToken.length() > 0) {

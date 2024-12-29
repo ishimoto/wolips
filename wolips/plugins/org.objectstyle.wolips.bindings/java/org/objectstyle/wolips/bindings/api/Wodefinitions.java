@@ -55,12 +55,13 @@
  */
 package org.objectstyle.wolips.bindings.api;
 
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 public class Wodefinitions extends AbstractApiModelElement {
 
-	private static final String WO = "wo";
+	private static final String WO = TBLipsConstants.WO_EXTENSION_KEY;
 	private Wo[] _wos;
 
 	protected Wodefinitions(Element element, ApiModel apiModel) {

@@ -38,7 +38,7 @@ public class BindingsContentProvider implements IStructuredContentProvider {
 						_api = wodElement.getApi(_javaProject, _cache);
 					} catch (Exception e) {
 						_api = null;
-						ComponenteditorPlugin.getDefault().log("Failed to load API for WO.", e);
+						ComponenteditorPlugin.getDefault().log("Failed to load API forTB.", e);
 					}
 				}
 				wodBindings = wodElement.getApiBindings(_api);

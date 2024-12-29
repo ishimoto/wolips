@@ -69,6 +69,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.objectstyle.wolips.bindings.Activator;
 import org.objectstyle.wolips.bindings.preferences.PreferenceConstants;
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.objectstyle.wolips.core.resources.builder.AbstractFullAndIncrementalBuilder;
 import org.objectstyle.wolips.core.resources.types.SuperTypeHierarchyCache;
 import org.objectstyle.wolips.core.resources.types.WOHierarchyScope;
@@ -157,7 +158,7 @@ public class WodBuilder extends AbstractFullAndIncrementalBuilder {
 					if (compilationUnit != null) {
 						IType type = compilationUnit.findPrimaryType();
 						if (type != null) {
-							IType woElementType = type.getJavaProject().findType("com.webobjects.appserver.WOElement", progressMonitor);
+							IType woElementType = type.getJavaProject().findType("org.treasureboat.webcore.dynamicelement.TBElement", progressMonitor);
 							if (woElementType != null) {
 								ITypeHierarchy typeHierarchy = SuperTypeHierarchyCache.getTypeHierarchy(type, progressMonitor);
 								if (typeHierarchy != null && typeHierarchy.contains(woElementType)) {
@@ -227,30 +228,27 @@ public class WodBuilder extends AbstractFullAndIncrementalBuilder {
 			try {
 				boolean validate = false;
 				if (resource instanceof IFile) {
-					if (resource.getParent().getName().endsWith(".wo")) {
+					if (resource.getParent().getName().endsWith(TBLipsConstants.DOT_WO_EXTENSION_KEY)) {
 						IFile file = (IFile) resource;
 						String fileExtension = file.getFileExtension();
-						if ("wod".equals(fileExtension)) {
+						if (TBLipsConstants.WOD_EXTENSION_KEY.equals(fileExtension)) {
 							validate = shouldValidate(file, buildCache);
 						}
-						else if ("html".equals(fileExtension)) {
+						else if (TBLipsConstants.HTML_EXTENSION_KEY.equals(fileExtension)) {
 							validate = shouldValidate(file, buildCache);
 						}
-						else if ("api".equals(fileExtension)) {
+						else if (TBLipsConstants.API_EXTENSION_KEY.equals(fileExtension)) {
 							// should we really do something with the component when
 							// we change the api?
 							// shoulnd't we validate all files using the api?
 							validate = false;
-						}
-						else if ("woo".equals(fileExtension)) {
-							validate = shouldValidate(file, buildCache);
 						}
 					}
 				}
 				else if (resource instanceof IContainer) {
 					IContainer folder = (IContainer) resource;
 					String fileExtension = folder.getFileExtension();
-					if ("wo".equals(fileExtension)) {
+					if (TBLipsConstants.WO_EXTENSION_KEY.equals(fileExtension)) {
 						validate = shouldValidate(folder, buildCache);
 					}
 				}
@@ -267,24 +265,20 @@ public class WodBuilder extends AbstractFullAndIncrementalBuilder {
 			if (resource instanceof IFile) {
 				IFile file = (IFile) resource;
 				String fileExtension = file.getFileExtension();
-				if ("wod".equals(fileExtension)) {
+				if (TBLipsConstants.WOD_EXTENSION_KEY.equals(fileExtension)) {
 					WodModelUtils.deleteProblems(file);
 				}
-				else if ("html".equals(fileExtension)) {
-					WodModelUtils.deleteProblems(file);
-				}
-				else if ("woo".equals(fileExtension)) {
+				else if (TBLipsConstants.HTML_EXTENSION_KEY.equals(fileExtension)) {
 					WodModelUtils.deleteProblems(file);
 				}
 			}
 			else if (resource instanceof IContainer) {
 				IContainer folder = (IContainer) resource;
 				String fileExtension = folder.getFileExtension();
-				if ("wo".equals(fileExtension)) {
+				if (TBLipsConstants.WO_EXTENSION_KEY.equals(fileExtension)) {
 					String componentName = folder.getName().substring(0, folder.getName().lastIndexOf('.'));
-					WodModelUtils.deleteProblems(folder.getFile(new Path(componentName + ".html")));
-					WodModelUtils.deleteProblems(folder.getFile(new Path(componentName + ".wod")));
-					WodModelUtils.deleteProblems(folder.getFile(new Path(componentName + ".woo")));
+					WodModelUtils.deleteProblems(folder.getFile(new Path(componentName + TBLipsConstants.DOT_HTML_EXTENSION_KEY)));
+					WodModelUtils.deleteProblems(folder.getFile(new Path(componentName + TBLipsConstants.DOT_WOD_EXTENSION_KEY)));
 				}
 			}
 		}

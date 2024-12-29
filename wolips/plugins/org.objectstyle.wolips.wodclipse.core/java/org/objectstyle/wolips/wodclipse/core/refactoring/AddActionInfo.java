@@ -14,7 +14,7 @@ public class AddActionInfo {
   public AddActionInfo(IType componentType) {
     _componentType = componentType;
     _name = "newAction";
-    _typeName = "WOActionResults";
+    _typeName = "ITBWActionResults";
   }
 
   public String getJavaTypeName() throws JavaModelException {

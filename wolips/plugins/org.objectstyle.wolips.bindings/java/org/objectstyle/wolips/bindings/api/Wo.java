@@ -75,7 +75,7 @@ public class Wo extends AbstractApiModelElement {
 
   private final static String CLASS = "class";
 
-  private final static String WOCOMPONENTCONTENT = "wocomponentcontent";
+  private final static String TBCOMPONENTCONTENT = "tbcomponentcontent";
 
   protected Wo(Element element, ApiModel apiModel) {
     super(element, apiModel);
@@ -99,7 +99,7 @@ public class Wo extends AbstractApiModelElement {
 
   public boolean isComponentContent() {
     synchronized (this.apiModel) {
-      String value = element.getAttribute(WOCOMPONENTCONTENT);
+      String value = element.getAttribute(TBCOMPONENTCONTENT);
       if (value == null) {
         return false;
       }
@@ -110,10 +110,10 @@ public class Wo extends AbstractApiModelElement {
   public void setComponentContent(boolean isComponentContent) {
     synchronized (this.apiModel) {
       if (isComponentContent) {
-        element.setAttribute(WOCOMPONENTCONTENT, "true");
+        element.setAttribute(TBCOMPONENTCONTENT, "true");
       }
       else {
-        element.setAttribute(WOCOMPONENTCONTENT, "false");
+        element.setAttribute(TBCOMPONENTCONTENT, "false");
       }
       apiModel.markAsDirty();
     }

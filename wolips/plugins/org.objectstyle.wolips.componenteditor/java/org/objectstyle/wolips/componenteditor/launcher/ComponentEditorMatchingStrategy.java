@@ -52,15 +52,23 @@ import org.eclipse.ui.ide.ResourceUtil;
 import org.eclipse.ui.part.FileEditorInput;
 import org.objectstyle.wolips.componenteditor.part.ComponentEditor;
 import org.objectstyle.wolips.components.input.ComponentEditorInput;
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.objectstyle.wolips.editors.EditorsPlugin;
 
 public class ComponentEditorMatchingStrategy implements IEditorMatchingStrategy {
 
 	private boolean canHandleExtension(String extension) {
-		if (!("wod".equalsIgnoreCase(extension) || "html".equalsIgnoreCase(extension) || "woo".equalsIgnoreCase(extension) || "api".equalsIgnoreCase(extension) || "tiff".equalsIgnoreCase(extension))) {
+		switch(extension) {
+		case TBLipsConstants.WOD_EXTENSION_KEY:
+		case TBLipsConstants.HTML_EXTENSION_KEY:
+		case TBLipsConstants.API_EXTENSION_KEY:
+		case "tiff":
+		case "png":
+			return true;
+
+		default:
 			return false;
 		}
-		return true;
 	}
 
 	public boolean matches(IEditorReference editorReference, IEditorInput editorInput) {
