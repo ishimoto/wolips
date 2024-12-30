@@ -6,6 +6,7 @@ import java.util.Set;
 import org.objectstyle.wolips.baseforplugins.util.StringUtilities;
 import org.objectstyle.wolips.bindings.wod.IWodElement;
 import org.objectstyle.wolips.bindings.wod.IWodModel;
+import org.objectstyle.wolips.core.TBLipsConstants;
 
 public class ElementRename {
   private String _oldName;
@@ -41,7 +42,7 @@ public class ElementRename {
       String newName = null;
       boolean forceAppendNumber = false;
 
-      if ("WOConditional".equals(typeName)) {
+      if ("TBConditional".equals(typeName)) {
         String conditionValue = wodElement.getBindingsMap().get("condition");
         String negateValue = wodElement.getBindingsMap().get("negate");
         String prefix = null;
@@ -50,15 +51,15 @@ public class ElementRename {
         }
         newName = newNameFromBindingValue(prefix, conditionValue, null);
       }
-      else if ("WOString".equals(typeName)) {
-        String value = wodElement.getBindingsMap().get("value");
+      else if ("TBString".equals(typeName)) {
+        String value = wodElement.getBindingsMap().get(TBLipsConstants.VALUE_BINDING_KEY);
         newName = newNameFromBindingValue(null, value, null);
       }
-      else if ("ERXLocalizedString".equals(typeName)) {
-        String value = wodElement.getBindingsMap().get("value");
+      else if ("TBWLocalizedString".equals(typeName)) {
+        String value = wodElement.getBindingsMap().get(TBLipsConstants.VALUE_BINDING_KEY);
         newName = newNameFromBindingValue(null, value, null);
       }
-      else if ("WOSubmitButton".equals(typeName)) {
+      else if ("TBSubmitButton".equals(typeName)) {
         String action = wodElement.getBindingsMap().get("action");
         if (action != null) {
           newName = newNameFromBindingValue(null, action + "Button", null);
@@ -67,7 +68,7 @@ public class ElementRename {
           newName = "Button";
         }
       }
-      else if ("WOHyperlink".equals(typeName)) {
+      else if ("TBHyperlink".equals(typeName)) {
         String action = wodElement.getBindingsMap().get("action");
         if (action != null) {
           newName = newNameFromBindingValue(null, action + "Link", null);
@@ -80,7 +81,7 @@ public class ElementRename {
         String list = wodElement.getBindingsMap().get("list");
         newName = newNameFromBindingValue(null, list, null);
       }
-      else if ("WOGenericContainer".equals(typeName) || "WOGenericElement".equals(typeName)) {
+      else if ("TBGenericContainer".equals(typeName) || "TBGenericElement".equals(typeName)) {
         String genericElementName = wodElement.getBindingsMap().get("elementName");
         newName = newNameFromBindingValue(null, genericElementName, null);
         forceAppendNumber = true;

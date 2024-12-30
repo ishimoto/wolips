@@ -11,6 +11,9 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.objectstyle.wolips.core.TBLipsConstants;
+import org.objectstyle.wolips.wodclipse.core.util.WodHtmlUtils;
+
 import jp.aonir.fuzzyxml.event.FuzzyXMLErrorEvent;
 import jp.aonir.fuzzyxml.event.FuzzyXMLErrorListener;
 import jp.aonir.fuzzyxml.internal.FuzzyXMLAttributeImpl;
@@ -25,10 +28,7 @@ import jp.aonir.fuzzyxml.internal.FuzzyXMLScriptImpl;
 import jp.aonir.fuzzyxml.internal.FuzzyXMLStyleImpl;
 import jp.aonir.fuzzyxml.internal.FuzzyXMLTextImpl;
 import jp.aonir.fuzzyxml.internal.FuzzyXMLUtil;
-import jp.aonir.fuzzyxml.internal.RenderContext;
 import jp.aonir.fuzzyxml.resources.Messages;
-
-import org.objectstyle.wolips.wodclipse.core.util.WodHtmlUtils;
 
 public class FuzzyXMLParser {
 
@@ -65,10 +65,9 @@ public class FuzzyXMLParser {
 		_wellFormedRequired = wellFormedRequired;
 		_roots = new LinkedList<FuzzyXMLNode>();
 		_isHTML = isHTML;
-		// MS: Hardcoded that "wo" is a loose namespace
-		addLooseNamespace("wo");
-		addLooseNamespace("webobject");
-		addLooseNamespace("webobjects");
+		// MS: Hardcoded that "tb" is a loose namespace
+		addLooseNamespace(TBLipsConstants.TB_TAG_KEY);
+		addLooseNamespace(TBLipsConstants.TreasureBoat_TAG_KEY);
 		if (!_wellFormedRequired) {
 			addAutocloseTag("img");
 			addAutocloseTag("br");
@@ -115,10 +114,10 @@ public class FuzzyXMLParser {
 	}
 
 	/**
-	 * A "loose" namespace is like the wo: namespace. We don't actually require
+	 * A "loose" namespace is like the tb: namespace. We don't actually require
 	 * that
-	 * wo:if have a corresponding wo:if close tag -- it actually just needs a
-	 * wo close tag.
+	 * tb:if have a corresponding tb:if close tag -- it actually just needs a
+	 * tb close tag. (was wo:)
 	 * 
 	 * @param namespace
 	 *          the name of the namespace to make loose
@@ -451,7 +450,7 @@ public class FuzzyXMLParser {
 		if (!closeTagMatches) {
 			closeAutocloseTags();
 
-			// Allow </wo> to close </wo:if>
+			// Allow </tb> to close </tb:if>
 			boolean looseNamespace = false;
 			int colonIndex = lowercaseLastOpenElementName.indexOf(':');
 			if (colonIndex != -1) {

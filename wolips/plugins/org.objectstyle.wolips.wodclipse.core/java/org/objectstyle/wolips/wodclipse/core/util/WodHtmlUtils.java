@@ -8,6 +8,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.objectstyle.wolips.bindings.wod.IWodElement;
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.objectstyle.wolips.variables.BuildProperties;
 import org.objectstyle.wolips.wodclipse.core.completion.WodParserCache;
 
@@ -16,9 +17,9 @@ public class WodHtmlUtils {
 
   static {
     StringBuffer patterns = new StringBuffer();
-    patterns.append("<webobjects{0,1}\\s+name\\s*=\\s*\"{0,1}([^>\"/\\s]+)\"{0,1}\\s*/{0,1}>");
+    patterns.append("<treasureboat{0,1}\\s+name\\s*=\\s*\"{0,1}([^>\"/\\s]+)\"{0,1}\\s*/{0,1}>");
     patterns.append("|");
-    patterns.append("<wo\\s+name\\s*=\\s*\"{0,1}([^>\"/\\s]+)\"{0,1}\\s*/{0,1}>");
+    patterns.append("<tb\\s+name\\s*=\\s*\"{0,1}([^>\"/\\s]+)\"{0,1}\\s*/{0,1}>");
     WodHtmlUtils.WEBOBJECTS_PATTERN = Pattern.compile(patterns.toString(), Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
   }
 
@@ -30,7 +31,7 @@ public class WodHtmlUtils {
     boolean isWOTag = false;
     if (tagName != null) {
       String lowercaseTagName = tagName.toLowerCase();
-      if (lowercaseTagName.startsWith("wo:")) {
+      if (lowercaseTagName.startsWith("tb:")) {
         isWOTag = true;
       }
     }
@@ -45,7 +46,7 @@ public class WodHtmlUtils {
     boolean isWOTag = false;
     if (tagName != null) {
       String lowercaseTagName = tagName.trim().toLowerCase();
-      if (lowercaseTagName.startsWith("webobject") || lowercaseTagName.equals("wo") || lowercaseTagName.startsWith("wo ") || lowercaseTagName.startsWith("wo:")) {
+      if (lowercaseTagName.startsWith("treasureboat") || lowercaseTagName.equals("tb") || lowercaseTagName.startsWith("tb ") || lowercaseTagName.startsWith("tb:")) {
         isWOTag = true;
       }
     }

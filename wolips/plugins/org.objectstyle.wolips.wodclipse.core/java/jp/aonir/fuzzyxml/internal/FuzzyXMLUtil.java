@@ -13,7 +13,7 @@ public class FuzzyXMLUtil {
 
   private static Pattern script = Pattern.compile("(<script.*?>)(.*?)(</script>)", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 
-  private static Pattern woTag = Pattern.compile("<(/*)(wo|webobject)(s*[^>]*)>", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+  private static Pattern woTag = Pattern.compile("<(/*)(tb|treasureboat)(s*[^>]*)>", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
   private static Pattern whiteSpace = Pattern.compile("([\\ \\t\\r\\n])");
 
   /**

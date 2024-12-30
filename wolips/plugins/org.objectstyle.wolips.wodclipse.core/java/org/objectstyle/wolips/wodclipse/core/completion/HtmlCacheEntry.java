@@ -60,8 +60,7 @@ public class HtmlCacheEntry extends AbstractCacheEntry<FuzzyXMLDocument> impleme
 
   @Override
   protected FuzzyXMLDocument _parse(String contents) {
-    BuildProperties buildProperties = (BuildProperties)getCache().getProject().getAdapter(BuildProperties.class);
-    FuzzyXMLParser parser = new FuzzyXMLParser(buildProperties != null ? buildProperties.isWellFormedTemplateRequired() : false, true);
+	FuzzyXMLParser parser = new FuzzyXMLParser(true, true);
     parser.addErrorListener(this);
     FuzzyXMLDocument htmlXmlDocument = parser.parse(contents);
     return htmlXmlDocument;

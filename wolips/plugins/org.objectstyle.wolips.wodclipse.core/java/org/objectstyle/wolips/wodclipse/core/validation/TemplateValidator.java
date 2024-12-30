@@ -123,13 +123,13 @@ public class TemplateValidator {
       String webobjectName = element.getAttributeValue("name");
       if (webobjectName == null) {
         if (validate) {
-          inlineProblems.add(new InlineWodProblem(element, "webobject tag missing 'name' attribute", false, _cache));
+          inlineProblems.add(new InlineWodProblem(element, "TreasureBoat tag missing 'name' attribute", false, _cache));
         }
       }
       else {
         _woElements.add(element);
         if (validate && element.getAttributes().length > 1) {
-          inlineProblems.add(new InlineWodProblem(element, "webobject tags should only have a 'name' attribute", true, _cache));
+          inlineProblems.add(new InlineWodProblem(element, "TreasureBoat tags should only have a 'name' attribute", true, _cache));
         }
       }
     }

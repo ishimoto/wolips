@@ -77,8 +77,7 @@ public class RefactoringWodBinding {
   public String _changeValue(String oldValue, String value) throws CoreException, InvocationTargetException, InterruptedException {
     String newValue = value;
     if (!ComparisonUtils.equals(oldValue, newValue, true)) {
-      BuildProperties buildProperties = (BuildProperties)_cache.getProject().getAdapter(BuildProperties.class);
-      newValue = RefactoringWodBinding.toBindingValue(_wodElement.isInline(), buildProperties.getInlineBindingPrefix(), buildProperties.getInlineBindingSuffix(), newValue);
+      newValue = RefactoringWodBinding.toBindingValue(_wodElement.isInline(), "$", "", newValue);
       ChangeBindingValueRefactoring.run(newValue, _wodElement, _wodBinding, _cache, new NullProgressMonitor());
       _wodBinding.setValue(newValue);
     }

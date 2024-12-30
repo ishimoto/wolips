@@ -15,6 +15,7 @@ import org.eclipse.jface.text.Position;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
 import org.objectstyle.wolips.bindings.wod.IWodElement;
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.objectstyle.wolips.wodclipse.core.completion.WodParserCache;
 import org.objectstyle.wolips.wodclipse.core.util.WodDocumentUtils;
 
@@ -40,7 +41,7 @@ public class ChangeElementTypeRefactoring implements IRunnableWithProgress {
           if (xmlDocument != null) {
             FuzzyXMLElement xmlElement = xmlDocument.getElementByOffset(typePosition.getOffset());
             if (xmlElement != null && xmlElement.hasCloseTag()) {
-              htmlEdits.add(new ReplaceEdit(xmlElement.getCloseTagOffset() + xmlElement.getCloseNameOffset() + 1, xmlElement.getCloseNameLength(), "wo:" + _newType));
+              htmlEdits.add(new ReplaceEdit(xmlElement.getCloseTagOffset() + xmlElement.getCloseNameOffset() + 1, xmlElement.getCloseNameLength(), "tb:" + _newType));
             }
           }
           htmlEdits.add(new ReplaceEdit(typePosition.getOffset(), typePosition.getLength(), _newType));

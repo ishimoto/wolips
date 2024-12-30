@@ -41,7 +41,6 @@ public class WodParserCache implements ITypeOwner {
 
   private WodCacheEntry _wodEntry;
   private HtmlCacheEntry _htmlEntry;
-  private WooCacheEntry _wooEntry;
 
   private TextViewerUndoManager _undoManager;
   private LocalizedComponentsLocateResult _componentsLocateResults;
@@ -154,7 +153,6 @@ public class WodParserCache implements ITypeOwner {
     _undoManager = new TextViewerUndoManager(25);
     _wodEntry = new WodCacheEntry(this);
     _htmlEntry = new HtmlCacheEntry(this);
-    _wooEntry = new WooCacheEntry(this);
     clearCache();
   }
 
@@ -190,7 +188,6 @@ public class WodParserCache implements ITypeOwner {
     cache._apiFile = _apiFile;
     cache._htmlEntry.setFile(_htmlEntry.getFile());
     cache._wodEntry.setFile(_wodEntry.getFile());
-    cache._wooEntry.setFile(_wooEntry.getFile());
     return cache;
   }
 
@@ -211,8 +208,6 @@ public class WodParserCache implements ITypeOwner {
       _wodEntry.setFile(_componentsLocateResults.getFirstWodFile());
       _apiFile = _componentsLocateResults.getDotApi(true);
       _componentType = null;
-      //_componentType = _componentsLocateResults.getDotJavaType();
-      _wooEntry.setFile(_componentsLocateResults.getFirstWooFile());
     }
     else {
       _woFolder = null;
@@ -229,7 +224,6 @@ public class WodParserCache implements ITypeOwner {
   public void clearParserCache() throws CoreException, LocateException {
     _htmlEntry.clear();
     _wodEntry.clear();
-    _wooEntry.clear();
   }
 
   public void clearValidationCache() {
@@ -287,10 +281,6 @@ public class WodParserCache implements ITypeOwner {
 		  _wodEntry.parse();
 	  }
 
-	  if (_wooEntry.shouldParse()) {
-		  // System.out.println("WodParserCache.parse: woo");
-		  _wooEntry.parse();
-	  }
   }
 
   public void scheduleValidate(final boolean force, final boolean threaded) {
@@ -351,10 +341,6 @@ public class WodParserCache implements ITypeOwner {
     return _wodEntry;
   }
 
-  public WooCacheEntry getWooEntry() {
-    return _wooEntry;
-  }
-
   public void _setValidated(boolean validated) {
     // ignore validated = false if we're validating right now ...
     if (validated || !_validating) {
@@ -381,12 +367,10 @@ public class WodParserCache implements ITypeOwner {
 
       _htmlEntry.deleteProblems();
       _wodEntry.deleteProblems();
-      _wooEntry.deleteProblems();
 
       if (Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.VALIDATE_TEMPLATES_KEY)) {
         _htmlEntry.validate();
         _wodEntry.validate();
-        _wooEntry.validate();
       }
       //System.out.println("WodParserCache.validate: b " + _woFolder + " (" + Thread.currentThread() + ")");
     }
