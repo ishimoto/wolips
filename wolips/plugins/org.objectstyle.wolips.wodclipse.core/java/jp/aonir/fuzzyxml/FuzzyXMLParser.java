@@ -46,7 +46,6 @@ public class FuzzyXMLParser {
 	private boolean _wellFormedRequired = false;
 	private boolean _isHTML = false;
 
-	// �p�[�X�Ɏg�p���鐳�K�\��
 	private Pattern _tag = Pattern.compile("<((|/)([^<>]*))([^<]?|>)");
 	// private Pattern attr =
 	// Pattern.compile("([\\w:]+?)\\s*=(\"|')([^\"]*?)\\2");
