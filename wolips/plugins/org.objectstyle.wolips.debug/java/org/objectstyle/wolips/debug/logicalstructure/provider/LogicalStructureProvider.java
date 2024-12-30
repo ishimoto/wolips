@@ -74,7 +74,6 @@ import org.objectstyle.wolips.debug.logicalstructure.type.eocontrol.EOOrQualifie
 import org.objectstyle.wolips.debug.logicalstructure.type.eocontrol.EOQualifierLogicalStructureType;
 import org.objectstyle.wolips.debug.logicalstructure.type.eocontrol.EOSQLQualifierLogicalStructureType;
 import org.objectstyle.wolips.debug.logicalstructure.type.eocontrol.EOSortOrderingLogicalStructureType;
-import org.objectstyle.wolips.debug.logicalstructure.type.foundation.NSArrayLogicalStructureType;
 import org.objectstyle.wolips.debug.logicalstructure.type.foundation.NSSelectorLogicalStructureType;
 
 public class LogicalStructureProvider extends LogicalStructure implements ILogicalStructureProvider {
@@ -199,14 +198,6 @@ public class LogicalStructureProvider extends LogicalStructure implements ILogic
 			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
 			NSSelectorLogicalStructureType selectorLogicalStructureType = new NSSelectorLogicalStructureType(value);
 			logicalStructureTypes[0] = selectorLogicalStructureType;
-			return logicalStructureTypes;
-		}
-		// only useful for wo < 5.3 (since 5.3 NSArray is a collection)
-		supported = this.isSuperclassOfValue("com.webobjects.foundation.NSArray", value);
-		if (supported) {
-			ILogicalStructureType[] logicalStructureTypes = new ILogicalStructureType[1];
-			NSArrayLogicalStructureType arrayLogicalStructureType = new NSArrayLogicalStructureType(value);
-			logicalStructureTypes[0] = arrayLogicalStructureType;
 			return logicalStructureTypes;
 		}
 		return new ILogicalStructureType[0];
