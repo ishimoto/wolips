@@ -255,6 +255,11 @@ public class ProjectTemplate implements Comparable<ProjectTemplate> {
 			if (input.getType() == ProjectInput.Type.Package) {
 				templateEngine.setPropertyForKey(((String) value).replace('.', '/'), input.getName() + "_folder");
 			}
+			
+			// set the package name for Gradle
+			if ("basePackage".equals(input.getName())) {
+				templateEngine.getWolipsContext().setPackageName(value.toString() + ".Application" );
+			}
 		}
 
 		Object[] keys = templateEngine.getKeys();
@@ -304,7 +309,7 @@ public class ProjectTemplate implements Comparable<ProjectTemplate> {
 					else {
 						String templatePath = templateChild.getAbsolutePath();
 						templatePath = templatePath.substring(baseFolder.getAbsolutePath().length());
-						templateEngine.addTemplate(new TemplateDefinition(templatePath, destinationFile.getParentFile().getAbsolutePath(), destinationFile.getName(), destinationFile.getName(), "UTF-8"));
+						templateEngine.addTemplate(new TemplateDefinition(templatePath, destinationFile.getParentFile().getAbsolutePath(), destinationFile.getName(), destinationFile.getName()));
 					}
 				}
 			}
@@ -354,10 +359,10 @@ public class ProjectTemplate implements Comparable<ProjectTemplate> {
 				templateBaseFolders.add(projectTemplatesFolder.getLocation().toFile());
 			}
 		}
-		templateBaseFolders.add(new File("/Library/Application Support/WOLips/" + baseFolderName));
-		templateBaseFolders.add(new File(System.getProperty("user.home"), "Documents and Settings/Application Data/WOLips/" + baseFolderName));
-		templateBaseFolders.add(new File(System.getProperty("user.home"), "Documents and Settings/AppData/Local/WOLips/" + baseFolderName));
-		templateBaseFolders.add(new File(System.getProperty("user.home"), "Library/Application Support/WOLips/" + baseFolderName));
+		templateBaseFolders.add(new File("/Library/Application Support/TBLips/" + baseFolderName));
+		templateBaseFolders.add(new File(System.getProperty("user.home"), "Documents and Settings/Application Data/TBLips/" + baseFolderName));
+		templateBaseFolders.add(new File(System.getProperty("user.home"), "Documents and Settings/AppData/Local/TBLips/" + baseFolderName));
+		templateBaseFolders.add(new File(System.getProperty("user.home"), "Library/Application Support/TBLips/" + baseFolderName));
 		return templateBaseFolders;
 	}
 

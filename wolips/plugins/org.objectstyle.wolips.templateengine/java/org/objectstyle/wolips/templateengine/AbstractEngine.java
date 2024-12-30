@@ -62,6 +62,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -81,6 +82,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.objectstyle.wolips.core.TBLipsConstants;
 
 /**
  * @author ulrich
@@ -117,25 +119,10 @@ public abstract class AbstractEngine implements IRunnableWithProgress {
 			this.velocityEngine.init();
 			this.context = new VelocityContext();
 			this.templates = new ArrayList<TemplateDefinition>();
-			this.setPropertyForKey(this, WOLipsContext.Key);
+			this.setPropertyForKey(this, TBLipsContext.Key);
 		} finally {
 			thread.setContextClassLoader(loader);
 		}
-//		SAXBuilder builder;
-//		Document myContext = null;
-//		try {
-//			builder = new SAXBuilder();
-//			myContext = builder.build(userHomeWOLipsPath + File.separator + "MyContext.xml");
-//		} catch (Exception ee) {
-//			// We can ignore this exception, it`s thrown if the xml document is
-//			// not found.
-//			// Per default there is no such file
-//			builder = null;
-//			myContext = null;
-//		}
-//		if (myContext != null) {
-//			this.setPropertyForKey(myContext, "MyContext");
-//		}
 	}
 
 	/**
@@ -185,7 +172,6 @@ public abstract class AbstractEngine implements IRunnableWithProgress {
 	private void run(TemplateDefinition templateDefinition) {
 		Writer writer = null;
 		File file = null;
-		String encoding = templateDefinition.getEncoding();
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot root = workspace.getRoot();
 		try {
@@ -202,13 +188,13 @@ public abstract class AbstractEngine implements IRunnableWithProgress {
 			IContainer folder = root.getContainerForLocation(new Path(parentDir.getPath()));
 			folder.refreshLocal(IResource.DEPTH_ZERO, null);
 			// Keep charset of component folder and HTML template in sync
-			if ("wo".equals(folder.getFileExtension()) && file.getPath().endsWith("html") 
-					&& !encoding.equals(folder.getDefaultCharset(true))) {
-				System.out.println("AbstractEngine.run: setting encoding of " + folder + " to " + encoding);
-				folder.setDefaultCharset(encoding, null);
+			if (TBLipsConstants.WO_EXTENSION_KEY.equals(folder.getFileExtension()) && file.getPath().endsWith(TBLipsConstants.HTML_EXTENSION_KEY) 
+					&& !StandardCharsets.UTF_8.name().equals(folder.getDefaultCharset(true))) {
+				System.out.println("AbstractEngine.run: setting encoding of " + folder + " to " + StandardCharsets.UTF_8.name());
+				folder.setDefaultCharset(StandardCharsets.UTF_8.name(), null);
 			}
 			writer = new BufferedWriter(
-						new OutputStreamWriter(new FileOutputStream(file), encoding));
+						new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8.name()));
 			template.merge(this.context, writer);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -219,16 +205,16 @@ public abstract class AbstractEngine implements IRunnableWithProgress {
 					writer.close();
 					IFile ifile = root.getFileForLocation(new Path(file.getPath()));
 					ifile.refreshLocal(IResource.DEPTH_ZERO, null);
-					if (!encoding.equals(ifile.getCharset(true)) && !"java".equals(ifile.getFileExtension())) {
-						System.out.println("AbstractEngine.run: setting encoding of " + ifile + " to " + encoding + " was " + ifile.getCharset(true));
-						ifile.setCharset(encoding, null);
+					if (!StandardCharsets.UTF_8.name().equals(ifile.getCharset(true)) && !"java".equals(ifile.getFileExtension())) {
+						System.out.println("AbstractEngine.run: setting encoding of " + ifile + " to " + StandardCharsets.UTF_8.name() + " was " + ifile.getCharset(true));
+						ifile.setCharset(StandardCharsets.UTF_8.name(), null);
 					}
 
 				} catch (Exception ee) {
 					ee.printStackTrace();
 				}
 			}
-			this.setPropertyForKey(null, WOLipsContext.Key);
+			this.setPropertyForKey(null, TBLipsContext.Key);
 		}
 	}
 

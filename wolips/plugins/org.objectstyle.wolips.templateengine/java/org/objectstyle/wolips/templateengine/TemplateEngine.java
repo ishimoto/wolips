@@ -89,7 +89,7 @@ public class TemplateEngine implements IRunnableWithProgress {
 
 	private VelocityEngine _velocityEngine;
 
-	private WOLipsContext _wolipsContext;
+	private TBLipsContext _wolipsContext;
 
 	private String _templatePath;
 	
@@ -124,8 +124,8 @@ public class TemplateEngine implements IRunnableWithProgress {
 		}
 		_context = new VelocityContext();
 		_templates = new LinkedList<TemplateDefinition>();
-		_wolipsContext = new WOLipsContext();
-		setPropertyForKey(_wolipsContext, WOLipsContext.Key);
+		_wolipsContext = new TBLipsContext();
+		setPropertyForKey(_wolipsContext, TBLipsContext.Key);
 	}
 
 	public void setTemplatePath(String loaderPath) {
@@ -230,7 +230,7 @@ public class TemplateEngine implements IRunnableWithProgress {
 	/**
 	 * @return Returns the wolipsContext.
 	 */
-	public WOLipsContext getWolipsContext() {
+	public TBLipsContext getWolipsContext() {
 		return _wolipsContext;
 	}
 

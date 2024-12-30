@@ -65,11 +65,11 @@ import java.util.GregorianCalendar;
 /**
  * @author ulrich
  */
-public class WOLipsContext {
+public class TBLipsContext {
 	/**
 	 * Comment for <code>Key</code>
 	 */
-	public final static String Key = "WOLipsContext";
+	public final static String Key = "TBLipsContext";
 
 	private String projectName;
 
@@ -92,7 +92,7 @@ public class WOLipsContext {
 
 	private String mavenVersion;
 
-	protected WOLipsContext() {
+	protected TBLipsContext() {
 		super();
 	}
 

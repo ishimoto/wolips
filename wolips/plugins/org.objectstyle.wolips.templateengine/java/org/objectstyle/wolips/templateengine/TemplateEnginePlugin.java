@@ -80,15 +80,15 @@ public class TemplateEnginePlugin extends AbstractBaseUIActivator {
 
 	private PluginLogger pluginLogger = null;
 
-	/**
-	 * Comment for <code>WOApplicationProject</code>
-	 */
-	public static final String WOApplicationProject = "WOApplicationProject";
-
-	/**
-	 * Comment for <code>WOnderApplicationProject</code>
-	 */
-	public static final String WOnderApplicationProject = "WOnderApplicationProject";
+//	/**
+//	 * Comment for <code>WOApplicationProject</code>
+//	 */
+//	public static final String WOApplicationProject = "WOApplicationProject";
+//
+//	/**
+//	 * Comment for <code>WOnderApplicationProject</code>
+//	 */
+//	public static final String WOnderApplicationProject = "WOnderApplicationProject";
 
 	/**
 	 * Comment for <code>D2W_ApplicationProject</code>
@@ -109,9 +109,9 @@ public class TemplateEnginePlugin extends AbstractBaseUIActivator {
 	public static final String JarProject = "JarProject";
 
 	/**
-	 * Comment for <code>WOComponent</code>
+	 * Comment for <code>TBComponent</code>
 	 */
-	public static final String WOComponent = "WOComponent";
+	public static final String TBComponent = "TBComponent";
 
 	/**
 	 * Comment for <code>EOModel</code>

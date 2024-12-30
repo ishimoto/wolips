@@ -62,6 +62,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.objectstyle.wolips.core.TBLipsConstants;
 
 /**
  * @author ulrich
@@ -82,10 +83,6 @@ public class ComponentEngine extends AbstractEngine {
 	private boolean createBodyTag = false;
 
 	private boolean createApiFile = false;
-
-	private String wooEncoding;
-	
-	private static final String DEFAULT_WOO_ENCODING = ENCODING_UTF8;
 
 	private int htmlBodyType;
 
@@ -214,20 +211,6 @@ public class ComponentEngine extends AbstractEngine {
 		return superclassName;
 	}
 
-	public String getWOOEncoding() {
-		if (wooEncoding == null) {
-			wooEncoding = DEFAULT_WOO_ENCODING;
-		}
-		return this.wooEncoding;
-	}
-
-	public void setWOOEncoding(String stringEncoding) {
-		this.wooEncoding = stringEncoding;
-	}
-
-	public String getHTMLCharset() {
-		return getWOOEncoding().toLowerCase();
-	}
 	
 	public int getHTMLBodyType() {
 		return this.htmlBodyType;
@@ -250,16 +233,14 @@ public class ComponentEngine extends AbstractEngine {
 			this.setPropertyForKey(this.getHTMLBodyType(), "HTMLBodyType");
 		}
 
-		String encoding = this.getWOOEncoding();
-		this.setPropertyForKey(encoding, "WOOEncoding");
+//		this.setPropertyForKey(StandardCharsets.UTF_8.name(), "WOOEncoding");
 
 		setDateInContext();
-		this.addTemplate(new TemplateDefinition("wocomponent/wocomponent.html.vm", this.getComponentPath().toOSString(), this.componentName + ".html", "html", encoding));
-		this.addTemplate(new TemplateDefinition("wocomponent/wocomponent.wod.vm", this.getComponentPath().toOSString(), this.componentName + ".wod", "wod", encoding));
-		this.addTemplate(new TemplateDefinition("wocomponent/wocomponent.woo.vm", this.getComponentPath().toOSString(), this.componentName + ".woo", "woo", ENCODING_UTF8));
-		this.addTemplate(new TemplateDefinition("wocomponent/wocomponent.java.vm", this.getJavaPath().toOSString(), this.componentName + ".java", "java"));
+		this.addTemplate(new TemplateDefinition("tbcomponent/tbcomponent.html.vm", this.getComponentPath().toOSString(), this.componentName + TBLipsConstants.DOT_HTML_EXTENSION_KEY, TBLipsConstants.HTML_EXTENSION_KEY));
+		this.addTemplate(new TemplateDefinition("tbcomponent/tbcomponent.wod.vm", this.getComponentPath().toOSString(), this.componentName + TBLipsConstants.DOT_WOD_EXTENSION_KEY, TBLipsConstants.WOD_EXTENSION_KEY));
+		this.addTemplate(new TemplateDefinition("tbcomponent/tbcomponent.java.vm", this.getJavaPath().toOSString(), this.componentName + TBLipsConstants.DOT_JAVA_EXTENSION_KEY, TBLipsConstants.JAVA_EXTENSION_KEY));
 		if (this.createApiFile) {
-			this.addTemplate(new TemplateDefinition("wocomponent/wocomponent.api.vm", this.getApiPath().toOSString(), this.componentName + ".api", "api"));
+			this.addTemplate(new TemplateDefinition("tbcomponent/tbcomponents.api.vm", this.getApiPath().toOSString(), this.componentName + TBLipsConstants.DOT_API_EXTENSION_KEY, TBLipsConstants.API_EXTENSION_KEY));
 		}
 		try {
 			super.run(monitor);

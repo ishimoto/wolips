@@ -97,7 +97,7 @@ public class TemplateDefinition {
 	 * @param type
 	 * @param encoding
 	 */
-	public TemplateDefinition(String templateName, String destination, String finalName, String type, String encoding) {
+	private TemplateDefinition(String templateName, String destination, String finalName, String type, String encoding) {
 		super();
 		this.templateName = templateName;
 		this.destination = destination;
