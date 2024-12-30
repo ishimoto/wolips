@@ -67,20 +67,6 @@ public class ProjectVariables implements IPersistentPreferenceStore {
 	}
 
 	/**
-	 * @return the path to the network root
-	 */
-	public IPath getNetworkRoot() {
-		return this.fixMissingSeparatorAfterDevice(_variables.networkRoot());
-	}
-
-	/**
-	 * @return the path to the network root
-	 */
-	public IPath getNetworkFrameworkPath() {
-		return this.fixMissingSeparatorAfterDevice(_variables.networkFrameworkPath());
-	}
-
-	/**
 	 * @return the path to the user home
 	 */
 	public IPath getUserRoot() {

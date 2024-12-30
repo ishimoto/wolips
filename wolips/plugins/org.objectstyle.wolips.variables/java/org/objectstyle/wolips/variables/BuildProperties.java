@@ -252,21 +252,6 @@ public class BuildProperties {
 		put("principalClass", (principalClass == null) ? "" : principalClass);
 	}
 
-	public boolean isEmbed(Root root) {
-		String shortName = root.getShortName();
-		return getBoolean("embed." + shortName, false);
-	}
-
-	public void setEmbed(Root root, boolean embed) {
-		String shortName = root.getShortName();
-		if (!embed) {
-			remove("embed." + shortName);
-		}
-		else {
-			put("embed." + shortName, embed);
-		}
-	}
-
 	public String getCustomInfoPListContent() {
 		return getCustomInfoPListContent(false);
 	}
@@ -363,12 +348,7 @@ public class BuildProperties {
 	}
 
 	public void setFramework(boolean framework) {
-		if (framework) {
-			put("project.type", "framework");
-		}
-		else {
-			put("project.type", "application");
-		}
+		put("project.type", framework ? "framework" : "application");
 	}
 	
 	public String getBundleType() {
@@ -379,20 +359,9 @@ public class BuildProperties {
 
 	private Version _woVersionDefault;
 
-	private Version _versionDefault;
-
-	private String _inlineBindingPrefixDefault;
-
-	private String _inlineBindingSuffixDefault;
-
-	private boolean _wellFormedTemplateRequiredDefault;
-
 	public void _copyDefaultsFrom(BuildProperties props) {
 		if (props._defaultsInitialized) {
 			_woVersionDefault = props._woVersionDefault;
-			_inlineBindingPrefixDefault = props._inlineBindingPrefixDefault;
-			_inlineBindingSuffixDefault = props._inlineBindingSuffixDefault;
-			_wellFormedTemplateRequiredDefault = props._wellFormedTemplateRequiredDefault;
 			_defaultsInitialized = true;
 		}
 	}
@@ -400,130 +369,14 @@ public class BuildProperties {
 	protected synchronized void ensureDefaultsInitialized() {
 		if (!_defaultsInitialized) {
 			_defaultsInitialized = true;
-			_woVersionDefault = new Version(VariablesPlugin.getDefault().getGlobalVariables().getString("wo.version", "5.3.3"));
-			_inlineBindingPrefixDefault = VariablesPlugin.getDefault().getGlobalVariables().getString("component.inlineBindingPrefix", "[");
-			_inlineBindingSuffixDefault = VariablesPlugin.getDefault().getGlobalVariables().getString("component.inlineBindingSuffix", "]");
-			// MS: This is pretty hacky -- Technically this plugin doesn't depend on the Bindings preference plugin, and I don't want to add it because it brings in a bunch
-			// of JDT dependencies that we don't want here, but I can't move the preferences out of the plugin easily without changing their key name. 
-			_wellFormedTemplateRequiredDefault = VariablesPlugin.getDefault().getGlobalVariables().getBoolean("component.wellFormedTemplateRequired", "yes".equals(Platform.getPreferencesService().getString("org.objectstyle.wolips.bindings", "WellFormedTemplate", null, null)));
 			BuildPropertiesAdapterFactory.initializeBuildPropertiesDefaults(this);
 		}
 	}
 
-	public void setWOVersionDefault(Version woVersionDefault) {
-		_woVersionDefault = woVersionDefault;
-	}
-
-	public Version getWOVersionDefault() {
-		ensureDefaultsInitialized();
-		return _woVersionDefault;
-	}
-
-	public void setVersionDefault(Version versionDefault) {
-		_versionDefault = versionDefault;
-	}
-	
-	public Version getVersionDefault() {
-		ensureDefaultsInitialized();
-		return _versionDefault;
-	}
-	
-	public void setVersion(Version version) {
-		if (version != null) {
-			put("version", version.getVersionStr());
-		}
-		else {
-			remove("version");
-		}
-	}
 
 	public Version getVersion() {
-		Version versionDefault = getVersionDefault();
-		return new Version(get("version", versionDefault == null ? null : versionDefault.getVersionStr()));
-	}
-	
-	public void setWOVersion(Version woVersion) {
-		if (woVersion != null) {
-			put("wo.version", woVersion.getVersionStr());
-		}
-		else {
-			remove("wo.version");
-		}
-	}
-
-	public Version getWOVersion() {
-		Version woVersionDefault = getWOVersionDefault();
-		return new Version(get("wo.version", woVersionDefault == null ? null : woVersionDefault.getVersionStr()));
-	}
-
-	public void setInlineBindingPrefixDefault(String inlineBindingPrefixDefault) {
-		_inlineBindingPrefixDefault = inlineBindingPrefixDefault;
-	}
-
-	public String getInlineBindingPrefixDefault() {
 		ensureDefaultsInitialized();
-		return _inlineBindingPrefixDefault;
+		return new Version(get("version", "6.0"));
 	}
 
-	public void setInlineBindingPrefix(String inlineBindingPrefix) {
-		if (inlineBindingPrefix != null) {
-			put("component.inlineBindingPrefix", inlineBindingPrefix);
-		}
-		else {
-			remove("component.inlineBindingPrefix");
-		}
-	}
-
-	public String getInlineBindingPrefix() {
-		return get("component.inlineBindingPrefix", getInlineBindingPrefixDefault());
-	}
-
-	public void setInlineBindingSuffixDefault(String inlineBindingSuffixDefault) {
-		_inlineBindingSuffixDefault = inlineBindingSuffixDefault;
-	}
-
-	public String getInlineBindingSuffixDefault() {
-		ensureDefaultsInitialized();
-		return _inlineBindingSuffixDefault;
-	}
-
-	public void setInlineBindingSuffix(String inlineBindingSuffix) {
-		if (inlineBindingSuffix != null) {
-			put("component.inlineBindingSuffix", inlineBindingSuffix);
-		}
-		else {
-			remove("component.inlineBindingSuffix");
-		}
-	}
-
-	public String getInlineBindingSuffix() {
-		return get("component.inlineBindingSuffix", getInlineBindingSuffixDefault());
-	}
-
-	public void setWellFormedTemplateRequiredDefault(boolean wellFormedTemplateRequiredDefault) {
-		_wellFormedTemplateRequiredDefault = wellFormedTemplateRequiredDefault;
-	}
-
-	public boolean getWellFormedTemplateRequiredDefault() {
-		ensureDefaultsInitialized();
-		return _wellFormedTemplateRequiredDefault;
-	}
-
-	public void setWellFormedTemplateRequired(Boolean wellFormedTemplateRequired) {
-		if (wellFormedTemplateRequired == null) {
-			remove("component.wellFormedTemplateRequired");
-		}
-		else {
-			put("component.wellFormedTemplateRequired", wellFormedTemplateRequired.booleanValue());
-		}
-	}
-
-	public boolean isWellFormedTemplateRequired() {
-		boolean wellFormedTemplateRequired = getBoolean("component.wellFormedTemplateRequired", getWellFormedTemplateRequiredDefault());
-		return wellFormedTemplateRequired;
-	}
-
-	public boolean isBuildFolderRequired() {
-		return getWOVersion().isAtLeastVersion(5, 6);
-	}
 }
