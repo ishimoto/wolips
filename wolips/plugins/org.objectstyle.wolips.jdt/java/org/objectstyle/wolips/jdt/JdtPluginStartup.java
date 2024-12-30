@@ -11,7 +11,7 @@ import org.objectstyle.wolips.variables.VariablesPlugin;
 public class JdtPluginStartup implements IStartup {
 
 	public void earlyStartup() {
-		// Trigger wolips.properties to write ...
+		// Trigger tblips.properties to write ...
 		VariablesPlugin.getDefault().getGlobalVariables();
 
 		final IWorkspace workspace = ResourcesPlugin.getWorkspace();

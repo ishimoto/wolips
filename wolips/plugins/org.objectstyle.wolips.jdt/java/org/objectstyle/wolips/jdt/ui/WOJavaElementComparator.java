@@ -67,6 +67,7 @@ import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
 import org.eclipse.jdt.internal.ui.packageview.PackageFragmentRootContainer;
 import org.eclipse.jdt.ui.JavaElementComparator;
 import org.eclipse.jface.viewers.Viewer;
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.objectstyle.wolips.jdt.ui.tags.TaggedComponentsContentProvider;
 
 public class WOJavaElementComparator extends JavaElementComparator {
@@ -74,8 +75,8 @@ public class WOJavaElementComparator extends JavaElementComparator {
 
 	public WOJavaElementComparator() {
 		_bundleExtensions = new HashSet<String>();
-		_bundleExtensions.add("wo");
-		_bundleExtensions.add("eomodeld");
+		_bundleExtensions.add(TBLipsConstants.WO_EXTENSION_KEY);
+		_bundleExtensions.add(TBLipsConstants.EOMODELD_EXTENSION_KEY);
 	}
 
 	@Override

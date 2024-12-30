@@ -162,14 +162,7 @@ public class EclipseProjectFramework extends Framework implements IEclipseFramew
 		Map<String, Object> propertyList = null;
 		if (projectAdapter != null) {
 			try {
-				File infoPlist;
-				BuildProperties buildProperties = (BuildProperties)project.getAdapter(BuildProperties.class);
-				if (buildProperties.getWOVersion().isAtLeastVersion(5, 6)) {
-					infoPlist = this.project.getLocation().append("Info.plist").toFile();
-				}
-				else {
-					infoPlist = projectAdapter.getWOJavaArchive().removeLastSegments(1).append("Info.plist").toFile();
-				}
+				File infoPlist = projectAdapter.getWOJavaArchive().removeLastSegments(1).append("Info.plist").toFile();
 				if (infoPlist.exists()) {
 					propertyList = (Map<String, Object>) WOLXMLPropertyListSerialization.propertyListWithContentsOfFile(infoPlist, new SimpleParserDataStructureFactory());
 				}

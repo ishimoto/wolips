@@ -132,7 +132,8 @@ public class ProjectFrameworkAdapter {
 
 	public Map<String, IEclipseFramework> getPluginFrameworks() {
 		Map<String, IEclipseFramework> pluginFrameworks = new TreeMap<String, IEclipseFramework>();
-		Pattern pluginPattern = Pattern.compile("(.*)PlugIn");
+//		Pattern pluginPattern = Pattern.compile("(.*)PlugIn");
+		Pattern pluginPattern = Pattern.compile("TBDB_(.*)");
 		FrameworkModel<IEclipseFramework> frameworkModel = JdtPlugin.getDefault().getFrameworkModel(getProject());
 		for (IEclipseFramework framework : frameworkModel.getAllFrameworks()) {
 			String frameworkName = framework.getName();
@@ -147,7 +148,8 @@ public class ProjectFrameworkAdapter {
 
 	public Map<String, IEclipseFramework> getAdaptorFrameworks() {
 		Map<String, IEclipseFramework> adaptorFrameworks = new TreeMap<String, IEclipseFramework>();
-		Pattern adaptorPattern = Pattern.compile("Java(.*)Adaptor");
+//		Pattern adaptorPattern = Pattern.compile("Java(.*)Adaptor");
+		Pattern adaptorPattern = Pattern.compile("TBAdaptor_(.*)");
 		FrameworkModel<IEclipseFramework> frameworkModel = JdtPlugin.getDefault().getFrameworkModel(getProject());
 		for (IEclipseFramework framework : frameworkModel.getAllFrameworks()) {
 			String frameworkName = framework.getName();

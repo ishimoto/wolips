@@ -63,7 +63,7 @@ public class WoprojectFilter extends ViewerFilter {
 			return true;
 		}
 		String folderName = folder.getName();
-		if (folderName == null || !"woproject".equals(folderName)) {
+		if (folderName == null) {
 			return true;
 		}
 		return false;

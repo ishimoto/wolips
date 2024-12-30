@@ -84,7 +84,7 @@ public class WOPackageExplorerLabelProvider extends PackageExplorerLabelProvider
 					image = _eomodelImage;
 				} else if (name.endsWith(".wo")) {
 					if (_wocomponentImage == null) {
-						_wocomponentImage = PluginImages.createImageDescriptor("images/WOComponentBundle.png").createImage(false);
+						_wocomponentImage = PluginImages.createImageDescriptor("images/TBComponentBundle.png").createImage(false);
 					}
 					image = _wocomponentImage;
 				}

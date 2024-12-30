@@ -76,7 +76,7 @@ public class WOComponentDecorator implements ILabelDecorator {
 			_decorated = true;
 			try {
 				if (_componentBundleImage == null) {
-					_componentBundleImage = PluginImages.createImageDescriptor("icons/WOComponentBundle.png").createImage(false);
+					_componentBundleImage = PluginImages.createImageDescriptor("icons/TBComponentBundle.png").createImage(false);
 				}
 				decoratedImage = _componentBundleImage;
 				decoratedImage = PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator().decorateImage(decoratedImage, element);

@@ -1,10 +1,7 @@
 package org.objectstyle.wolips.jdt;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.Platform;
-import org.objectstyle.woenvironment.frameworks.Version;
 import org.objectstyle.wolips.core.resources.types.project.ProjectAdapter;
-import org.objectstyle.wolips.jdt.classpath.model.IEclipseFramework;
 import org.objectstyle.wolips.variables.BuildProperties;
 import org.objectstyle.wolips.variables.IBuildPropertiesInitializer;
 import org.objectstyle.wolips.variables.VariablesPlugin;
@@ -14,57 +11,6 @@ public class WOBuildPropertiesInitializer implements IBuildPropertiesInitializer
 		IProject project = buildProperties.getProject();
 		if (!project.isAccessible()) {
 			return;
-		}
-
-		try {
-			ProjectFrameworkAdapter projectFrameworkAdaptor = (ProjectFrameworkAdapter) project.getAdapter(ProjectFrameworkAdapter.class);
-			if (projectFrameworkAdaptor != null) {
-				IEclipseFramework foundationFramework;
-				// ... If you have the JavaFoundation source framework and you're actually talking to it right now, well .. we have
-				// to special case that one. If a JavaFoundation framework falls in the forest, does it make a sound?
-				if ("JavaFoundation".equals(project.getName())) {
-					foundationFramework = JdtPlugin.getDefault().getFrameworkModel(project).getFrameworkWithName("JavaFoundation");
-				}
-				else {
-					foundationFramework = projectFrameworkAdaptor.getLinkedFrameworkNamed("JavaFoundation");
-				}
-				if (foundationFramework != null) {
-					Version version = foundationFramework.getVersion();
-					if (version != null && !version.isUndefined()) {
-						buildProperties.setWOVersionDefault(version);
-					}
-				}
-				
-				boolean wellFormedTemplateRequiredDefault;
-				if (projectFrameworkAdaptor.isLinkedToFrameworkNamed("WOOgnl")) {
-					buildProperties.setInlineBindingPrefixDefault("$");
-					buildProperties.setInlineBindingSuffixDefault("");
-					wellFormedTemplateRequiredDefault = false;
-				} else if (buildProperties.getWOVersion().isAtLeastVersion(5, 4)) {
-					buildProperties.setInlineBindingPrefixDefault("[");
-					buildProperties.setInlineBindingSuffixDefault("]");
-					wellFormedTemplateRequiredDefault = true;
-				} else {
-					buildProperties.setInlineBindingPrefixDefault("[");
-					buildProperties.setInlineBindingSuffixDefault("]");
-					wellFormedTemplateRequiredDefault = false;
-				}
-				String globalWellFormedTemplateRequiredDefault = Platform.getPreferencesService().getString("org.objectstyle.wolips.bindings", "WellFormedTemplate", null, null);
-				if ("yes".equals(globalWellFormedTemplateRequiredDefault)) {
-					wellFormedTemplateRequiredDefault = true;
-				}
-				else if ("no".equals(globalWellFormedTemplateRequiredDefault)) {
-					wellFormedTemplateRequiredDefault = false;
-				}
-				buildProperties.setWellFormedTemplateRequiredDefault(VariablesPlugin.getDefault().getGlobalVariables().getBoolean("component.wellFormedTemplateRequired", wellFormedTemplateRequiredDefault));
-				
-				IEclipseFramework framework = projectFrameworkAdaptor.getFramework();
-				if (framework != null) {
-					buildProperties.setVersionDefault(framework.getVersion());
-				}
-			}
-		} catch (Throwable e) {
-			e.printStackTrace(System.out);
 		}
 	}
 	

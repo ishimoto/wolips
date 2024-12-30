@@ -95,9 +95,9 @@ public class WOFrameworkContainerPage extends WizardPage implements IClasspathCo
 	 * The constructor.
 	 */
 	public WOFrameworkContainerPage() {
-		super("WebObjects Frameworks");
-		setTitle("WebObjects Frameworks");
-		setMessage("Select the frameworks to add to this project.");
+		super("TreasureBoat Frameworks");
+		setTitle("TreasureBoat Frameworks");
+		setMessage("Select the TB Frameworks to add to this project.");
 	}
 
 	protected boolean isFrameworkUsed(IEclipseFramework framework) {

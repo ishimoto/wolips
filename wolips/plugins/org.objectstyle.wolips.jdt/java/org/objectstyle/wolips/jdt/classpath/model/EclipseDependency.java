@@ -61,7 +61,7 @@ public class EclipseDependency extends Dependency {
 	public String getSystemRoot() {
 		IPath systemRoot = _variables.getSystemRoot();
 		if (systemRoot == null) {
-			throw new IllegalArgumentException("You do not have a 'wo.system.root' property set in your wolips.properties file.");
+			throw new IllegalArgumentException("You do not have a 'wo.system.root' property set in your tblips.properties file.");
 		}
 		return systemRoot.toString();
 	}

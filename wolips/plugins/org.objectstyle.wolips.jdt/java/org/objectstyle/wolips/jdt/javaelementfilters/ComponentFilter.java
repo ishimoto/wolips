@@ -46,6 +46,7 @@ package org.objectstyle.wolips.jdt.javaelementfilters;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.objectstyle.wolips.core.TBLipsConstants;
 
 public class ComponentFilter extends ViewerFilter {
 
@@ -57,7 +58,7 @@ public class ComponentFilter extends ViewerFilter {
 		if (element instanceof IFolder) {
 			IFolder folder = (IFolder) element;
 			String folderExtension = folder.getFileExtension();
-			if (folderExtension != null && "wo".equals(folderExtension)) {
+			if (folderExtension != null && TBLipsConstants.WO_EXTENSION_KEY.equals(folderExtension)) {
 				return false;
 			}
 		}

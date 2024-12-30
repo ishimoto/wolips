@@ -66,6 +66,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchSite;
 import org.eclipse.ui.actions.SelectionListenerAction;
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.objectstyle.wolips.refactoring.RenameWOComponentWizard;
 
 public class RenameWOComponentAction extends SelectionListenerAction {
@@ -96,7 +97,7 @@ public class RenameWOComponentAction extends SelectionListenerAction {
 
 	private static boolean isWOComponentResource(IStructuredSelection selection) {
 		IResource resource = getResource(selection);
-		if (resource instanceof IFolder && "wo".equals(resource.getLocation().getFileExtension())) {
+		if (resource instanceof IFolder && TBLipsConstants.WO_EXTENSION_KEY.equals(resource.getLocation().getFileExtension())) {
 			return true;
 		}
 		if (resource instanceof IFile && "api".equals(resource.getLocation().getFileExtension())) {

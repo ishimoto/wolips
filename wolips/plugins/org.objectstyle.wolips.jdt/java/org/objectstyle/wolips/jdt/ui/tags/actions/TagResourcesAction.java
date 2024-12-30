@@ -82,6 +82,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.objectstyle.wolips.jdt.ui.tags.Tag;
 import org.objectstyle.wolips.jdt.ui.tags.TagLib;
 import org.objectstyle.wolips.workbenchutilities.actions.AbstractActionOnIResources;
@@ -141,7 +142,7 @@ public class TagResourcesAction extends AbstractActionOnIResources {
 		}
 		IResource[] members = null;
 		if (resource.getType() == IResource.FOLDER) {
-			if (resource.getFileExtension() != null && "wo".equals(resource.getFileExtension())) {
+			if (resource.getFileExtension() != null && TBLipsConstants.WO_EXTENSION_KEY.equals(resource.getFileExtension())) {
 				components.add(resource.getName().substring(0, resource.getName().indexOf('.')));
 				return;
 			}

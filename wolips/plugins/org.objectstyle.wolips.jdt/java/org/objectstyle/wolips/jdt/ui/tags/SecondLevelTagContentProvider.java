@@ -65,6 +65,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.objectstyle.wolips.core.TBLipsConstants;
 
 public class SecondLevelTagContentProvider implements ITaggedComponentsContentProvider {
 
@@ -140,10 +141,10 @@ public class SecondLevelTagContentProvider implements ITaggedComponentsContentPr
 		}
 		IResource[] members = null;
 		if (resource.getType() == IResource.FOLDER) {
-			if (resource.getFileExtension() != null && "wo".equals(resource.getFileExtension())) {
+			if (resource.getFileExtension() != null && TBLipsConstants.WO_EXTENSION_KEY.equals(resource.getFileExtension())) {
 				for (int i = 0; i < taggedComponents.length; i++) {
 					TaggedComponent taggedComponent = taggedComponents[i];
-					String folderName = taggedComponent.name + ".wo";
+					String folderName = taggedComponent.name + TBLipsConstants.DOT_WO_EXTENSION_KEY;
 					if (folderName.equals(resource.getName())) {
 						folder.add((IFolder) resource);
 						return;
