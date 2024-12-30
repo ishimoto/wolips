@@ -1,0 +1,38 @@
+#if( ${TBLipsContext.createPackageDeclaration} )
+package ${TBLipsContext.packageName};
+#end
+
+import lombok.extern.slf4j.Slf4j;
+
+import org.treasureboat.webcore.appserver.TBContext;
+#if (${TBLipsContext.superclassImportRequired})
+import ${TBLipsContext.superclassName};
+#end
+
+@Slf4j
+public class ${TBLipsContext.componentName} extends ${TBLipsContext.superclassShortName} {
+
+	/**
+	*  Constructor
+	*/
+    public ${TBLipsContext.componentName}(TBContext context) {
+        super(context);
+    }
+    
+    /**
+    *  log:  Slf4j Takes care of this
+    */
+
+	
+	/**
+	 * Default serialVersionID
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	/**
+	*  Methods
+	*/
+	
+	
+	
+}
