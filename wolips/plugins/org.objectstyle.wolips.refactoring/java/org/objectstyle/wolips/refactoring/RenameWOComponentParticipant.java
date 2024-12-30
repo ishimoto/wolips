@@ -74,7 +74,7 @@ public class RenameWOComponentParticipant extends RenameParticipant {
 		try {
 			if (_element instanceof IType) {
 				mySourceType = (IType) _element;
-				initialized = PluginUtils.isOfType(mySourceType, "com.webobjects.appserver.WOComponent");
+				initialized = PluginUtils.isOfType(mySourceType, "org.treasureboat.webcore.components.TBComponent");
 			}
 		} catch (Throwable e) {
 			e.printStackTrace();
