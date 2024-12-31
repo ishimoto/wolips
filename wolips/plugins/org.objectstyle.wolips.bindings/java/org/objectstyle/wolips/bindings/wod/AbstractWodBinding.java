@@ -251,20 +251,20 @@ public abstract class AbstractWodBinding implements IWodBinding {
           if (checkKeyPath) {
             BindingValueKeyPath bindingValueKeyPath = new BindingValueKeyPath(bindingValue, javaFileType, javaProject, cache);
             // NTS: Technically these need to be related to every java file name in the key path
-            if (!bindingValueKeyPath.isValid() || (bindingValueKeyPath.isWOComponent() && !PreferenceConstants.IGNORE.equals(missingComponentSeverity)) || (bindingValueKeyPath.isNSKeyValueCoding() && !PreferenceConstants.IGNORE.equals(missingNSKVCSeverity) && !bindingValueKeyPath.isNSCollection())) {
-            	boolean warning;
-            	if (bindingValueKeyPath.isValid()) {
-            		warning = false;
-            	}
-            	else if (bindingValueKeyPath.isWOComponent()) {
-            		warning = PreferenceConstants.WARNING.equals(missingComponentSeverity);
-            	}
-            	else if (bindingValueKeyPath.isNSKeyValueCoding()) {
-            		warning = PreferenceConstants.WARNING.equals(missingCollectionSeverity);
-            	}
-            	else {
-            		warning = false;
-            	}
+            if (!bindingValueKeyPath.isValid() || (bindingValueKeyPath.isTBComponent() && !PreferenceConstants.IGNORE.equals(missingComponentSeverity)) || (bindingValueKeyPath.isTBFKeyValueCoding() && !PreferenceConstants.IGNORE.equals(missingNSKVCSeverity) && !bindingValueKeyPath.isNSCollection())) {
+//            	boolean warning;
+//            	if (bindingValueKeyPath.isValid()) {
+//            		warning = false;
+//            	}
+//            	else if (bindingValueKeyPath.isTBComponent()) {
+//            		warning = PreferenceConstants.WARNING.equals(missingComponentSeverity);
+//            	}
+//            	else if (bindingValueKeyPath.isTBFKeyValueCoding()) {
+//            		warning = PreferenceConstants.WARNING.equals(missingCollectionSeverity);
+//            	}
+//            	else {
+//            		warning = false;
+//            	}
               String invalidKey = bindingValueKeyPath.getInvalidKey();
               String validKeyPath = bindingValueKeyPath.getValidKeyPath();
               if ((validKeyPath == null || validKeyPath.length() == 0) && htmlCache != null && htmlCache.getVars().contains(invalidKey)) {
