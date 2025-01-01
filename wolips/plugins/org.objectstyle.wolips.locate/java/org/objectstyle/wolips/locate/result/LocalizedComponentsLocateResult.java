@@ -88,7 +88,7 @@ public class LocalizedComponentsLocateResult extends AbstractLocateResult {
 
 	private IFile dotApi;
 
-	private String[] superclasses = new String[] { "com.webobjects.appserver.WOElement" };
+	private String[] superclasses = new String[] { "org.treasureboat.webcore.dynamicelement.TBElement" };
 
 	public LocalizedComponentsLocateResult() {
 		super();
@@ -283,16 +283,6 @@ public class LocalizedComponentsLocateResult extends AbstractLocateResult {
 		return wodFile;
 	}
 
-	public IFile getFirstWooFile() throws CoreException {
-		IFile wooFile;
-		if (components.size() > 0) {
-			IFolder componentFolder = components.get(0);
-			wooFile = LocalizedComponentsLocateResult.getWoo(componentFolder);
-		} else {
-			wooFile = null;
-		}
-		return wooFile;
-	}
 
 	public boolean isValid() {
 		boolean valid = true;
@@ -329,10 +319,6 @@ public class LocalizedComponentsLocateResult extends AbstractLocateResult {
 
 	public static IFile getWod(IFolder component) throws CoreException {
 		return LocalizedComponentsLocateResult.getMemberWithExtension(component, "wod", true);
-	}
-
-	public static IFile getWoo(IFolder component) throws CoreException {
-		return LocalizedComponentsLocateResult.getMemberWithExtension(component, "woo", false);
 	}
 
 	private static IFile getMemberWithExtension(IFolder folder, String extension, boolean mustExist) throws CoreException {
