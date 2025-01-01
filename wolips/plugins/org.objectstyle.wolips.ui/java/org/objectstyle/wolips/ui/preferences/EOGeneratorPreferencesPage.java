@@ -81,7 +81,6 @@ public class EOGeneratorPreferencesPage extends FieldEditorPreferencePage implem
 		addField(new DirectoryFieldEditor(Preferences.PREF_EOGENERATOR_TEMPLATE_DIR, PreferencesMessages.getString("Preferences.EOGeneratorTemplateDir.Label"), getFieldEditorParent()));
 		addField(new StringFieldEditor(Preferences.PREF_EOGENERATOR_JAVA_TEMPLATE, PreferencesMessages.getString("Preferences.EOGeneratorJavaTemplate.Label"), getFieldEditorParent()));
 		addField(new StringFieldEditor(Preferences.PREF_EOGENERATOR_SUBCLASS_JAVA_TEMPLATE, PreferencesMessages.getString("Preferences.EOGeneratorSubclassJavaTemplate.Label"), getFieldEditorParent()));
-    addField(new BooleanFieldEditor(Preferences.PREF_EOGENERATOR_JAVA_14, PreferencesMessages.getString("Preferences.EOGeneratorJava14.Label"), getFieldEditorParent()));
 	}
 
 	/**

@@ -85,27 +85,17 @@ public class WOLipsDevelopmentPropertyPage extends WOLipsPropertyPage {
 
 	private static final String WO_USE_INCREMENTAL_TITLE = "Incremental";
 
-	private static final String WO_USE_ANT_TITLE = "Ant (build.xml)";
-
 	private static final String WO_USE_TARGET_BUILDER_TITLE = "Use Target Builder for JavaClient";
 
 	private Button _useTargetBuilderCheck;
 
 	private Button _webObjectsProjectCheck;
 
-	private Button _buildStyleAntButton;
-
 	private Button _buildStyleIncrementalButton;
 
 	private Button _bundleTypeFrameworkButton;
 
 	private Button _bundleTypeApplicationButton;
-
-	private Button _wellFormedRequiredButton;
-
-	private Text _inlineBindingsPrefixText;
-
-	private Text _inlineBindingsSuffixText;
 
 	private Text _principalClassText;
 
@@ -161,27 +151,15 @@ public class WOLipsDevelopmentPropertyPage extends WOLipsPropertyPage {
 			}
 		});
 
-		_buildStyleAntButton = new Button(buildStyleGroup, SWT.RADIO | SWT.LEFT);
-		_buildStyleAntButton.setText(WO_USE_ANT_TITLE);
-		_buildStyleAntButton.setEnabled(true);
-		FormData antLayoutData = new FormData();
-		antLayoutData.top = new FormAttachment(_buildStyleIncrementalButton, 5);
-		_buildStyleAntButton.setLayoutData(antLayoutData);
-
 		boolean isIncremental = (project == null || project.isIncrementalBuilderInstalled());
 		if (isIncremental) {
 			_buildStyleIncrementalButton.setSelection(true);
-		} else {
-			_buildStyleAntButton.setSelection(true);
 		}
 
 		_useTargetBuilderCheck = new Button(buildStyleGroup, SWT.CHECK | SWT.LEFT);
 		_useTargetBuilderCheck.setText(WO_USE_TARGET_BUILDER_TITLE);
 		_useTargetBuilderCheck.setEnabled(true);
 		_useTargetBuilderCheck.setSelection(project != null && project.isTargetBuilderInstalled());
-		FormData targetBuilderData = new FormData();
-		targetBuilderData.top = new FormAttachment(_buildStyleAntButton, 15);
-		_useTargetBuilderCheck.setLayoutData(targetBuilderData);
 
 		Composite textSettingsGroup = new Composite(buildStyleGroup, SWT.NONE);
 		GridLayout textSettingsLayout = new GridLayout(2, false);
@@ -200,46 +178,6 @@ public class WOLipsDevelopmentPropertyPage extends WOLipsPropertyPage {
 				projectFrameworkFolder = "";
 			}
 			_projectFrameworkFolderText.setText(projectFrameworkFolder);
-		}
-	}
-
-	private void _addComponentsSection(Composite parent, ProjectAdapter project) {
-		Composite componentsGroup = _createGroupWithLabel(parent, "Components");
-
-		_wellFormedRequiredButton = new Button(componentsGroup, SWT.CHECK | SWT.LEFT);
-		_wellFormedRequiredButton.setText("Require well-formed HTML");
-		_wellFormedRequiredButton.setEnabled(true);
-		FormData wellFormedLayoutData = new FormData();
-		wellFormedLayoutData.left = new FormAttachment(0, 0);
-		_wellFormedRequiredButton.setLayoutData(wellFormedLayoutData);
-		_wellFormedRequiredButton.setSelection(project.getBuildProperties().isWellFormedTemplateRequired());
-		_wellFormedRequiredButton.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
-				WOLipsDevelopmentPropertyPage.this.enableWidgets();
-			}
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-				widgetSelected(e);
-			}
-		});
-
-		Composite textSettingsGroup = new Composite(componentsGroup, SWT.NONE);
-		GridLayout textSettingsLayout = new GridLayout(2, false);
-		textSettingsLayout.marginLeft = -3;
-		textSettingsGroup.setLayout(textSettingsLayout);
-		FormData textSettingsLayoutData = new FormData();
-		textSettingsLayoutData.top = new FormAttachment(_wellFormedRequiredButton, 10);
-		textSettingsLayoutData.left = new FormAttachment(0, 0);
-		textSettingsLayoutData.right = new FormAttachment(100, 0);
-		textSettingsGroup.setLayoutData(textSettingsLayoutData);
-		_inlineBindingsPrefixText = _addTextField(textSettingsGroup, "Inline Bindings Prefix");
-		if (project != null) {
-			_inlineBindingsPrefixText.setText(project.getBuildProperties().getInlineBindingPrefix());
-		}
-
-		_inlineBindingsSuffixText = _addTextField(textSettingsGroup, "Inline Bindings Suffix");
-		if (project != null) {
-			_inlineBindingsSuffixText.setText(project.getBuildProperties().getInlineBindingSuffix());
 		}
 	}
 
@@ -306,7 +244,6 @@ public class WOLipsDevelopmentPropertyPage extends WOLipsPropertyPage {
 	protected void _createContents(Composite parent, ProjectAdapter projectAdapter, boolean isWOProject) {
 		_addWOProjectSection(parent, isWOProject);
 		_addBundleSettingsSection(parent, projectAdapter);
-		_addComponentsSection(parent, projectAdapter);
 		_addBuildStyleSection(parent, projectAdapter);
 
 		enableWidgets();
@@ -332,20 +269,11 @@ public class WOLipsDevelopmentPropertyPage extends WOLipsPropertyPage {
 	public boolean performOk() {
 		// store the value in the owner text field
 		try {
-			boolean useTargetBuilder = _useTargetBuilderCheck.getSelection();
 			if (_webObjectsProjectCheck.getSelection()) {
 				if (_bundleTypeFrameworkButton.getSelection()) {
-					if (_buildStyleIncrementalButton.getSelection()) {
-						WOLipsNatureUtils.setNatureForProject(WOLipsNatureUtils.INCREMENTAL_FRAMEWORK_ID, useTargetBuilder, getProject(), new NullProgressMonitor());
-					} else if (_buildStyleAntButton.getSelection()) {
-						WOLipsNatureUtils.setNatureForProject(WOLipsNatureUtils.ANT_FRAMEWORK_ID, useTargetBuilder, getProject(), new NullProgressMonitor());
-					}
+					WOLipsNatureUtils.setNatureForProject(WOLipsNatureUtils.INCREMENTAL_FRAMEWORK_ID, getProject(), new NullProgressMonitor());
 				} else if (_bundleTypeApplicationButton.getSelection()) {
-					if (_buildStyleIncrementalButton.getSelection()) {
-						WOLipsNatureUtils.setNatureForProject(WOLipsNatureUtils.INCREMENTAL_APPLICATION_ID, useTargetBuilder, getProject(), new NullProgressMonitor());
-					} else if (_buildStyleAntButton.getSelection()) {
-						WOLipsNatureUtils.setNatureForProject(WOLipsNatureUtils.ANT_APPLICATION_ID, useTargetBuilder, getProject(), new NullProgressMonitor());
-					}
+					WOLipsNatureUtils.setNatureForProject(WOLipsNatureUtils.INCREMENTAL_APPLICATION_ID, getProject(), new NullProgressMonitor());
 				}
 				ProjectAdapter project = getProjectAdapter();
 				if (project != null) {
@@ -359,9 +287,6 @@ public class WOLipsDevelopmentPropertyPage extends WOLipsPropertyPage {
 						buildProperties.setProjectFrameworkFolder(projectFrameworkFolderText);
 					}
 					buildProperties.setFramework(_bundleTypeFrameworkButton.getSelection());
-					buildProperties.setWellFormedTemplateRequired(_wellFormedRequiredButton.getSelection());
-					buildProperties.setInlineBindingPrefix(_inlineBindingsPrefixText.getText());
-					buildProperties.setInlineBindingSuffix(_inlineBindingsSuffixText.getText());
 					buildProperties.save();
 				}
 			} else {

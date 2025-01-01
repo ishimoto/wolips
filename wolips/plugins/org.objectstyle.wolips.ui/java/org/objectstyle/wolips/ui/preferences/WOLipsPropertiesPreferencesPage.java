@@ -85,7 +85,7 @@ public class WOLipsPropertiesPreferencesPage extends FieldEditorPreferencePage i
 			wolipsPropertiesName = Preferences.getPreferenceStore().getString(Preferences.PREF_WOLIPS_PROPERTIES_FILE);
 		}
 		IPreferenceStore preferenceStore = VariablesPlugin.getDefault().getGlobalVariables(wolipsPropertiesName);
-		preferenceStore.setValue("wolips.properties", wolipsPropertiesName);
+		preferenceStore.setValue("tblips.properties", wolipsPropertiesName);
 		return preferenceStore;
 	}
 
@@ -107,12 +107,10 @@ public class WOLipsPropertiesPreferencesPage extends FieldEditorPreferencePage i
 		};
 		addField(_wolipsPropertiesFieldEditor);
 
-		addField(new WOLipsDirectoryFieldEditor(WOVariables.NETWORK_FRAMEWORKS, "Network Frameworks", widthInChars, getFieldEditorParent()));
 		addField(new WOLipsDirectoryFieldEditor(WOVariables.SYSTEM_FRAMEWORKS, "System Frameworks", widthInChars, getFieldEditorParent()));
 		addField(new WOLipsDirectoryFieldEditor(WOVariables.LOCAL_FRAMEWORKS, "Local Frameworks", widthInChars, getFieldEditorParent()));
 		addField(new WOLipsDirectoryFieldEditor(WOVariables.USER_FRAMEWORKS, "User Frameworks", widthInChars, getFieldEditorParent()));
 
-		addField(new WOLipsDirectoryFieldEditor(WOVariables.NETWORK_ROOT, "Network Root", widthInChars, getFieldEditorParent()));
 		addField(new WOLipsDirectoryFieldEditor(WOVariables.SYSTEM_ROOT, "System Root", widthInChars, getFieldEditorParent()));
 		addField(new WOLipsDirectoryFieldEditor(WOVariables.LOCAL_ROOT, "Local Root", widthInChars, getFieldEditorParent()));
 		addField(new WOLipsDirectoryFieldEditor(WOVariables.USER_ROOT, "User Root", widthInChars, getFieldEditorParent()));

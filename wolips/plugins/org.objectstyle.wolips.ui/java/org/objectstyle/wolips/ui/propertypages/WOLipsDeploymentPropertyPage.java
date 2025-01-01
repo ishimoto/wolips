@@ -78,25 +78,6 @@ public class WOLipsDeploymentPropertyPage extends WOLipsPropertyPage {
 
 	private Text _customWebXMLText;
 
-	private Button _javaClientButton;
-
-	private Button _javaWebStartButton;
-
-	private void _addEmbedSettingsSection(Composite parent, ProjectAdapter project) {
-		Composite embedGroup = _createGroupWithLabel(parent, "Embed Frameworks");
-		embedGroup.setLayout(new GridLayout(1, false));
-
-		_embedButtons = new HashMap<Root, Button>();
-		for (Root root : JdtPlugin.getDefault().getFrameworkModel(project.getUnderlyingProject()).getRoots()) {
-			Button embedButton = new Button(embedGroup, SWT.CHECK | SWT.LEFT);
-			embedButton.setText(root.getName());
-			embedButton.setEnabled(true);
-			embedButton.setSelection(getBuildProperties().isEmbed(root));
-			embedButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			_embedButtons.put(root, embedButton);
-		}
-	}
-
 	private void _addCustomInfoPListSettingsSection(Composite parent, ProjectAdapter project) {
 		Composite customInfoPListGroup = _createGroupWithLabel(parent, "Custom Info.plist");
 		customInfoPListGroup.setLayout(new GridLayout(2, false));
@@ -108,30 +89,6 @@ public class WOLipsDeploymentPropertyPage extends WOLipsPropertyPage {
 				_customInfoPListText.setText(buildProperties.getCustomInfoPListContent(true));
 			}
 		}
-	}
-
-	private void _addJavaClientSection(Composite parent) {
-		Composite javaClientGroup = _createGroupWithLabel(parent, "Java Client");
-		javaClientGroup.setLayout(new GridLayout(1, false));
-
-		_javaClientButton = new Button(javaClientGroup, SWT.CHECK | SWT.LEFT);
-		_javaClientButton.setText("Java Client");
-		_javaClientButton.setEnabled(true);
-		_javaClientButton.setSelection(getBuildProperties().isJavaClient());
-		_javaClientButton.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
-				WOLipsDeploymentPropertyPage.this.enableWidgets();
-			}
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-				widgetSelected(e);
-			}
-		});
-
-		_javaWebStartButton = new Button(javaClientGroup, SWT.CHECK | SWT.LEFT);
-		_javaWebStartButton.setText("Java WebStart");
-		_javaWebStartButton.setEnabled(true);
-		_javaWebStartButton.setSelection(getBuildProperties().isJavaWebStart());
 	}
 
 	private void _addServletDeploymentSection(Composite parent) {
@@ -187,9 +144,7 @@ public class WOLipsDeploymentPropertyPage extends WOLipsPropertyPage {
 	
 			for (Button embedButton : _embedButtons.values()) {
 				embedButton.setEnabled(isApplication && !_servletDeploymentCheck.getSelection());
-			}
-	
-			_javaWebStartButton.setEnabled(_javaClientButton.getSelection());
+			}	
 		}
 	}
 
@@ -197,8 +152,6 @@ public class WOLipsDeploymentPropertyPage extends WOLipsPropertyPage {
 	protected void _createContents(Composite parent, ProjectAdapter projectAdapter, boolean isWOProject) {
 		_addCustomInfoPListSettingsSection(parent, projectAdapter);
 		_addServletDeploymentSection(parent);
-		_addJavaClientSection(parent);
-		_addEmbedSettingsSection(parent, projectAdapter);
 		enableWidgets();
 	}
 
@@ -224,21 +177,6 @@ public class WOLipsDeploymentPropertyPage extends WOLipsPropertyPage {
 				buildProperties.setWebXML(_generateWebXMLCheck.getSelection());
 				buildProperties.setWebXML_CustomContent(_customWebXMLText.getText());
 
-				ProjectFrameworkAdapter projectFrameworkAdapter = getProjectFrameworkAdapter();
-				if (buildProperties.isServletDeployment()) {
-					projectFrameworkAdapter.addFrameworkNamed("JavaWOJSPServlet");
-				} else {
-					projectFrameworkAdapter.removeFrameworkNamed("JavaWOJSPServlet");
-				}
-
-				for (Root root : _embedButtons.keySet()) {
-					Button embedButton = _embedButtons.get(root);
-					boolean embed = buildProperties.isServletDeployment() || (embedButton.isEnabled() && embedButton.getSelection());
-					buildProperties.setEmbed(root, embed);
-				}
-
-				buildProperties.setJavaClient(_javaClientButton.getSelection());
-				buildProperties.setJavaWebStart(_javaClientButton.getSelection() && _javaWebStartButton.getSelection());
 				buildProperties.save();
 			}
 		} catch (Exception up) {
