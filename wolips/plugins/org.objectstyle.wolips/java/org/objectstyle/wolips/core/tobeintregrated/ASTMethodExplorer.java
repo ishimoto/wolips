@@ -173,9 +173,9 @@ public class ASTMethodExplorer extends ASTVisitor {
 				// classDependencies
 				classDependencies.put(declaredClassBinding.getName(), superClassBinding.getName());
 
-				// WOComponent && title()
-				boolean isWOComponent = superClassBinding.getName().equals("WOComponent");
-				skip = skip || (isWOComponent && binding.getName().equals("title"));
+				// TBComponent && title()
+				boolean isTBComponent = superClassBinding.getName().equals("TBComponent");
+				skip = skip || (isTBComponent && binding.getName().equals("title"));
 			}
 
 			// DirectAction.Action()

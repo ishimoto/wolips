@@ -121,8 +121,8 @@ public abstract class AbstractProjectTestCase extends TestCase {
 			naturesList.add("org.eclipse.jdt.core.javanature");
 			description.setNatureIds(naturesList.toArray(new String[naturesList.size()]));
 			project.setDescription(description, monitor);
-			boolean success = WOLipsNatureUtils.addAntFrameworkNatureToProject(project, monitor);
-			assertTrue(success);
+//			boolean success = WOLipsNatureUtils.addAntFrameworkNatureToProject(project, monitor);
+//			assertTrue(success);
 		} catch (CoreException e) {
 			assertTrue(false);
 		}
@@ -161,8 +161,8 @@ public abstract class AbstractProjectTestCase extends TestCase {
 			naturesList.add("org.eclipse.jdt.core.javanature");
 			description.setNatureIds(naturesList.toArray(new String[naturesList.size()]));
 			project.setDescription(description, monitor);
-			boolean success = WOLipsNatureUtils.addAntApplicationNatureToProject(project, monitor);
-			assertTrue(success);
+//			boolean success = WOLipsNatureUtils.addAntApplicationNatureToProject(project, monitor);
+//			assertTrue(success);
 		} catch (CoreException e) {
 			assertTrue(false);
 		}

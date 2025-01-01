@@ -56,8 +56,6 @@
 package org.objectstyle.wolips.core.resources.internal.types.file;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.objectstyle.wolips.baseforplugins.util.WOLipsNatureUtils;
 import org.objectstyle.wolips.core.resources.internal.types.AbstractResourceAdapterFactory;
 import org.objectstyle.wolips.core.resources.types.IResourceType;
 import org.objectstyle.wolips.core.resources.types.file.IPBDotProjectAdapter;
@@ -88,11 +86,11 @@ public class FileAdapterFactory extends AbstractResourceAdapterFactory {
 	}
 
 	public IResourceType createAdapter(Object adaptableObject, Class adapterType) {
-		IFile file = (IFile) adaptableObject;
-		IProject project = file.getProject();
-		if (WOLipsNatureUtils.isWOLipsNature(project) && adapterType == IPBDotProjectAdapter.class) {
-			return new PBDotProjectAdapter(file);
-		}
+//		IFile file = (IFile) adaptableObject;
+//		IProject project = file.getProject();
+//		if (WOLipsNatureUtils.isWOLipsNature(project) && adapterType == IPBDotProjectAdapter.class) {
+//			return new PBDotProjectAdapter(file);
+//		}
 		return null;
 	}
 }

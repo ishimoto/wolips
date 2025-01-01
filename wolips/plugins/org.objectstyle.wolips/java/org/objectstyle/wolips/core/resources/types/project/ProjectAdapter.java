@@ -72,12 +72,9 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.JavaCore;
 import org.objectstyle.wolips.baseforplugins.util.WOLipsNatureUtils;
 import org.objectstyle.wolips.core.CorePlugin;
-import org.objectstyle.wolips.core.resources.internal.build.AntApplicationNature;
-import org.objectstyle.wolips.core.resources.internal.build.AntFrameworkNature;
 import org.objectstyle.wolips.core.resources.internal.types.AbstractResourceAdapter;
 import org.objectstyle.wolips.core.resources.types.IPBDotProjectOwner;
 import org.objectstyle.wolips.core.resources.types.file.IPBDotProjectAdapter;
@@ -102,8 +99,6 @@ public class ProjectAdapter extends AbstractResourceAdapter implements IPBDotPro
 	protected static final String TARGET_BUILDER_ID = "org.objectstyle.wolips.targetbuilder.targetbuilder";
 
 	protected static final String INCREMENTAL_BUILDER_ID = "org.objectstyle.wolips.incrementalbuilder";
-
-	private static final String ANT_BUILDER_ID = "org.objectstyle.wolips.antbuilder";
 
 	public ProjectAdapter(IProject project, boolean isFramework) {
 		super(project);
@@ -146,23 +141,27 @@ public class ProjectAdapter extends AbstractResourceAdapter implements IPBDotPro
 		return pbDotProjectAdapter;
 	}
 
+	/**
+	 * @deprecated
+	 * @return
+	 */
 	public IWoprojectAdapter getWoprojectAdapter() {
-		IContainer underlyingContainer = this.getUnderlyingProject();
-		IFolder wprojectFolder = null;
-		IWoprojectAdapter wprojectAdapter = null;
-		wprojectFolder = underlyingContainer.getFolder(new Path(IWoprojectAdapter.FOLDER_NAME));
-		if (wprojectFolder.exists()) {
-			wprojectAdapter = (IWoprojectAdapter) wprojectFolder.getAdapter(IWoprojectAdapter.class);
-			if (wprojectAdapter != null) {
-				return wprojectAdapter;
-			}
-		}
-		wprojectFolder = underlyingContainer.getFolder(new Path(IWoprojectAdapter.FOLDER_NAME_DEPRECATED));
-		if (wprojectFolder.exists()) {
-			wprojectAdapter = (IWoprojectAdapter) wprojectFolder.getAdapter(IWoprojectAdapter.class);
-		}
-		return wprojectAdapter;
-
+//		IContainer underlyingContainer = this.getUnderlyingProject();
+//		IFolder wprojectFolder = null;
+//		IWoprojectAdapter wprojectAdapter = null;
+//		wprojectFolder = underlyingContainer.getFolder(new Path(IWoprojectAdapter.FOLDER_NAME));
+//		if (wprojectFolder.exists()) {
+//			wprojectAdapter = (IWoprojectAdapter) wprojectFolder.getAdapter(IWoprojectAdapter.class);
+//			if (wprojectAdapter != null) {
+//				return wprojectAdapter;
+//			}
+//		}
+//		wprojectFolder = underlyingContainer.getFolder(new Path(IWoprojectAdapter.FOLDER_NAME_DEPRECATED));
+//		if (wprojectFolder.exists()) {
+//			wprojectAdapter = (IWoprojectAdapter) wprojectFolder.getAdapter(IWoprojectAdapter.class);
+//		}
+//		return wprojectAdapter;
+		return null;
 	}
 
 	public IPBDotProjectOwner getPBDotProjectOwner(IResource resource) {
@@ -244,25 +243,25 @@ public class ProjectAdapter extends AbstractResourceAdapter implements IPBDotPro
 		return returnValue;
 	}
 
-	/**
-	 * Installs the ant builder.
-	 * 
-	 * @throws CoreException
-	 */
-	public void installAntBuilder() throws CoreException {
-		if (!this.isAntBuilderInstalled())
-			this.installBuilder(ProjectAdapter.ANT_BUILDER_ID);
-	}
-
-	/**
-	 * Removes the ant builder.
-	 * 
-	 * @throws CoreException
-	 */
-	public void removeAntBuilder() throws CoreException {
-		if (this.isAntBuilderInstalled())
-			this.removeBuilder(ProjectAdapter.ANT_BUILDER_ID);
-	}
+//	/**
+//	 * Installs the ant builder.
+//	 * 
+//	 * @throws CoreException
+//	 */
+//	public void installAntBuilder() throws CoreException {
+//		if (!this.isAntBuilderInstalled())
+//			this.installBuilder(ProjectAdapter.ANT_BUILDER_ID);
+//	}
+//
+//	/**
+//	 * Removes the ant builder.
+//	 * 
+//	 * @throws CoreException
+//	 */
+//	public void removeAntBuilder() throws CoreException {
+//		if (this.isAntBuilderInstalled())
+//			this.removeBuilder(ProjectAdapter.ANT_BUILDER_ID);
+//	}
 
 	/**
 	 * Installs the incremetal builder.
@@ -327,12 +326,12 @@ public class ProjectAdapter extends AbstractResourceAdapter implements IPBDotPro
 		return this.isBuilderInstalled(ProjectAdapter.TARGET_BUILDER_ID);
 	}
 
-	/**
-	 * @return Return true if the ant builder is installed.
-	 */
-	public boolean isAntBuilderInstalled() {
-		return this.isBuilderInstalled(ProjectAdapter.ANT_BUILDER_ID);
-	}
+//	/**
+//	 * @return Return true if the ant builder is installed.
+//	 */
+//	public boolean isAntBuilderInstalled() {
+//		return this.isBuilderInstalled(ProjectAdapter.ANT_BUILDER_ID);
+//	}
 
 	/**
 	 * @return Return true if the incremental builder is installed.
@@ -382,7 +381,7 @@ public class ProjectAdapter extends AbstractResourceAdapter implements IPBDotPro
 	 * @return boolean whether this is one of ours
 	 */
 	private boolean isWOLipsBuilder(String name) {
-		return (name.equals(ProjectAdapter.INCREMENTAL_BUILDER_ID) || name.equals(ProjectAdapter.ANT_BUILDER_ID));
+		return (name.equals(ProjectAdapter.INCREMENTAL_BUILDER_ID));
 	}
 
 	/**
@@ -566,7 +565,7 @@ public class ProjectAdapter extends AbstractResourceAdapter implements IPBDotPro
 	}
 
 	protected boolean mockBundlesEnabled() {
-		return Platform.getPreferencesService().getBoolean("org.objectstyle.wolips.preferences", "org.objectstyle.wolips.preference.MockBundleEnabled", true, null);
+		return false; //Platform.getPreferencesService().getBoolean("org.objectstyle.wolips.preferences", "org.objectstyle.wolips.preference.MockBundleEnabled", true, null);
 	}
 	
 	/**
@@ -576,15 +575,11 @@ public class ProjectAdapter extends AbstractResourceAdapter implements IPBDotPro
 	public IContainer getWorkingDirFolder() throws CoreException {
 		IContainer workingDirFolder;
 		IProject project = this.getUnderlyingProject();
-		BuildProperties buildProperties = (BuildProperties)project.getAdapter(BuildProperties.class);
-		if (buildProperties.getWOVersion().isAtLeastVersion(5, 6) || !mockBundlesEnabled()) {
+		if ( !mockBundlesEnabled()) {
 			workingDirFolder = project;
 		} else {
-			if (this.isAntBuilderInstalled() || (WOLipsNatureUtils.getNature(project) instanceof AntApplicationNature)) {
-				workingDirFolder = this.getUnderlyingProject().getFolder(IBuildAdapter.FILE_NAME_DIST);
-			} else {
-				workingDirFolder = this.getUnderlyingProject().getFolder(IBuildAdapter.FILE_NAME_BUILD);
-			}
+			workingDirFolder = this.getUnderlyingProject().getFolder(IBuildAdapter.FILE_NAME_BUILD);
+			
 			if (workingDirFolder != null && workingDirFolder.exists()) {
 				IFolder woaFolder = null;
 				IResource[] members = workingDirFolder.members();
@@ -609,8 +604,7 @@ public class ProjectAdapter extends AbstractResourceAdapter implements IPBDotPro
 	public IPath getWOJavaArchive() throws CoreException {
 		IPath path = null;
 		IProject project = this.getUnderlyingProject();
-		BuildProperties buildProperties = (BuildProperties)project.getAdapter(BuildProperties.class);
-		if (buildProperties.getWOVersion().isAtLeastVersion(5, 6) || !mockBundlesEnabled()) {
+		if (!mockBundlesEnabled()) {
 			path = this.getUnderlyingProject().getLocation();
 		} else {
 			IResource resource = null;
@@ -620,11 +614,7 @@ public class ProjectAdapter extends AbstractResourceAdapter implements IPBDotPro
 			// that fragment is not
 			// visible here (so I can't use the class, I think) [hn3000]
 			if (this.isFramework()) {
-				if (this.isAntBuilderInstalled() || (WOLipsNatureUtils.getNature(project) instanceof AntFrameworkNature)) {
-					resource = getJar("dist/", ".framework/");
-					if (!resource.exists())
-						resource = getJar("", ".framework/");
-				} else if (this.isIncrementalBuilderInstalled()) {
+				if (this.isIncrementalBuilderInstalled()) {
 					resource = this.getUnderlyingProject().getFolder("build/" + projectName + ".framework/Resources/Java");
 				}
 				if (resource != null && resource.exists()) {
@@ -639,11 +629,7 @@ public class ProjectAdapter extends AbstractResourceAdapter implements IPBDotPro
 				IContainer wdFolder = getWorkingDirFolder();
 				if (wdFolder != null && wdFolder.exists()) {
 					IFolder javaFolder = wdFolder.getFolder(new Path("Contents/Resources/Java"));
-					if (this.isAntBuilderInstalled() || (WOLipsNatureUtils.getNature(project) instanceof AntApplicationNature)) {
-						resource = javaFolder.findMember(wdFolder.getName().substring(0, wdFolder.getName().length() - 4).toLowerCase() + ".jar");
-						if (!resource.exists())
-							resource = getJar("", ".woa/Contents/");
-					} else if (this.isIncrementalBuilderInstalled()) {
+						if (this.isIncrementalBuilderInstalled()) {
 						resource = javaFolder;
 					}
 				}

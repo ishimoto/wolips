@@ -9,6 +9,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.objectstyle.wolips.baseforuiplugins.utils.WorkbenchUtilities;
 import org.objectstyle.wolips.core.CorePlugin;
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.objectstyle.wolips.locate.LocatePlugin;
 import org.objectstyle.wolips.locate.result.LocalizedComponentsLocateResult;
 
@@ -37,9 +38,6 @@ public class ComponentWOLipsResource implements IWOLipsResource {
 				if (results.getFirstWodFile() != null) {
 					list.add(results.getFirstWodFile());
 				}
-				if (results.getFirstWooFile() != null) {
-					list.add(results.getFirstWooFile());
-				}
 			}
 		} catch (Exception e) {
 			CorePlugin.getDefault().log(e);
@@ -53,10 +51,10 @@ public class ComponentWOLipsResource implements IWOLipsResource {
 
 	public void open() {
 		String extension = _resource.getFileExtension();
-		if ("wo".equals(extension)) {
+		if (TBLipsConstants.WO_EXTENSION_KEY.equals(extension)) {
 			String fileName = _resource.getName();
 			fileName = fileName.substring(0, fileName.length() - extension.length() - 1);
-			IFile wodFile = (IFile) ((IFolder) _resource).findMember(fileName + ".wod");
+			IFile wodFile = (IFile) ((IFolder) _resource).findMember(fileName + TBLipsConstants.DOT_WOD_EXTENSION_KEY);
 			if (wodFile != null) {
 				WorkbenchUtilities.open(wodFile, "org.objectstyle.wolips.componenteditor.ComponentEditor");
 			}

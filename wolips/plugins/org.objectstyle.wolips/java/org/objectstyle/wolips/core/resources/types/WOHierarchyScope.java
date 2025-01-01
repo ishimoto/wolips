@@ -231,6 +231,13 @@ public class WOHierarchyScope extends AbstractSearchScope implements SuffixConst
 		if (this.hierarchy == null) {
 			if (resourcePath.equals(this.focusPath)) {
 				return true;
+			}
+			if (this.needsRefresh) {
+				try {
+					initialize();
+				} catch (JavaModelException e) {
+					return false;
+				}
 			} else {
 				if (this.needsRefresh) {
 					try {

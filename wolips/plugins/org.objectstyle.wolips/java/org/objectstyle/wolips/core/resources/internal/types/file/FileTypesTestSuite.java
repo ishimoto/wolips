@@ -77,7 +77,7 @@ public class FileTypesTestSuite extends TestCase {
 	 */
 	public static Test suite() throws Exception {
 		TestSuite suite = new TestSuite();
-		suite.addTestSuite(PBDotProjectAdapterTest.class);
+//		suite.addTestSuite(PBDotProjectAdapterTest.class);
 		return suite;
 	}
 }
