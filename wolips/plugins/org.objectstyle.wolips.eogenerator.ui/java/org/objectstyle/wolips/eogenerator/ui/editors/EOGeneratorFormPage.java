@@ -99,8 +99,8 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.FileEditorInput;
 import org.objectstyle.wolips.eogenerator.core.model.EOGeneratorModel;
-import org.objectstyle.wolips.eogenerator.core.model.EOModelReference;
 import org.objectstyle.wolips.eogenerator.core.model.EOGeneratorModel.Define;
+import org.objectstyle.wolips.eogenerator.core.model.EOModelReference;
 
 public class EOGeneratorFormPage extends FormPage {
 	private EOGeneratorModel _model;
@@ -695,7 +695,7 @@ public class EOGeneratorFormPage extends FormPage {
 		FileDialog templateDialog = new FileDialog(getEditorSite().getShell());
 		templateDialog.setFileName(_model.getTemplateDir());
 		templateDialog.setText(text);
-		templateDialog.setFilterExtensions(new String[] { "*.eotemplate" });
+		templateDialog.setFilterExtensions(new String[] { "*.vm" });
 		String templateDir = _model.getTemplateDir();
 		if (templateDir != null) {
 			templateDialog.setFilterPath(templateDir);
@@ -714,7 +714,7 @@ public class EOGeneratorFormPage extends FormPage {
 	}
 
 	protected void createDefinesSection(FormToolkit toolkit, Composite parent) {
-		Composite definesSection = createSection(toolkit, parent, "Defines", "These variables will turn into EOGenerator -define-Xxx parameters that will be accessible in your templates (i.e. EOGenericRecord, etc)", 1, 2);
+		Composite definesSection = createSection(toolkit, parent, "Defines", "These variables will turn into TBEnterpriseGenericRecord -define-Xxx parameters that will be accessible in your templates (i.e. TBEnterpriseGenericRecord, etc)", 1, 2);
 		Table definesTable = toolkit.createTable(definesSection, SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.BORDER);
 
 		definesTable.setLinesVisible(true);
