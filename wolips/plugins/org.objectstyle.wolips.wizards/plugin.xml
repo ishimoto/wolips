@@ -44,7 +44,7 @@
 	        icon="icons/woproject/woapplication_wiz.gif"
 	        id="org.objectstyle.tblips.wizards.TBApplicationGradleWizard"
 	        project="true">
-	        <class class="org.objectstyle.wolips.wizards.TBApplicationGradleWizard">
+	        <class class="org.objectstyle.wolips.wizards.TBApplicationExtendedWizard">
 	          <parameter name="wotype" value="true"/>
 	        </class>
 	     <description>
@@ -83,7 +83,7 @@
 			category="org.objectstyle.wolips.wizards"
 			project="true"
 			id="org.objectstyle.wolips.wizards.new.projectFromTemplate">
-			<class class="org.objectstyle.wolips.wizards.template.NewProjectFromTemplateWizard">
+			<class class="org.objectstyle.wolips.wizards.template.NewWOProjectWizard">
 			  <parameter name = "wotype" value = "true"/>
 			</class>
 		 <description>
