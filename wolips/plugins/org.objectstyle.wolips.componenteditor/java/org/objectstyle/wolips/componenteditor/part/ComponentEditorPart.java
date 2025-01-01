@@ -84,7 +84,6 @@ import org.objectstyle.wolips.wodclipse.editor.WodEditor;
 public class ComponentEditorPart extends MultiPageEditorPart implements IEditorTarget, IResourceChangeListener, IComponentEditor, IShowEditorInput {
 	private int htmlPageId;
 	private int wodPageId;
-	private int wooPageId;
 	private int previewPageId;
 	private int apiPageId;
 	
@@ -101,6 +100,9 @@ public class ComponentEditorPart extends MultiPageEditorPart implements IEditorT
 	private ApiTab apiTab;
 
 	private ComponentEditorTab[] componentEditorTabs;
+	
+	// Frank
+	public boolean	_tabsInitialized = false;
 	
 	private boolean _saving;
 
@@ -152,6 +154,9 @@ public class ComponentEditorPart extends MultiPageEditorPart implements IEditorT
 		if (componentEditorTabs == null) {
 			return null;
 		}
+		else if (this.getActivePage() < 0) {
+			return null;
+		}
 		return componentEditorTabs[this.getActivePage()].getActiveEditorInput();
 	}
 
@@ -165,23 +170,18 @@ public class ComponentEditorPart extends MultiPageEditorPart implements IEditorT
 		// htmlwod tabs
 		IFileEditorInput htmlInput = null;
 		IFileEditorInput wodInput = null;
-		IFileEditorInput wooInput = null;
 		int inputsPerComponent = 3;
 		int tabIndex = 0;
 		boolean hasMultipleComponents = editorInput.length > inputsPerComponent;
 		for (int componentNum = 0; componentNum < editorInput.length; componentNum += inputsPerComponent) {
 			htmlInput = (IFileEditorInput) editorInput[componentNum + 0];
 			wodInput = (IFileEditorInput) editorInput[componentNum + 1];
-			wooInput = (IFileEditorInput) editorInput[componentNum + 2];
 
 			String language = null;
 			if (hasMultipleComponents) {
 				language = ComponentEditorInput.getLanguageName(htmlInput);
 				if (language == null) {
 					language = ComponentEditorInput.getLanguageName(wodInput);
-					if (language == null) {
-						language = ComponentEditorInput.getLanguageName(wooInput);
-					}
 				}
 				if (language == null) {
 					language = "";
@@ -204,14 +204,6 @@ public class ComponentEditorPart extends MultiPageEditorPart implements IEditorT
 			this.setPageText(tabIndex, language + "Component");
 			tabIndex++;
 			
-			
-
-			WooTab wooTab = new WooTab(this, tabIndex, wooInput);
-			componentEditorTabsList.add(wooTab);
-			wooTab.createTab();
-			wooPageId = this.addPage(wooTab);
-			this.setPageText(tabIndex, language + "Display Groups");
-			tabIndex++;
 		}
 
 		if (componentEditorInput.getStandaloneHtmlEditor() != null) {
@@ -222,7 +214,7 @@ public class ComponentEditorPart extends MultiPageEditorPart implements IEditorT
 			htmlWodTab.createTab();
 			htmlPageId = this.addPage(htmlWodTab);
 			wodPageId = htmlPageId;
-			this.setPageText(tabIndex, "HTML");
+			this.setPageText(tabIndex, "HTML");  //XXX: why UPPERCASE???
 			tabIndex++;
 		}
 		
@@ -237,15 +229,15 @@ public class ComponentEditorPart extends MultiPageEditorPart implements IEditorT
 			tabIndex++;
 		}
 		
-		if (editorInput.length > 0) {
-			// html preview tab
-			htmlPreviewTab = new HtmlPreviewTab(this, tabIndex, htmlInput);
-			componentEditorTabsList.add(htmlPreviewTab);
-			htmlPreviewTab.createTab();
-			previewPageId = this.addPage(htmlPreviewTab);
-			this.setPageText(tabIndex, "Preview (Experimental)");
-			tabIndex++;
-		}
+//		if (editorInput.length > 0) {
+//			// html preview tab
+//			htmlPreviewTab = new HtmlPreviewTab(this, tabIndex, htmlInput);
+//			componentEditorTabsList.add(htmlPreviewTab);
+//			htmlPreviewTab.createTab();
+//			previewPageId = this.addPage(htmlPreviewTab);
+//			this.setPageText(tabIndex, "Preview (Experimental)");
+//			tabIndex++;
+//		}
 
 		componentEditorTabs = componentEditorTabsList.toArray(new ComponentEditorTab[componentEditorTabsList.size()]);
 		htmlWodTabs = htmlWodTabsList.toArray(new HtmlWodTab[htmlWodTabsList.size()]);
@@ -264,13 +256,13 @@ public class ComponentEditorPart extends MultiPageEditorPart implements IEditorT
 		});
 		if (componentEditorInput.isDisplayWodPartOnReveal()) {
 			this.switchToWod();
-		} else if (componentEditorInput.isDisplayWooPartOnReveal()) {
-			this.switchToWoo();
 		} else if (componentEditorInput.isDisplayApiPartOnReveal()) {
 			this.switchToApi();
 		} else if (componentEditorInput.isDisplayHtmlPartOnReveal()) {
 			this.switchToHtml();
 		}
+		// Frank
+		_tabsInitialized = true;
 		return;
 	}
 
@@ -340,9 +332,6 @@ public class ComponentEditorPart extends MultiPageEditorPart implements IEditorT
 		case IEditorTarget.TARGET_WOD:
 			this.switchToWod();
 			break;
-		case IEditorTarget.TARGET_WOO:
-			this.switchToWoo();
-			break;
 
 		default:
 			break;
@@ -365,10 +354,6 @@ public class ComponentEditorPart extends MultiPageEditorPart implements IEditorT
 		switchToPage(wodPageId);
 	}
 
-	public void switchToWoo() {
-		switchToPage(wooPageId);
-	}
-
 	public void switchToPreview() {
 		switchToPage(previewPageId);
 	}
@@ -383,6 +368,10 @@ public class ComponentEditorPart extends MultiPageEditorPart implements IEditorT
 	}
 
 	protected void pageChange(int newPageIndex) {
+		// Frank
+		if (componentEditorTabs == null)
+			return;
+		
 		super.pageChange(newPageIndex);
 		componentEditorTabs[newPageIndex].editorSelected();
 	}
@@ -400,6 +389,13 @@ public class ComponentEditorPart extends MultiPageEditorPart implements IEditorT
 	}
 
 	public IEditorPart getEditor(int pageIndex) {
+		if (componentEditorTabs == null)
+			return null;
+		
+		int tabIndex = this.getActivePage();
+		if (tabIndex < 0)
+			tabIndex = 0;
+		
 		return componentEditorTabs[this.getActivePage()].getActiveEmbeddedEditor();
 	}
 
@@ -512,9 +508,6 @@ public class ComponentEditorPart extends MultiPageEditorPart implements IEditorT
 					break;
 				case 1:
 					switchToWod();
-					break;
-				case 2:
-					switchToWoo();
 					break;
 				case 3:
 					switchToApi();
