@@ -192,8 +192,6 @@ public class EOGeneratorModel {
 
 	private String _defaultSubclassJavaTemplate;
 	
-	private boolean _java14;
-	
 	private String _extension;
 
 	public EOGeneratorModel(IProject project, String lineInfo) throws ParseException {
@@ -222,7 +220,6 @@ public class EOGeneratorModel {
 			_defaultTemplateDir = Preferences.getEOGeneratorTemplateDir();
 			_defaultJavaTemplate = Preferences.getEOGeneratorJavaTemplate();
 			_defaultSubclassJavaTemplate = Preferences.getEOGeneratorSubclassJavaTemplate();
-			_java14 = Preferences.isEOGeneratorJava14();
 			_extension = "java";
 		}
 		catch (NoClassDefFoundError e) {
@@ -233,13 +230,13 @@ public class EOGeneratorModel {
 		}
 	}
 	
-	public void setJava14(boolean java14) {
-		_java14 = java14;
-	}
-	
-	public boolean isJava14() {
-		return _java14;
-	}
+//	public void setJava14(boolean java14) {
+//		_java14 = java14;
+//	}
+//	
+//	public boolean isJava14() {
+//		return _java14;
+//	}
 
 	public void setDefaultEOGeneratorPath(String defaultEOGeneratorPath) {
 		_defaultEOGeneratorPath = defaultEOGeneratorPath;
@@ -324,7 +321,7 @@ public class EOGeneratorModel {
 
 		sb.append(escape(getEOGeneratorPath(), false));
 
-		append(sb, "-destination", EOGeneratorModel.toFullPath(workingDirectory, _destination));
+		append(sb, "-destination", "GeneratedEOs" /* EOGeneratorModel.toFullPath(workingDirectory, _destination) */);
 		append(sb, "-destination2", EOGeneratorModel.toFullPath(workingDirectory, _destination2));
 		append(sb, "-destination3", EOGeneratorModel.toFullPath(workingDirectory, _destination3));
 		append(sb, "-destination4", EOGeneratorModel.toFullPath(workingDirectory, _destination4));
@@ -333,7 +330,7 @@ public class EOGeneratorModel {
 		append(sb, "-java", _java);
 		append(sb, "-javaclient", _javaClient);
 		append(sb, "-javaclientcommon", _javaClientCommon);
-		append(sb, "-javaTemplate", getJavaTemplate());
+		append(sb, "-javaTemplate", "" /* getJavaTemplate() */);
 		append(sb, "-javaTemplate2", getJavaTemplate2());
 		append(sb, "-javaTemplate3", getJavaTemplate3());
 		append(sb, "-javaTemplate4", getJavaTemplate4());
@@ -354,7 +351,7 @@ public class EOGeneratorModel {
 		}
 
 		append(sb, "-subclassDestination", EOGeneratorModel.toFullPath(workingDirectory, _subclassDestination));
-		append(sb, "-subclassJavaTemplate", getSubclassJavaTemplate());
+		append(sb, "-subclassJavaTemplate", "" /* getSubclassJavaTemplate() */);
 		append(sb, "-templatedir", EOGeneratorModel.toFullPath(workingDirectory, getTemplateDir()));
 		append(sb, "-verbose", _verbose);
 		append(sb, "-loadModelGroup", _loadModelGroup);
