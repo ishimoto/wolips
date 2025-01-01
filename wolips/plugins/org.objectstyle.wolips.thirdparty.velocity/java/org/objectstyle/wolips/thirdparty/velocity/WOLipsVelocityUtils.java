@@ -64,13 +64,13 @@ public class WOLipsVelocityUtils {
 		}
 
 		templatePaths.append(",");
-		templatePaths.append(new File("/Library/Application Support/WOLips/" + templateFamilyName).getAbsolutePath());
+		templatePaths.append(new File("/Library/Application Support/TBLips/" + templateFamilyName).getAbsolutePath());
 		templatePaths.append(",");
-		templatePaths.append(new File(System.getProperty("user.home"), "Documents and Settings/Application Data/WOLips/" + templateFamilyName).getAbsolutePath());
+		templatePaths.append(new File(System.getProperty("user.home"), "Documents and Settings/Application Data/TBLips/" + templateFamilyName).getAbsolutePath());
 		templatePaths.append(",");
-		templatePaths.append(new File(System.getProperty("user.home"), "Documents and Settings/AppData/Local/WOLips/" + templateFamilyName).getAbsolutePath());
+		templatePaths.append(new File(System.getProperty("user.home"), "Documents and Settings/AppData/Local/TBLips/" + templateFamilyName).getAbsolutePath());
 		templatePaths.append(",");
-		templatePaths.append(new File(System.getProperty("user.home"), "Library/Application Support/WOLips/" + templateFamilyName).getAbsolutePath());
+		templatePaths.append(new File(System.getProperty("user.home"), "Library/Application Support/TBLips/" + templateFamilyName).getAbsolutePath());
 
 		Thread thread = Thread.currentThread();
 		ClassLoader loader = thread.getContextClassLoader();
@@ -101,6 +101,9 @@ public class WOLipsVelocityUtils {
 		try {
 			template = engine.getTemplate(templateName, "UTF-8");
 		} catch (ResourceNotFoundException e) {
+			if (! templateName.endsWith(".vm") ){
+				throw new Exception("Failed to load template name '" + templateName + "', it does not end with a .vm extension.");
+			}
 			throw new Exception("Failed to load the template '" + templateName + "'.  Check your model's eogen file to make sure that it specifies the correct template folder and template names.");
 		}
 
@@ -114,7 +117,7 @@ public class WOLipsVelocityUtils {
 		if (newFileContentsStr != null) {
 			if (newFileContentsStr.contains("<%")) {
 				throw new IOException("You are attempting to use an old EOGenerator template with Velocity EOGenerator.");
-			} else if (newFileContentsStr.contains("<wo:")) {
+			} else if (newFileContentsStr.contains("<tb:")) {
 				throw new IOException("You are attempting to use a JavaEOGenerator template with Velocity EOGenerator.");
 			}
 		}
