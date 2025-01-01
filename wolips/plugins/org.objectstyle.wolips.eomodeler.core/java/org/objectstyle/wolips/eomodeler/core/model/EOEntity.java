@@ -115,12 +115,28 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 	public static final String MAX_NUMBER_OF_INSTANCES_TO_BATCH_FETCH = "maxNumberOfInstancesToBatchFetch";
 
 	public static final String READ_ONLY = "readOnly";
+
+	public static final String CORE_DATA = "coreData";
+
+	public static final String REST_CONTROLLER = "restController";
+
+	public static final String QT_CLIENT = "qtClient";
+	
+	public static final String COPY_TYPE = "copyType";
+
+	public static final String HAS_SUB_ENTITY = "subEntity";
+	
+	public static final String AUDIT = "audit";
+	
+	public static final String TAG = "tag";
 	
 	public static final String IMMUTABLE = "immutable";
 
 	public static final String RAW_ROWS_ONLY = "rawRowsOnly";
 
 	public static final String EXTERNAL_NAME = "externalName";
+
+	public static final String EXTERNAL_SCHEMA = "externalSchema";
 
 	public static final String ABSTRACT_ENTITY = "abstractEntity";
 
@@ -145,6 +161,24 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 	public static final String INSERT_PROCEDURE = "insertProcedure";
 
 	public static final String NEXT_PRIMARY_KEY_PROCEDURE = "nextPrimaryKeyProcedure";
+	
+	public static final String fkPrefix = "id";
+	
+	public static final String fkSuffix = "ID";
+	
+	public static final String ENGLISH = "english";
+	public static final String FRENCH = "french";
+	public static final String GERMAN = "german";
+	public static final String DUTCH = "dutch";
+	public static final String ITALIAN = "italian";
+	public static final String JAPANESE = "japanese";
+	public static final String CHINESE = "chinese";
+	public static final String SPANISH = "spanish";
+	public static final String PORTUGUESE = "portuguese";
+	public static final String BRAZILIAN = "brazilian";
+	public static final String ICON = "icon";
+	
+	private static boolean _useFKPrefix = true; 
 
 	private EOModel myModel;
 
@@ -154,11 +188,15 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 
 	private boolean myGenerateSource;
 
+	private String myCopytypeName;
+
 	private String myOriginalName;
 
 	private String myName;
 
 	private String myExternalName;
+
+	private String myExternalSchema;
 
 	private String myClassName;
 
@@ -170,11 +208,23 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 
 	private String myExternalQuery;
 
+	private String myTag;
+
 	private Boolean myCachesObjects;
 
 	private Boolean myAbstractEntity;
 
 	private Boolean myReadOnly;
+
+	private Boolean myCoreData;
+
+	private Boolean myRestController;  // XXX PDY
+		
+	private Boolean myQtClient;
+	
+	private Boolean myAudit;
+
+	private Boolean mySubEntity;
 
 	private Boolean myImmutable;
 
@@ -186,7 +236,7 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 
 	private Set<EORelationship> myRelationships;
 
-	private Set<EOFetchSpecification> myFetchSpecs;
+	private Set<TBEnterpriseFetchSpecification> myFetchSpecs;
 
 	private Set<EOEntityIndex> myEntityIndexes;
 
@@ -211,13 +261,25 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 	private EOLastModified _lastModified;
 	
 	private EOLastModified _fspecLastModified;
-	
+
 	private String _cardinality;
+	
+	private String myEnglish;
+	private String myFrench;
+	private String myGerman;
+	private String myDutch;
+	private String myItalian;
+	private String myJapanese;
+	private String myChinese;
+	private String mySpanish;
+	private String myPortuguese;
+	private String myBrazilian;
+	private String myIcon;
 
 	public EOEntity() {
 		myAttributes = new LinkedHashSet<EOAttribute>();
 		myRelationships = new LinkedHashSet<EORelationship>();
-		myFetchSpecs = new LinkedHashSet<EOFetchSpecification>();
+		myFetchSpecs = new LinkedHashSet<TBEnterpriseFetchSpecification>();
 		myEntityIndexes = new LinkedHashSet<EOEntityIndex>();
 		myEntityMap = new EOModelMap();
 		myFetchSpecsMap = new EOModelMap();
@@ -338,7 +400,7 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		joiningEntitiesSet.add(_entity2);
 		String packageName = getModel().guessPackageName(joiningEntitiesSet);
 		if (_flatten) {
-			manyToManyEntity.setClassName("EOGenericRecord");
+			manyToManyEntity.setClassName("TBEnterpriseGenericRecord");
 		} else {
 			String className = manyToManyEntity.getName();
 			if (packageName != null && packageName.length() > 0) {
@@ -359,7 +421,13 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		while (entity1PrimaryKeyAttributesIter.hasNext()) {
 			EOAttribute entity1PrimaryKeyAttribute = entity1PrimaryKeyAttributesIter.next();
 			EOAttribute manyToManyPrimaryKeyAttribute = entity1PrimaryKeyAttribute._cloneModelObject();
-			manyToManyPrimaryKeyAttribute.setName(manyToManyEntity.findUnusedAttributeName(StringUtils.toLowercaseFirstLetter(getName()) + StringUtils.toUppercaseFirstLetter(manyToManyPrimaryKeyAttribute.getName())));
+			String pk1String = EOEntity.fkPrefix + getName();
+			
+			if ( ! EOEntity.useFKPrefix()) {
+				pk1String = StringUtils.toLowercaseFirstLetter(getName()) + StringUtils.toUppercaseFirstLetter(manyToManyPrimaryKeyAttribute.getName());
+			}
+
+			manyToManyPrimaryKeyAttribute.setName(manyToManyEntity.findUnusedAttributeName(pk1String));
 			manyToManyPrimaryKeyAttribute.setColumnName(getModel().getAttributeNamingConvention().format(null, manyToManyPrimaryKeyAttribute.getName(), null));
 			EOJoin entity1Join = new EOJoin();
 			entity1Join.setSourceAttribute(manyToManyPrimaryKeyAttribute);
@@ -381,7 +449,13 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		while (entity2PrimaryKeyAttributesIter.hasNext()) {
 			EOAttribute entity2PrimaryKeyAttribute = entity2PrimaryKeyAttributesIter.next();
 			EOAttribute manyToManyPrimaryKeyAttribute = entity2PrimaryKeyAttribute._cloneModelObject();
-			manyToManyPrimaryKeyAttribute.setName(manyToManyEntity.findUnusedAttributeName(StringUtils.toLowercaseFirstLetter(_entity2.getName()) + StringUtils.toUppercaseFirstLetter(manyToManyPrimaryKeyAttribute.getName())));
+			String pk2String = EOEntity.fkPrefix + _entity2.getName();
+
+			if ( ! EOEntity.useFKPrefix()) {
+				pk2String = StringUtils.toLowercaseFirstLetter(_entity2.getName()) +  EOEntity.fkSuffix;
+			}
+			
+			manyToManyPrimaryKeyAttribute.setName(manyToManyEntity.findUnusedAttributeName(pk2String));
 			manyToManyPrimaryKeyAttribute.setColumnName(getModel().getAttributeNamingConvention().format(null, manyToManyPrimaryKeyAttribute.getName(), null));
 			EOJoin entity2Join = new EOJoin();
 			entity2Join.setSourceAttribute(manyToManyPrimaryKeyAttribute);
@@ -590,9 +664,9 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		}
 	}
 	protected void _cloneFetchSpecificationsFrom(EOEntity _entity, boolean _skipExistingNames) throws DuplicateNameException {
-		for (EOFetchSpecification fetchSpec : _entity.getFetchSpecs()) {
+		for (TBEnterpriseFetchSpecification fetchSpec : _entity.getFetchSpecs()) {
 			if (!_skipExistingNames || getFetchSpecNamed(fetchSpec.getName()) == null) {
-				EOFetchSpecification clonedFetchSpec = fetchSpec._cloneModelObject();
+				TBEnterpriseFetchSpecification clonedFetchSpec = fetchSpec._cloneModelObject();
 				clonedFetchSpec.setName(findUnusedFetchSpecificationName(clonedFetchSpec.getName()));
 				addFetchSpecification(clonedFetchSpec);
 			}
@@ -704,6 +778,7 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 			relationship = new EORelationship(newRelationshipName);
 		}
 		relationship.setClassProperty(Boolean.TRUE);
+		relationship.setCoreData(Boolean.TRUE);
 		addRelationship(relationship);
 		return relationship;
 	}
@@ -754,6 +829,7 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 			attribute.setName(newAttributeName);
 			attribute.setColumnName("");
 			attribute.setClassProperty(Boolean.TRUE);
+			attribute.setCoreData(Boolean.TRUE);
 			addAttribute(attribute);
 			attribute.setDefinition(_flattenAttribute.toKeyPath());
 		} else {
@@ -762,14 +838,15 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 			attribute.synchronizeNameChange(newAttributeName, newAttributeName);
 			attribute.guessColumnNameInEntity(this);
 			attribute.setClassProperty(Boolean.TRUE);
+			attribute.setCoreData(Boolean.TRUE);
 			addAttribute(attribute);
 		}
 		return attribute;
 	}
 
-	public EOFetchSpecification addBlankFetchSpec(String _name) throws DuplicateFetchSpecNameException {
+	public TBEnterpriseFetchSpecification addBlankFetchSpec(String _name) throws DuplicateFetchSpecNameException {
 		String newFetchSpecName = findUnusedFetchSpecificationName(_name);
-		EOFetchSpecification fetchSpec = new EOFetchSpecification(newFetchSpecName);
+		TBEnterpriseFetchSpecification fetchSpec = new TBEnterpriseFetchSpecification(newFetchSpecName);
 		addFetchSpecification(fetchSpec);
 		return fetchSpec;
 	}
@@ -786,16 +863,16 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 
 	public boolean hasSharedObjects() {
 		boolean hasSharedObjects = false;
-		Iterator<EOFetchSpecification> fetchSpecsIter = myFetchSpecs.iterator();
+		Iterator<TBEnterpriseFetchSpecification> fetchSpecsIter = myFetchSpecs.iterator();
 		while (!hasSharedObjects && fetchSpecsIter.hasNext()) {
-			EOFetchSpecification fetchSpec = fetchSpecsIter.next();
+			TBEnterpriseFetchSpecification fetchSpec = fetchSpecsIter.next();
 			hasSharedObjects = BooleanUtils.isTrue(fetchSpec.isSharesObjects());
 		}
 		return hasSharedObjects;
 	}
 
 	public void shareNoObjects() {
-		for (EOFetchSpecification fetchSpec : myFetchSpecs) {
+		for (TBEnterpriseFetchSpecification fetchSpec : myFetchSpecs) {
 			fetchSpec.setSharesObjects(Boolean.FALSE);
 		}
 	}
@@ -803,7 +880,7 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 	public boolean isSharesAllObjectsOnly() {
 		boolean sharesAllObjects = false;
 		int sharedFetchSpecCount = 0;
-		for (EOFetchSpecification fetchSpec : myFetchSpecs) {
+		for (TBEnterpriseFetchSpecification fetchSpec : myFetchSpecs) {
 			if (BooleanUtils.isTrue(fetchSpec.isSharesObjects())) {
 				sharedFetchSpecCount++;
 				if (EOEntity.FETCH_ALL.equals(fetchSpec.getName())) {
@@ -815,11 +892,11 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 	}
 
 	public void shareAllObjects() throws DuplicateFetchSpecNameException {
-		EOFetchSpecification fetchAllFetchSpec = getFetchSpecNamed(EOEntity.FETCH_ALL);
+		TBEnterpriseFetchSpecification fetchAllFetchSpec = getFetchSpecNamed(EOEntity.FETCH_ALL);
 		if (fetchAllFetchSpec != null) {
 			fetchAllFetchSpec.setSharesObjects(Boolean.TRUE);
 		} else {
-			fetchAllFetchSpec = new EOFetchSpecification(EOEntity.FETCH_ALL);
+			fetchAllFetchSpec = new TBEnterpriseFetchSpecification(EOEntity.FETCH_ALL);
 			fetchAllFetchSpec.setSharesObjects(Boolean.TRUE, false);
 			addFetchSpecification(fetchAllFetchSpec);
 		}
@@ -846,6 +923,14 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		// duplicate names, then
 		// the entities get renamed to be EOXxxPrototypes1
 		return myName != null && myName.startsWith("EO") && myName.indexOf("Prototypes") != -1;
+	}
+
+	public static boolean useFKPrefix() {
+		return _useFKPrefix;
+	}
+
+	public void setUseFKPrefix(boolean useFKPrefix) {
+		_useFKPrefix = useFKPrefix;
 	}
 
 	public String getExternalQuery() {
@@ -879,9 +964,301 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 	public void setReadOnly(Boolean _readOnly) {
 		Boolean oldReadOnly = myReadOnly;
 		myReadOnly = _readOnly;
-		firePropertyChange(EOEntity.READ_ONLY, oldReadOnly, myReadOnly);
+		firePropertyChange(READ_ONLY, oldReadOnly, myReadOnly);
 	}
 
+	public Boolean getCoreData() {
+		return isCoreData();
+	}
+	
+	public Boolean isCoreData() {
+		return myCoreData;
+	}
+	
+	public void setCoreData(Boolean _coreData) {
+		Boolean oldCoreData = myCoreData;
+		myCoreData = _coreData;
+		firePropertyChange(CORE_DATA, oldCoreData, myCoreData);
+	}
+	/**
+	 * XXX PDY
+	 * @return Boolean of restController for this Entity
+	 */	
+	public Boolean getRestController() {
+		return isRestController();
+	}
+	
+	/**
+	 * XXX PDY
+	 * @return Boolean of restController for this Entity
+	 */	
+	public Boolean isRestController() {
+		return myRestController;
+	}
+	/**
+	 * XXX PDY
+	 * @param _restController
+	 */
+	public void setRestController(Boolean _restController) {
+		Boolean oldRestController = myRestController;
+		myRestController = _restController;
+		firePropertyChange(REST_CONTROLLER, oldRestController, myRestController);
+	}
+
+	
+	// added plotters, 11-Mar-2019
+	public Boolean getQtClient() {
+		return isQtClient();
+	}
+
+	public Boolean isQtClient() {
+		return myQtClient;
+	}
+
+	public void setQtClient(Boolean _qtClient) {
+		Boolean oldQtClient = myQtClient;
+		myQtClient = _qtClient;
+		firePropertyChange(QT_CLIENT, oldQtClient, myQtClient);
+	}
+	////////////////////////////////
+
+	
+	public Boolean getAudit() {
+		return isAudit();
+	}
+	
+	public Boolean isAudit() {
+		return myAudit;
+	}
+	
+	public void setAudit(Boolean _audit) {
+		Boolean oldAudit = myAudit;
+		myAudit = _audit;
+		firePropertyChange(AUDIT, oldAudit, myAudit);
+	}
+
+	public Boolean getSubEntity() {
+		return isSubEntity();
+	}
+	
+	public Boolean isSubEntity() {
+		return mySubEntity;
+	}
+	
+	public void setSubEntity(Boolean _subEntity) {
+		Boolean oldSubEntity = mySubEntity;
+		mySubEntity = _subEntity;
+		firePropertyChange(HAS_SUB_ENTITY, oldSubEntity, mySubEntity);
+	}	
+	
+	public String getCopyType() {
+		return myCopytypeName;
+	}
+	
+	public void setCopyType(String _copyType) {
+		setCopyType(_copyType, true);
+	}
+	
+	public void setCopyType(String _copyType, boolean _fireEvents) {
+		String oldCopyType = getCopyType();
+		myCopytypeName = _copyType;
+		if (_fireEvents) {
+			firePropertyChange(COPY_TYPE, oldCopyType, getCopyType());
+		}
+	}			
+	
+	public String getTag() {
+		return myTag;
+	}
+
+	public void setTag(String _tag) {
+		setTag(_tag, true);
+	}
+	
+	public void setTag(String _tag, boolean _fireEvents) {
+		String oldTag = getTag();
+		myTag = _tag;
+		if (_fireEvents) {
+			firePropertyChange(TAG, oldTag, getTag());
+		}
+	}			
+	
+	public String getEnglish() {
+		return myEnglish;
+	}
+	
+	public void setEnglish(String _English) {
+		setEnglish(_English, true);
+	}
+
+	public void setEnglish(String _English, boolean _fireEvents) {
+		String old = getEnglish();
+		myEnglish = _English;
+		if (_fireEvents) {
+			firePropertyChange(ENGLISH, old, getEnglish());
+		}
+	}		
+
+	public String getFrench() {
+		return myFrench;
+	}
+	
+	public void setFrench(String _French) {
+		setFrench(_French, true);
+	}
+	
+	public void setFrench(String _French, boolean _fireEvents) {
+		String old = getFrench();
+		myFrench = _French;
+		if (_fireEvents) {
+			firePropertyChange(FRENCH, old, getFrench());
+		}
+	}		
+	
+	public String getGerman() {
+		return myGerman;
+	}
+	
+	public void setGerman(String _German) {
+		setGerman(_German, true);
+	}
+	
+	public void setGerman(String _German, boolean _fireEvents) {
+		String old = getGerman();
+		myGerman = _German;
+		if (_fireEvents) {
+			firePropertyChange(GERMAN, old, getGerman());
+		}
+	}		
+	
+	public String getDutch() {
+		return myDutch;
+	}
+	
+	public void setDutch(String _Dutch) {
+		setDutch(_Dutch, true);
+	}
+	
+	public void setDutch(String _Dutch, boolean _fireEvents) {
+		String old = getDutch();
+		myDutch = _Dutch;
+		if (_fireEvents) {
+			firePropertyChange(DUTCH, old, getDutch());
+		}
+	}		
+	
+	public String getItalian() {
+		return myItalian;
+	}
+	
+	public void setItalian(String _Italian) {
+		setItalian(_Italian, true);
+	}
+	
+	public void setItalian(String _Italian, boolean _fireEvents) {
+		String old = getItalian();
+		myItalian = _Italian;
+		if (_fireEvents) {
+			firePropertyChange(ITALIAN, old, getItalian());
+		}
+	}		
+	
+	public String getJapanese() {
+		return myJapanese;
+	}
+	
+	public void setJapanese(String _Japanese) {
+		setJapanese(_Japanese, true);
+	}
+	
+	public void setJapanese(String _Japanese, boolean _fireEvents) {
+		String old = getJapanese();
+		myJapanese = _Japanese;
+		if (_fireEvents) {
+			firePropertyChange(JAPANESE, old, getJapanese());
+		}
+	}		
+	
+	public String getChinese() {
+		return myChinese;
+	}
+	
+	public void setChinese(String _Chinese) {
+		setChinese(_Chinese, true);
+	}
+	
+	public void setChinese(String _Chinese, boolean _fireEvents) {
+		String old = getChinese();
+		myChinese = _Chinese;
+		if (_fireEvents) {
+			firePropertyChange(CHINESE, old, getChinese());
+		}
+	}		
+	
+	public String getSpanish() {
+		return mySpanish;
+	}
+	
+	public void setSpanish(String _Spanish) {
+		setSpanish(_Spanish, true);
+	}
+	
+	public void setSpanish(String _Spanish, boolean _fireEvents) {
+		String old = getSpanish();
+		mySpanish = _Spanish;
+		if (_fireEvents) {
+			firePropertyChange(SPANISH, old, getSpanish());
+		}
+	}		
+	
+	public String getPortuguese() {
+		return myPortuguese;
+	}
+	
+	public void setPortuguese(String _Portuguese) {
+		setPortuguese(_Portuguese, true);
+	}
+	
+	public void setPortuguese(String _Portuguese, boolean _fireEvents) {
+		String old = getPortuguese();
+		myPortuguese = _Portuguese;
+		if (_fireEvents) {
+			firePropertyChange(PORTUGUESE, old, getPortuguese());
+		}
+	}		
+	
+	public String getBrazilian() {
+		return myBrazilian;
+	}
+	
+	public void setBrazilian(String _Brazilian) {
+		setBrazilian(_Brazilian, true);
+	}
+	
+	public void setBrazilian(String _Brazilian, boolean _fireEvents) {
+		String old = getBrazilian();
+		myBrazilian = _Brazilian;
+		if (_fireEvents) {
+			firePropertyChange(BRAZILIAN, old, getBrazilian());
+		}
+	}		
+
+	public String getIcon() {
+		return myIcon;
+	}
+	
+	public void setIcon(String _Icon) {
+		setIcon(_Icon, true);
+	}
+	
+	public void setIcon(String _Icon, boolean _fireEvents) {
+		String old = getIcon();
+		myIcon = _Icon;
+		if (_fireEvents) {
+			firePropertyChange(ICON, old, getIcon());
+		}
+	}		
+	
 	public Boolean getImmutable() {
 		return isImmutable();
 	}
@@ -895,7 +1272,7 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		myImmutable = _immutable;
 		firePropertyChange(EOEntity.IMMUTABLE, oldImmutable, myImmutable);
 	}
-	
+
 	public Boolean getRawRowsOnly() {
 		return isRawRowsOnly();
 	}
@@ -995,6 +1372,21 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		}
 		return packageName;
 	}
+	
+	public String getPackageNameOf(String className) {
+		String packageName;
+		if (className == null) {
+			packageName = null;
+		} else {
+			int lastDotIndex = className.lastIndexOf('.');
+			if (lastDotIndex == -1) {
+				packageName = null;
+			} else {
+				packageName = className.substring(0, lastDotIndex);
+			}
+		}
+		return packageName;
+	}
 
 	public String getSuperclassPackageName() {
 		String packageName = getPackageName();
@@ -1046,6 +1438,22 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		return classNameWithoutPackage;
 	}
 
+	public String getClassNameWithoutPackageOf(String className) {
+		String classNameWithoutPackage;
+
+		if (className == null) {
+			classNameWithoutPackage = null;
+		} else {
+			int lastDotIndex = className.lastIndexOf('.');
+			if (lastDotIndex == -1) {
+				classNameWithoutPackage = className;
+			} else {
+				classNameWithoutPackage = className.substring(lastDotIndex + 1);
+			}
+		}
+		return classNameWithoutPackage;
+	}
+
 	public String getPrefixClassNameWithOptionalPackage() {
 		String prefixClassName;
 		if (EOModelRenderContext.getInstance().getSuperclassPackage() != null) {
@@ -1065,9 +1473,41 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		return prefixClassNameWithoutPackage;
 	}
 
+	public String getPrefixClassNameWithoutPackageOf(String className) {
+		String prefixClassNameWithoutPackage = getClassNameWithoutPackageOf(className);
+		if (prefixClassNameWithoutPackage != null) {
+			String prefix = EOModelRenderContext.getInstance().getPrefix();
+			prefixClassNameWithoutPackage = prefix + prefixClassNameWithoutPackage;
+		}
+		return prefixClassNameWithoutPackage;
+	}
+
 	public String getPrefixClassName() {
 		String prefixClassName;
 		String className = getClassNameWithDefault();
+		if (className == null) {
+			prefixClassName = null;
+		} else {
+			String superclassPackage = EOModelRenderContext.getInstance().getSuperclassPackage();
+			if (superclassPackage != null && superclassPackage.trim().length() > 0) {
+				superclassPackage = superclassPackage + ".";
+			} else {
+				superclassPackage = "";
+			}
+			String prefix = EOModelRenderContext.getInstance().getPrefix();
+			int lastDotIndex = className.lastIndexOf('.');
+			if (lastDotIndex == -1) {
+				prefixClassName = superclassPackage + prefix + className;
+			} else {
+				prefixClassName = className.substring(0, lastDotIndex + 1) + superclassPackage + prefix + className.substring(lastDotIndex + 1);
+			}
+		}
+		return prefixClassName;
+	}
+
+	public String getPrefixClassNameOf(String className) {
+		String prefixClassName;
+		
 		if (className == null) {
 			prefixClassName = null;
 		} else {
@@ -1164,13 +1604,23 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		firePropertyChange(EOEntity.EXTERNAL_NAME, oldExternalName, myExternalName);
 	}
 
-//	public int hashCode() {
-//		return (myName == null) ? super.hashCode() : myName.hashCode();
-//	}
-//
-//	public boolean equals(Object _obj) {
-//		return (_obj instanceof EOEntity && ((_obj == this) || ComparisonUtils.equals(myName, ((EOEntity) _obj).myName)));
-//	}
+	public String getExternalSchema() {
+		return myExternalSchema;
+	}
+
+	public void setExternalSchema(String _externalSchema) {
+		String oldExternalSchema = myExternalSchema;
+		myExternalSchema = _externalSchema;
+		firePropertyChange(EOEntity.EXTERNAL_SCHEMA, oldExternalSchema, myExternalSchema);
+	}
+
+	//	public int hashCode() {
+	//		return (myName == null) ? super.hashCode() : myName.hashCode();
+	//	}
+	//
+	//	public boolean equals(Object _obj) {
+	//		return (_obj instanceof EOEntity && ((_obj == this) || ComparisonUtils.equals(myName, ((EOEntity) _obj).myName)));
+	//	}
 
 	public Set<EOModelReferenceFailure> getReferenceFailures() {
 		Set<EOModelReferenceFailure> referenceFailures = new HashSet<EOModelReferenceFailure>();
@@ -1350,6 +1800,9 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 	}
 
 	public Boolean isAbstractEntity() {
+		if (myAbstractEntity == null) {
+			return false;
+		}
 		return myAbstractEntity;
 	}
 
@@ -1384,6 +1837,24 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		firePropertyChange(EOEntity.ABSTRACT_ENTITY, oldAbstractEntity, myAbstractEntity);
 	}
 
+	/**
+	 * if the EOEntity is a lookup or reference entity
+	 * @return
+	 */
+	public boolean isLookupEntity() {
+		Object object = getUserInfo().get(EOModel.USERINFO_REFERENCE_EO_KEY);
+		if ( object != null) {
+			if ( object instanceof Boolean) {
+				return ((Boolean) object).booleanValue();
+			} 
+			String referenceEntityInfo = (String) object;
+			if ("true".equalsIgnoreCase(referenceEntityInfo)) 
+				return true;	
+			
+		}
+		return false;
+	}
+	
 	public Boolean getCachesObjects() {
 		return isCachesObjects();
 	}
@@ -1413,7 +1884,7 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		if (myRestrictingQualifier == null) {
 			restrictingQualifierKeys = new LinkedHashSet<String>();
 		} else {
-			restrictingQualifierKeys = EOQualifierFactory.getQualifierKeysFromQualifierString(myRestrictingQualifier);
+			restrictingQualifierKeys = TBEnterpriseQualifierFactory.getQualifierKeysFromQualifierString(myRestrictingQualifier);
 		}
 		return restrictingQualifierKeys;
 	}
@@ -1520,6 +1991,19 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		}
 		Arrays.sort(attributeNames);
 		return attributeNames;
+	}
+
+	public boolean isPrimaryKeyId() {
+		Set<EOAttribute> attributes = getAttributes();
+		Iterator<EOAttribute> attributeIter = attributes.iterator();
+		for (int attributeNum = 0; attributeIter.hasNext(); attributeNum++) {
+			EOAttribute attribute = attributeIter.next();
+			String name = attribute.getName();
+			if ("id".equalsIgnoreCase(name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public Set<EORelationship> getClientClassRelationships() {
@@ -1704,12 +2188,12 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		return new PropertyListSet<EORelationship>(myRelationships);
 	}
 
-	public Set<EOFetchSpecification> getFetchSpecs() {
+	public Set<TBEnterpriseFetchSpecification> getFetchSpecs() {
 		return myFetchSpecs;
 	}
 
-	public Set<EOFetchSpecification> getSortedFetchSpecs() {
-		return new PropertyListSet<EOFetchSpecification>(myFetchSpecs);
+	public Set<TBEnterpriseFetchSpecification> getSortedFetchSpecs() {
+		return new PropertyListSet<TBEnterpriseFetchSpecification>(myFetchSpecs);
 	}
 
 	public Set<EOEntityIndex> getEntityIndexes() {
@@ -1839,9 +2323,9 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 	}
 
 	@SuppressWarnings("unused")
-	protected void _fetchSpecificationChanged(EOFetchSpecification _fetchSpecification, String _propertyName, Object _oldValue, Object _newValue) {
+	protected void _fetchSpecificationChanged(TBEnterpriseFetchSpecification _fetchSpecification, String _propertyName, Object _oldValue, Object _newValue) {
 		setFetchSpecsDirty(true);
-		//myFetchSpecs = new HashSet<EOFetchSpecification>(myFetchSpecs);
+		//myFetchSpecs = new HashSet<TBEnterpriseFetchSpecification>(myFetchSpecs);
 		// firePropertyChange(EOEntity.FETCH_SPECIFICATION + "." +
 		// _propertyName, new ProxyChange(_fetchSpecification, _oldValue), new
 		// ProxyChange(_fetchSpecification, _newValue));
@@ -1911,11 +2395,11 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		return matchingRelationship;
 	}
 
-	public EOFetchSpecification getFetchSpecNamed(String _name) {
-		EOFetchSpecification matchingFetchSpec = null;
-		Iterator<EOFetchSpecification> fetchSpecsIter = myFetchSpecs.iterator();
+	public TBEnterpriseFetchSpecification getFetchSpecNamed(String _name) {
+		TBEnterpriseFetchSpecification matchingFetchSpec = null;
+		Iterator<TBEnterpriseFetchSpecification> fetchSpecsIter = myFetchSpecs.iterator();
 		while (matchingFetchSpec == null && fetchSpecsIter.hasNext()) {
-			EOFetchSpecification fetchSpec = fetchSpecsIter.next();
+			TBEnterpriseFetchSpecification fetchSpec = fetchSpecsIter.next();
 			if (ComparisonUtils.equals(fetchSpec.getName(), _name)) {
 				matchingFetchSpec = fetchSpec;
 			}
@@ -1927,8 +2411,8 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		return _findUnusedName(_newName, "getFetchSpecNamed");
 	}
 
-	public void _checkForDuplicateFetchSpecName(EOFetchSpecification _fetchSpec, String _newName, Set<EOModelVerificationFailure> _failures) throws DuplicateFetchSpecNameException {
-		EOFetchSpecification existingFetchSpec = getFetchSpecNamed(_newName);
+	public void _checkForDuplicateFetchSpecName(TBEnterpriseFetchSpecification _fetchSpec, String _newName, Set<EOModelVerificationFailure> _failures) throws DuplicateFetchSpecNameException {
+		TBEnterpriseFetchSpecification existingFetchSpec = getFetchSpecNamed(_newName);
 		if (existingFetchSpec != null && existingFetchSpec != _fetchSpec) {
 			if (_failures == null) {
 				throw new DuplicateFetchSpecNameException(_newName, this);
@@ -1940,17 +2424,17 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		}
 	}
 
-	public void addFetchSpecification(EOFetchSpecification _fetchSpecification) throws DuplicateFetchSpecNameException {
+	public void addFetchSpecification(TBEnterpriseFetchSpecification _fetchSpecification) throws DuplicateFetchSpecNameException {
 		addFetchSpecification(_fetchSpecification, true, null);
 	}
 
-	public void addFetchSpecification(EOFetchSpecification _fetchSpecification, boolean _fireEvents, Set<EOModelVerificationFailure> _failures) throws DuplicateFetchSpecNameException {
+	public void addFetchSpecification(TBEnterpriseFetchSpecification _fetchSpecification, boolean _fireEvents, Set<EOModelVerificationFailure> _failures) throws DuplicateFetchSpecNameException {
 		_fetchSpecification._setEntity(this);
 		_checkForDuplicateFetchSpecName(_fetchSpecification, _fetchSpecification.getName(), _failures);
-		Set<EOFetchSpecification> oldFetchSpecs = null;
+		Set<TBEnterpriseFetchSpecification> oldFetchSpecs = null;
 		if (_fireEvents) {
 			oldFetchSpecs = myFetchSpecs;
-			Set<EOFetchSpecification> newFetchSpecs = new LinkedHashSet<EOFetchSpecification>();
+			Set<TBEnterpriseFetchSpecification> newFetchSpecs = new LinkedHashSet<TBEnterpriseFetchSpecification>();
 			newFetchSpecs.addAll(myFetchSpecs);
 			newFetchSpecs.add(_fetchSpecification);
 			myFetchSpecs = newFetchSpecs;
@@ -1960,9 +2444,9 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		}
 	}
 
-	public void removeFetchSpecification(EOFetchSpecification _fetchSpecification) {
-		Set<EOFetchSpecification> oldFetchSpecs = myFetchSpecs;
-		Set<EOFetchSpecification> newFetchSpecs = new LinkedHashSet<EOFetchSpecification>();
+	public void removeFetchSpecification(TBEnterpriseFetchSpecification _fetchSpecification) {
+		Set<TBEnterpriseFetchSpecification> oldFetchSpecs = myFetchSpecs;
+		Set<TBEnterpriseFetchSpecification> newFetchSpecs = new LinkedHashSet<TBEnterpriseFetchSpecification>();
 		newFetchSpecs.addAll(myFetchSpecs);
 		newFetchSpecs.remove(_fetchSpecification);
 		myFetchSpecs = newFetchSpecs;
@@ -2105,7 +2589,9 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		myName = _entityMap.getString("name", true);
 		myOriginalName = myName;
 		myExternalName = _entityMap.getString("externalName", true);
+		myExternalSchema = _entityMap.getString("externalSchema", true);
 		myClassName = _entityMap.getString("className", true);
+		myCopytypeName = _entityMap.getString("copyType", true);
 
 		Map internalInfo = myEntityMap.getMap("internalInfo");
 		if (internalInfo != null) {
@@ -2120,6 +2606,25 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 			myAbstractEntity = _entityMap.getBoolean("isAbstractEntity");
 		}
 		myReadOnly = _entityMap.getBoolean("isReadOnly");
+		myCoreData = _entityMap.getBoolean("coreData");
+		myRestController = _entityMap.getBoolean("restController");  // XXX PDY
+		myQtClient = _entityMap.getBoolean("qtClient");
+		mySubEntity = _entityMap.getBoolean("hasSubEntity");
+		myAudit = _entityMap.getBoolean("audit");
+		myTag = _entityMap.getString("tag", true);
+		
+		myEnglish = _entityMap.getString(ENGLISH, true);
+		myFrench = _entityMap.getString(FRENCH, true);
+		myGerman = _entityMap.getString(GERMAN, true);
+		myDutch = _entityMap.getString(DUTCH, true);
+		myItalian = _entityMap.getString(ITALIAN, true);
+		myJapanese = _entityMap.getString(JAPANESE, true);
+		myChinese = _entityMap.getString(CHINESE, true);
+		mySpanish = _entityMap.getString(SPANISH, true);
+		myPortuguese = _entityMap.getString(PORTUGUESE, true);
+		myBrazilian = _entityMap.getString(BRAZILIAN, true);
+		myIcon = _entityMap.getString(ICON, true);
+		
 		myImmutable = _entityMap.getBoolean("isImmutable");
 		myRawRowsOnly = _entityMap.getBoolean("isRawRowsOnly");
 		if (_entityMap.containsKey("mappingQualifier")) {
@@ -2200,7 +2705,7 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 	protected void _addFetchSpecificationFromMap(Map.Entry<Object, Map> _fetchSpecEntry, Set<EOModelVerificationFailure> _failures, Set<String> _sharedObjectFetchSpecificationNames) throws EOModelException {
 		String fetchSpecName = _fetchSpecEntry.getKey().toString();
 		EOModelMap fetchSpecMap = new EOModelMap(_fetchSpecEntry.getValue());
-		EOFetchSpecification fetchSpec = new EOFetchSpecification(fetchSpecName);
+		TBEnterpriseFetchSpecification fetchSpec = new TBEnterpriseFetchSpecification(fetchSpecName);
 		fetchSpec.loadFromMap(fetchSpecMap, _failures);
 		if (_sharedObjectFetchSpecificationNames != null && _sharedObjectFetchSpecificationNames.contains(fetchSpecName)) {
 			fetchSpec.setSharesObjects(Boolean.TRUE, false);
@@ -2212,16 +2717,41 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		EOModelMap entityMap = myEntityMap.cloneModelMap();
 		entityMap.setString("name", myName, true);
 		entityMap.setString("externalName", myExternalName, true);
+		entityMap.setString("externalSchema", myExternalSchema, true);
 		entityMap.setString("className", myClassName, true);
 		if (myParent != null) {
 			entityMap.setString("parent", myParent.getName(), true);
 		} else {
 			entityMap.remove("parent");
 		}
+		if (myCopytypeName != null) {
+			entityMap.setString("copyType", myCopytypeName, true);
+		} else {
+			entityMap.remove("copyType");
+		}
 		entityMap.setBoolean("cachesObjects", myCachesObjects, EOModelMap.YNOptionalDefaultNo);
 		entityMap.setBoolean("isAbstractEntity", myAbstractEntity, EOModelMap.YNOptionalDefaultNo);
 		entityMap.remove("isFetchable");
 		entityMap.setBoolean("isReadOnly", myReadOnly, EOModelMap.YNOptionalDefaultNo);
+		entityMap.setBoolean("coreData", myCoreData, EOModelMap.YNOptionalDefaultNo);
+		entityMap.setBoolean("restController", myRestController, EOModelMap.YNOptionalDefaultNo);   // XXX PDY
+		entityMap.setBoolean("qtClient", myQtClient, EOModelMap.YNOptionalDefaultNo);
+		entityMap.setBoolean("hasSubEntity", mySubEntity, EOModelMap.YNOptionalDefaultNo);
+		entityMap.setBoolean("audit", myAudit, EOModelMap.YNOptionalDefaultNo);
+		entityMap.setString("tag", myTag, true);
+		
+		entityMap.setString(ENGLISH, myEnglish, true);
+		entityMap.setString(FRENCH, myFrench, true);
+		entityMap.setString(GERMAN, myGerman, true);
+		entityMap.setString(DUTCH, myDutch, true);
+		entityMap.setString(ITALIAN, myItalian, true);
+		entityMap.setString(JAPANESE, myJapanese, true);
+		entityMap.setString(CHINESE, myChinese, true);
+		entityMap.setString(SPANISH, mySpanish, true);
+		entityMap.setString(PORTUGUESE, myPortuguese, true);
+		entityMap.setString(BRAZILIAN, myBrazilian, true);
+		entityMap.setString(ICON, myIcon, true);
+				
 		entityMap.setBoolean("isImmutable", myImmutable, EOModelMap.YNOptionalDefaultNo);
 		entityMap.setBoolean("isRawRowsOnly", myRawRowsOnly, EOModelMap.YNOptionalDefaultNo);
 		entityMap.setString("restrictingQualifier", myRestrictingQualifier, true);
@@ -2287,7 +2817,7 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		entityMap.setSet("primaryKeyAttributes", primaryKeyAttributes, true);
 
 		Set<String> sharedObjectFetchSpecificationNames = new PropertyListSet<String>(EOModelMap.asArray(myEntityMap.get("sharedObjectFetchSpecificationNames")));
-		for (EOFetchSpecification fetchSpec : myFetchSpecs) {
+		for (TBEnterpriseFetchSpecification fetchSpec : myFetchSpecs) {
 			if (BooleanUtils.isTrue(fetchSpec.isSharesObjects())) {
 				sharedObjectFetchSpecificationNames.add(fetchSpec.getName());
 			}
@@ -2371,7 +2901,7 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 	public EOModelMap toFetchSpecsMap() {
 		EOModelMap fetchSpecsMap = myFetchSpecsMap.cloneModelMap();
 		fetchSpecsMap.clear();
-		for (EOFetchSpecification fetchSpec : myFetchSpecs) {
+		for (TBEnterpriseFetchSpecification fetchSpec : myFetchSpecs) {
 			EOModelMap fetchSpecMap = fetchSpec.toMap();
 			fetchSpecsMap.setMap(fetchSpec.getName(), fetchSpecMap, true);
 		}
@@ -2480,7 +3010,7 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 			relationship.resolve(_failures);
 		}
 
-		for (EOFetchSpecification fetchSpec : myFetchSpecs) {
+		for (TBEnterpriseFetchSpecification fetchSpec : myFetchSpecs) {
 			fetchSpec.resolve(_failures);
 		}
 
@@ -2522,14 +3052,14 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 			}
 
 			Set<String> commonClassPropertyNames = internalInfoModelMap.getSet("_commonClassPropertyNames");
-      if (commonClassPropertyNames != null) {
-        for (String attributeName : commonClassPropertyNames) {
-          IEOAttribute attribute = getAttributeOrRelationshipNamed(attributeName);
-          if (attribute != null) {
-            attribute.setCommonClassProperty(Boolean.TRUE, false);
-          }
-        }
-      }
+			if (commonClassPropertyNames != null) {
+				for (String attributeName : commonClassPropertyNames) {
+					IEOAttribute attribute = getAttributeOrRelationshipNamed(attributeName);
+					if (attribute != null) {
+						attribute.setCommonClassProperty(Boolean.TRUE, false);
+					}
+				}
+			}
 		}
 
 		Map<String, String> storedProcedureNames = myEntityMap.getMap("storedProcedureNames");
@@ -2593,7 +3123,7 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 			relationship.verify(failures);
 		}
 
-		for (EOFetchSpecification fetchSpec : myFetchSpecs) {
+		for (TBEnterpriseFetchSpecification fetchSpec : myFetchSpecs) {
 			fetchSpec.verify(failures);
 		}
 
@@ -2630,7 +3160,7 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		if (isPartialEntitySet() && getPartialEntity().isPartialEntitySet()) {
 			failures.add(new EOModelVerificationFailure(myModel, this, "The entity " + getName() + " is a partial of an entity that is itself a partial. This is not currently allowed.", false));
 		}
-		
+
 		if (_lastModified == null) {
 			if (getClassName() != null && getPackageName() == null && !isGenericRecord()) {
 				failures.add(new EOModelVerificationFailure(myModel, this, "The class '" + getClassName() + "' for the entity " + getName() + " doesn't have a package name.", true));
@@ -2647,6 +3177,7 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		entity.myParent = myParent;
 		entity.myPartialEntity = myPartialEntity;
 		entity.myExternalName = myExternalName;
+		entity.myExternalSchema = myExternalSchema;
 		entity.myClassName = myClassName;
 		entity.myClientClassName = myClientClassName;
 		entity.myRestrictingQualifier = myRestrictingQualifier;
@@ -2654,6 +3185,25 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		entity.myCachesObjects = myCachesObjects;
 		entity.myAbstractEntity = myAbstractEntity;
 		entity.myReadOnly = myReadOnly;
+		entity.myCoreData = myCoreData;
+		entity.myRestController = myRestController;  // XXX PDY
+		entity.myQtClient = myQtClient;
+		entity.mySubEntity = mySubEntity;
+		entity.myAudit = myAudit;
+		entity.myTag = myTag;
+		
+		entity.myEnglish = myEnglish;
+		entity.myFrench = myFrench;
+		entity.myGerman = myGerman;
+		entity.myDutch = myDutch;
+		entity.myItalian = myItalian;
+		entity.myJapanese = myJapanese;
+		entity.myChinese = myChinese;
+		entity.mySpanish = mySpanish;
+		entity.myPortuguese = myPortuguese;
+		entity.myBrazilian = myBrazilian;
+		entity.myIcon = myIcon;
+		
 		entity.myImmutable = myImmutable;
 		entity.myRawRowsOnly = myRawRowsOnly;
 		entity.myMaxNumberOfInstancesToBatchFetch = myMaxNumberOfInstancesToBatchFetch;
@@ -2722,7 +3272,7 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 	public boolean getSqlGenerationCreateInheritedProperties() {
 		return isHorizontalInheritance();
 	}
-	
+
 	public String getSqlGenerationPrimaryKeyColumnNames() {
 		StringBuffer sb = new StringBuffer();
 		Iterator<EOAttribute> attributesIter = getPrimaryKeyAttributes().iterator();
@@ -2735,7 +3285,7 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 		}
 		return sb.toString();
 	}
-	
+
 	public String toString() {
 		return "[EOEntity: name = " + myName + "; attributes = " + myAttributes + "; relationships = " + myRelationships + "; fetchSpecs = " + myFetchSpecs + "]"; //$NON-NLS-4$ //$NON-NLS-5$
 	}
@@ -2746,5 +3296,9 @@ public class EOEntity extends UserInfoableEOModelObject<EOModel> implements IEOE
 
 	public int compareTo(EOEntity otherEntity) {
 		return myName.compareTo(otherEntity.getName());
+	}
+	
+	public void setLastModified(EOLastModified _lastModified) {
+		this._lastModified = _lastModified;
 	}
 }

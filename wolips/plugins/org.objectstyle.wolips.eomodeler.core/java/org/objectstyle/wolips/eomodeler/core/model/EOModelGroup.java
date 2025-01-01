@@ -83,7 +83,15 @@ public class EOModelGroup extends EOModelObject<Object> {
 	}
 
 	public boolean hasProjectWonder() {
-		return containsModelNamed("erprototypes");
+		return containsModelNamed("TBPrototypes");
+	}
+
+	public boolean hasTBPrototypes() {
+		return containsModelNamed("TBPrototypes");
+	}
+	
+	public boolean hasTBBaseModel() {
+		return containsModelNamed("TBBaseModel");
 	}
 
 	public Set<EOModelReferenceFailure> getReferenceFailures() {

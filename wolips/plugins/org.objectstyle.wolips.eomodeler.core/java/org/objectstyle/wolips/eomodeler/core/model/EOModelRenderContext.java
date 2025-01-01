@@ -25,13 +25,24 @@ public class EOModelRenderContext {
 
 	private String _superclassPackage;
 	
-	private boolean _javaClient;
+	private boolean _java; // Server-side
 	
-	private boolean _javaClientCommon;
+	private boolean _javaClient; // Client-side
+	
+	private boolean _javaClientCommon; // Client-side (common classes, not used)
 
 	public EOModelRenderContext() {
 		_prefix = "_";
-		_eogenericRecordClassName = "com.webobjects.eocontrol.EOGenericRecord";
+//		_eogenericRecordClassName = "com.webobjects.eocontrol.EOGenericRecord";
+		_eogenericRecordClassName = "org.treasureboat.enterprise.eof.TBEnterpriseGenericRecord";
+	}
+	
+	public void setJava(boolean javaServerSide) {
+		_java = javaServerSide;
+	}
+	
+	public boolean isJava() {
+		return _java;
 	}
 	
 	public void setJavaClient(boolean javaClient) {
@@ -74,6 +85,7 @@ public class EOModelRenderContext {
 		return _eogenericRecordClassName;
 	}
 
+	// If there is a JavaClient class defined in the TBModel, then this method gives preference over the server class name
 	public String getClassNameForEntity(EOEntity entity) {
 	  String className;
 	  if (_javaClientCommon) {
@@ -90,4 +102,41 @@ public class EOModelRenderContext {
 	  }
 	  return className;
 	}
+	
+	/*
+	 * Return the class name for a server-side entity 
+	 */
+	public String getServerClassNameForEntity(EOEntity entity) {
+		  String className;
+		 
+		  if (_java) {
+			  className = entity.getClassName();
+		  } else className = null;
+		  
+		  if (className != null) {
+			  className = className.replace('$', '.');
+		  }
+		  return className;
+		}
+	
+	/*
+	 * If "JavaClient" is selected in the EOGenerator file then the JavaClient class name is returned from the TBModel
+	 */
+	public String getClientClassNameForEntity(EOEntity entity) {
+		  String className;
+		  if (_javaClientCommon) {
+			className = entity.getParentClassName();
+		  }
+		  else if (_javaClient) {
+		    className = entity.getClientClassName();
+		  }
+		  else {
+		    className = null;
+		  }
+		  if (className != null) {
+			  className = className.replace('$', '.');
+		  }
+		  return className;
+	}
+
 }

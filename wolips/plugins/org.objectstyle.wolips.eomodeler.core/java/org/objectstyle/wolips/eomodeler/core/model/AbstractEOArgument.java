@@ -61,6 +61,8 @@ public abstract class AbstractEOArgument<T extends EOModelObject> extends UserIn
 
 	public static final String COLUMN_NAME = "columnName";
 
+	public static final String DEFAULT_VALUE = "defaultValue";
+
 	public static final String ADAPTOR_VALUE_CONVERSION_CLASS_NAME = "adaptorValueConversionClassName";
 
 	public static final String ADAPTOR_VALUE_CONVERSION_METHOD_NAME = "adaptorValueConversionMethodName";
@@ -94,6 +96,8 @@ public abstract class AbstractEOArgument<T extends EOModelObject> extends UserIn
 	private String myName;
 
 	private String myColumnName;
+
+	private String myDefaultValue;
 
 	private String myExternalType;
 
@@ -166,6 +170,7 @@ public abstract class AbstractEOArgument<T extends EOModelObject> extends UserIn
 		} else {
 			argument.myColumnName = myColumnName;
 		}
+		argument.myDefaultValue = myDefaultValue;
 		argument.myExternalType = myExternalType;
 		argument.myValueType = myValueType;
 		argument.myValueClassName = myValueClassName;
@@ -238,6 +243,16 @@ public abstract class AbstractEOArgument<T extends EOModelObject> extends UserIn
 		String oldColumnName = getColumnName();
 		myColumnName = _columnName;
 		firePropertyChange(AbstractEOArgument.COLUMN_NAME, oldColumnName, getColumnName());
+	}
+
+	public String getDefaultValue() {
+		return myDefaultValue;
+	}
+
+	public void setDefaultValue(String _defaultValue) {
+		String oldDefaultValue = getDefaultValue();
+		myDefaultValue = _defaultValue;
+		firePropertyChange(AbstractEOArgument.DEFAULT_VALUE, oldDefaultValue, getDefaultValue());
 	}
 
 	public String getAdaptorValueConversionClassName() {
@@ -364,10 +379,10 @@ public abstract class AbstractEOArgument<T extends EOModelObject> extends UserIn
 			className = "NSNumber";
 		} else if (className.equals("java.math.BigDecimal")) {
 			className = "NSDecimalNumber";
-		} else if (className.equals("com.webobjects.foundation.NSTimestamp")) {
+		} else if (className.equals("org.treasureboat.foundation.date.TBFZonedDateTime")) {
 			className = "NSCalendarDate";
-		} else if (className.equals("com.webobjects.foundation.NSData")) {
-			className = "NSData";
+		} else if (className.equals("org.treasureboat.foundation.TBFData")) {
+			className = "TBFData";
 		} else if (className.equals("")) {
 			className = null;
 		} else {
@@ -408,10 +423,10 @@ public abstract class AbstractEOArgument<T extends EOModelObject> extends UserIn
 			className = java.lang.String.class.getName();
 		} else if ("NSCalendarDate".equals(className)) {
 			if (shorten) {
-				className = "NSTimestamp";
+				className = "TBFZonedDateTime";
 			}
 			else {
-				className = "com.webobjects.foundation.NSTimestamp";
+				className = "org.treasureboat.foundation.date.TBFZonedDateTime";
 			}
 		} else if ("NSDecimalNumber".equals(className)) {
 			String valueType = getValueType();
@@ -539,8 +554,9 @@ public abstract class AbstractEOArgument<T extends EOModelObject> extends UserIn
 		if (_argumentMap.containsKey("externalName")) {
 			myColumnName = _argumentMap.getString("externalName", true);
 		} else {
-			myColumnName = _argumentMap.getString("columnName", true);
+			myColumnName = _argumentMap.getString(AbstractEOArgument.COLUMN_NAME, true);
 		}
+		myDefaultValue = _argumentMap.getString(AbstractEOArgument.DEFAULT_VALUE,true);
 		myExternalType = _argumentMap.getString("externalType", true);
 		myScale = _argumentMap.getInteger("scale");
 		myPrecision = _argumentMap.getInteger("precision");
@@ -577,12 +593,13 @@ public abstract class AbstractEOArgument<T extends EOModelObject> extends UserIn
 		// If columnName is prototyped, EOModeler leaves out the columnName. If,
 		// however, columnName is MISSING, then it needs to write a "".
 		if (isFlattened()) {
-			argumentMap.remove("columnName");
+			argumentMap.remove(AbstractEOArgument.COLUMN_NAME);
 		} else if (myColumnName == null && getColumnName() == null) {
-			argumentMap.setString("columnName", "", false);
+			argumentMap.setString(AbstractEOArgument.COLUMN_NAME, "", false);
 		} else {
-			argumentMap.setString("columnName", myColumnName, false);
+			argumentMap.setString(AbstractEOArgument.COLUMN_NAME, myColumnName, false);
 		}
+		argumentMap.setString(AbstractEOArgument.DEFAULT_VALUE, myDefaultValue, false);
 		argumentMap.remove("externalName");
 		argumentMap.setString("externalType", myExternalType, true);
 		argumentMap.setInteger("scale", myScale);

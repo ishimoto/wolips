@@ -29,9 +29,9 @@ public class EOFSQLUtils53 {
 	}
 
 	private static Object toWOCollectionsReflect(Object obj) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		Class<?> nsmutarray = Class.forName("com.webobjects.foundation.NSMutableArray");
-		Class<?> nsmutdictionary = Class.forName("com.webobjects.foundation.NSMutableDictionary");
-		Class<?> nsmutset = Class.forName("com.webobjects.foundation.NSMutableSet");
+		Class<?> nsmutarray = Class.forName("org.treasureboat.foundation.array.TBFMutableArray");
+		Class<?> nsmutdictionary = Class.forName("org.treasureboat.foundation.dic.TBFMutableDictionary");
+		Class<?> nsmutset = Class.forName("org.treasureboat.foundation.TBFMutableSet");
 		Object result;
 		if (obj instanceof Map) {
 			Object nsDict = nsmutdictionary.getConstructor().newInstance();
@@ -93,9 +93,10 @@ public class EOFSQLUtils53 {
 	}
 
 	private static Object toJavaCollectionsReflect(Object obj) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		Class<?> nsarray = Class.forName("com.webobjects.foundation.NSArray");
-		Class<?> nsdictionary = Class.forName("com.webobjects.foundation.NSDictionary");
-		Class<?> nsset = Class.forName("com.webobjects.foundation.NSSet");
+		Class<?> nsarray = Class.forName("org.treasureboat.foundation.array.TBFArray");
+		Class<?> nsdictionary = Class.forName("org.treasureboat.foundation.dic.TBFDictionary");
+		Class<?> nsset = Class.forName("org.treasureboat.foundation.TBFSet");
+	
 		Object result;
 		if (nsdictionary.isInstance(obj)) {
 			Map map = new HashMap();

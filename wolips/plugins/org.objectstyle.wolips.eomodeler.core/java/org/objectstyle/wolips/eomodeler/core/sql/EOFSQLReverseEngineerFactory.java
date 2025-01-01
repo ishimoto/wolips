@@ -46,6 +46,10 @@ public class EOFSQLReverseEngineerFactory implements IEOSQLReverseEngineerFactor
 		public File reverseEngineerWithTableNamesIntoModel(List<String> tableNamesList) throws IOException {
 			try {
 				return (File) _eofSQLReverseEngineer.getClass().getMethod("reverseEngineerWithTableNamesIntoModel", List.class).invoke(_eofSQLReverseEngineer, tableNamesList);
+			} catch (InvocationTargetException e) {
+			    // Answer:
+			    e.getCause().printStackTrace();
+			    return null;
 			} catch (Throwable e) {
 				throw new RuntimeException("Failed to reverse engineer.", e);
 			}

@@ -65,30 +65,43 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- * Declare a class named "org.objectstyle.wolips.eomodeler.EOModelProcessor"
- * with the following methods: public void processModel(EOModel _model,
- * NSMutableArray _entities, NSMutableDictionary _flags); public void
- * processSQL(StringBuffer _sqlBuffer, EOModel _model, NSMutableArray _entities,
- * NSMutableDictionary _flags);
- * 
- * or declare an "eomodelProcessorClassName" in your extra info dictionary that
+ * Declare a class named "org.objectstyle.wolips.TBModeler.TBModelProcessor"
+ * with the following methods: 
+ * <code>
+ * public void processModel(TBModel _model, TBFMutableArray _entities, TBFMutableDictionary _flags); 
+ * public void processSQL(StringBuffer _sqlBuffer, TBModel _model, TBFMutableArray _entities, TBFMutableDictionary _flags);
+ * </code>
+ * or declare an "TBModelProcessorClassName" in your extra info dictionary that
  * has methods of the same signature.
  * 
- * processModel will be called prior to sql generation, and processSQL will be
- * called after sql generation but before it retuns to EOModeler.
+ * processModel() will be called prior to SQL generation, and processSQL() will be
+ * called after SQL generation but before it returns to TBModeler.
  * 
  * @author mschrag
  * 
  */
 public class EOFSQLGenerator53 implements IEOSQLGenerator {
 	
-	// com.webobjects.foundation.NSMutableArray
+	public static final String PROTOTYPE_ENTITY_NAME_KEY = "prototypeEntityName";
+	public static final String CONNECTION_DICTIONARY_KEY = "connectionDictionary";
+	public static final String TBMODEL_PROCESSOR_CLASSNAME_KEY = "TBModelProcessorClassName";
+	public static final String TB_CLASSPATH_KEY = "com.webobjects.classpath";
+	public static final String JAVA_CLASSPATH_KEY = "java.class.path";
+	public static final String UNDERSCORE_ENTITY_MODELER =  "_EntityModeler";
+	public static final String JDBC2INFO = "jdbc2Info";
+	public static final String TB_PROTOTYPES = "TBPrototypes";
+	public static final String EO_PREFIX = "EO";  //This has to stay EO
+	public static final String PROTOTYPES_SUFFIX = "Prototypes";
+	public static final String YES = "YES";
+	public static final String NO = "NO";
+	
+	// org.treasureboat.foundation.array.TBFMutableArray
 	private Object _entities;
 
-	// com.webobjects.eoaccess.EOModel
+	// org.treasureboat.enterprise.model.TBModel
 	private Object _model;
 
-	// com.webobjects.eoaccess.EOModelGroup
+	// org.treasureboat.enterprise.model.TBModelGroup
 	private Object _modelGroup;
 
 	private Object _modelProcessor;
@@ -111,13 +124,13 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 
 	private void init(String modelName, List modelURLs, List entityNames, Map selectedDatabaseConfig, boolean runInEntityModeler) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		fixClassPath();
-		
-		Class<?> eomodelgroup = Class.forName("com.webobjects.eoaccess.EOModelGroup");
-		Class<?> eomodel = Class.forName("com.webobjects.eoaccess.EOModel");
-		Class<?> nsarray = Class.forName("com.webobjects.foundation.NSArray");
-		Class<?> nsdictionary = Class.forName("com.webobjects.foundation.NSDictionary");
-		Class<?> nsmutarray = Class.forName("com.webobjects.foundation.NSMutableArray");
-		Class<?> nsmutdictionary = Class.forName("com.webobjects.foundation.NSMutableDictionary");
+
+		Class<?> eomodelgroup = Class.forName("org.treasureboat.enterprise.model.TBModelGroup");
+		Class<?> eomodel = Class.forName("org.treasureboat.enterprise.model.TBModel");
+		Class<?> nsarray = Class.forName("org.treasureboat.foundation.array.TBFArray");
+		Class<?> nsdictionary = Class.forName("org.treasureboat.foundation.dic.TBFDictionary");
+		Class<?> nsmutarray = Class.forName("org.treasureboat.foundation.array.TBFMutableArray");
+		Class<?> nsmutdictionary = Class.forName("org.treasureboat.foundation.dic.TBFMutableDictionary");
 
 		Map databaseConfig = selectedDatabaseConfig;
 		if (databaseConfig == null) {
@@ -131,8 +144,8 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 			URL modelURL = (URL) modelURLIter.next();
 			eomodelgroup.getMethod("addModelWithPathURL", URL.class).invoke(_modelGroup, modelURL);
 		}
-
-		String prototypeEntityName = (String) databaseConfig.get("prototypeEntityName");
+	
+		String prototypeEntityName = (String) databaseConfig.get(PROTOTYPE_ENTITY_NAME_KEY);
 		if (prototypeEntityName != null) {
 			replacePrototypes(_modelGroup, prototypeEntityName);
 		}
@@ -141,11 +154,11 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 		_model = eomodelgroup.getMethod("modelNamed", String.class).invoke(_modelGroup, modelName);
 
 		Object defaultConnectionDictionary;
-		Map overrideConnectionDictionary = (Map) databaseConfig.get("connectionDictionary");
+		Map overrideConnectionDictionary = (Map) databaseConfig.get(CONNECTION_DICTIONARY_KEY);
 		if (overrideConnectionDictionary != null) {
 			Object connectionDictionary = EOFSQLUtils53.toWOCollections(overrideConnectionDictionary);
 			eomodel.getMethod("setConnectionDictionary", nsdictionary).invoke(_model, connectionDictionary);
-			String eomodelProcessorClassName = (String) nsdictionary.getMethod("valueForKey", String.class).invoke(connectionDictionary, "eomodelProcessorClassName");
+			String eomodelProcessorClassName = (String) nsdictionary.getMethod("valueForKey", String.class).invoke(connectionDictionary, TBMODEL_PROCESSOR_CLASSNAME_KEY);
 			if (eomodelProcessorClassName != null) {
 				findModelProcessor(eomodelProcessorClassName, true);
 			}
@@ -164,7 +177,7 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 		}
 
 		if (_modelProcessor == null) {
-			findModelProcessor("org.objectstyle.wolips.eomodeler.EOModelProcessor", false);
+			findModelProcessor("org.objectstyle.wolips.TBModeler.TBModelProcessor", false);
 		}
 		if (entityNames == null || entityNames.size() == 0) {
 			Object entitiesarr = eomodel.getMethod("entities").invoke(_model);
@@ -172,8 +185,6 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 			while (entitiesEnum.hasMoreElements()) {
 				Object entity = entitiesEnum.nextElement();
 				if (!isPrototype(entity)) {// &&
-					// entityUsesSeparateTable(entity))
-					// {
 					nsmutarray.getMethod("addObject", Object.class).invoke(_entities, entity);
 				}
 			}
@@ -192,7 +203,7 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 		Object connectionDictionary = eomodel.getMethod("connectionDictionary").invoke(_model);
 		if (connectionDictionary != null) {
 			Object mutableConnectionDictionary = nsdictionary.getMethod("mutableClone").invoke(connectionDictionary);
-			nsmutdictionary.getMethod("removeObjectForKey", Object.class).invoke(mutableConnectionDictionary, "jdbc2Info");
+			nsmutdictionary.getMethod("removeObjectForKey", Object.class).invoke(mutableConnectionDictionary, JDBC2INFO);
 			eomodel.getMethod("setConnectionDictionary", nsdictionary).invoke(_model, mutableConnectionDictionary);
 		}
 
@@ -201,7 +212,7 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 		if (runInEntityModeler) {
 			Object infodict = eomodel.getMethod("userInfo").invoke(_model);
 			Object modelUserInfo = nsdictionary.getMethod("mutableClone").invoke(infodict);
-			Object entityModelerDict = nsmutdictionary.getMethod("valueForKey", String.class).invoke(modelUserInfo, "_EntityModeler");
+			Object entityModelerDict = nsmutdictionary.getMethod("valueForKey", String.class).invoke(modelUserInfo, UNDERSCORE_ENTITY_MODELER);
 			Object mutableEntityModelerDict;
 			if (entityModelerDict == null) {
 				mutableEntityModelerDict = nsmutdictionary.getConstructor().newInstance();
@@ -209,7 +220,7 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 				mutableEntityModelerDict = nsdictionary.getMethod("mutableClone").invoke(entityModelerDict);
 			}
 			nsmutdictionary.getMethod("takeValueForKey", Object.class, String.class).invoke(mutableEntityModelerDict, Boolean.TRUE, "inEntityModeler");
-			nsmutdictionary.getMethod("takeValueForKey", Object.class, String.class).invoke(modelUserInfo, mutableEntityModelerDict, "_EntityModeler");
+			nsmutdictionary.getMethod("takeValueForKey", Object.class, String.class).invoke(modelUserInfo, mutableEntityModelerDict, UNDERSCORE_ENTITY_MODELER);
 			eomodel.getMethod("setUserInfo", nsdictionary).invoke(_model, modelUserInfo);
 		}
 
@@ -236,13 +247,13 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 	}
 
 	private void replacePrototypesReflect(Object modelGroup, String prototypeEntityName) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, InstantiationException {
-		Class<?> eomodelgroup = Class.forName("com.webobjects.eoaccess.EOModelGroup");
-		Class<?> eomodel = Class.forName("com.webobjects.eoaccess.EOModel");
-		Class<?> eoentity = Class.forName("com.webobjects.eoaccess.EOEntity");
-		Class<?> nsarray = Class.forName("com.webobjects.foundation.NSArray");
-		Class<?> nsmutdictionary = Class.forName("com.webobjects.foundation.NSMutableDictionary");
+		Class<?> eomodelgroup = Class.forName("org.treasureboat.enterprise.model.TBModelGroup");
+		Class<?> eomodel = Class.forName("org.treasureboat.enterprise.model.TBModel");
+		Class<?> eoentity = Class.forName("org.treasureboat.enterprise.model.TBEntity");
+		Class<?> nsarray = Class.forName("org.treasureboat.foundation.array.TBFArray");
+		Class<?> nsmutdictionary = Class.forName("org.treasureboat.foundation.array.TBFMutableArray");
 
-		String replacementPrototypeName = "EOPrototypes";
+		String replacementPrototypeName = TB_PROTOTYPES;
 
 		// Don't replace prototypes if the selected prototype entity name
 		// doesn't exist
@@ -263,7 +274,7 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 		while (modelsEnum.hasMoreElements()) {
 			Object model = modelsEnum.nextElement();
 			String adaptorName = (String) eomodel.getMethod("adaptorName").invoke(model);
-			Object eoAdaptorPrototypesEntity = eomodelgroup.getMethod("entityNamed", String.class).invoke(_modelGroup, "EO" + adaptorName + "Prototypes");
+			Object eoAdaptorPrototypesEntity = eomodelgroup.getMethod("entityNamed", String.class).invoke(_modelGroup, EO_PREFIX + adaptorName + PROTOTYPES_SUFFIX);
 			if (eoAdaptorPrototypesEntity != null) {
 				prototypesModel = eoentity.getMethod("model").invoke(eoAdaptorPrototypesEntity);
 				// System.out.println("EOFSQLGenerator.EOFSQLGenerator:
@@ -325,7 +336,7 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 	}
 
 	private void localizeEntitiesReflect() throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		Class<?> nsarray = Class.forName("com.webobjects.foundation.NSArray");
+		Class<?> nsarray = Class.forName("org.treasureboat.foundation.array.TBFArray");
 		Object entities = nsarray.getConstructor(nsarray).newInstance(_entities);
 		Enumeration entitiesEnum = (Enumeration) nsarray.getMethod("objectEnumerator").invoke(entities);
 		while (entitiesEnum.hasMoreElements()) {
@@ -351,9 +362,9 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 	}
 
 	private void fixAllowsNullOnSingleTableInheritanceReflect() throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		Class<?> eoentity = Class.forName("com.webobjects.eoaccess.EOEntity");
-		Class<?> nsarray = Class.forName("com.webobjects.foundation.NSArray");
-		Class<?> eoattribute = Class.forName("com.webobjects.eoaccess.EOAttribute");
+		Class<?> eoentity = Class.forName("org.treasureboat.enterprise.model.TBEntity");
+		Class<?> nsarray = Class.forName("org.treasureboat.foundation.array.TBFArray");
+		Class<?> eoattribute = Class.forName("org.treasureboat.enterprise.model.TBAttribute");
 		Object entities = nsarray.getConstructor(nsarray).newInstance(_entities);
 		Enumeration entitiesEnum = (Enumeration) nsarray.getMethod("objectEnumerator").invoke(entities);
 		while (entitiesEnum.hasMoreElements()) {
@@ -388,7 +399,7 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 	}
 
 	private void ensureSingleTableInheritanceParentEntitiesAreIncludedReflect() throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		Class<?> nsarray = Class.forName("com.webobjects.foundation.NSArray");
+		Class<?> nsarray = Class.forName("org.treasureboat.foundation.array.TBFArray");
 		Object entities = nsarray.getConstructor(nsarray).newInstance(_entities);
 		Enumeration entitiesEnum = (Enumeration) nsarray.getMethod("objectEnumerator").invoke(entities);
 		while (entitiesEnum.hasMoreElements()) {
@@ -412,10 +423,10 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 	}
 
 	private void ensureSingleTableInheritanceChildEntitiesAreIncludedReflect() throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		Class<?> eomodel = Class.forName("com.webobjects.eoaccess.EOModel");
-		Class<?> eoentity = Class.forName("com.webobjects.eoaccess.EOEntity");
-		Class<?> nsarray = Class.forName("com.webobjects.foundation.NSArray");
-		Class<?> nsmutarray = Class.forName("com.webobjects.foundation.NSMutableArray");
+		Class<?> eomodel = Class.forName("org.treasureboat.enterprise.model.TBModel");
+		Class<?> eoentity = Class.forName("org.treasureboat.enterprise.model.TBEntity");
+		Class<?> nsarray = Class.forName("org.treasureboat.foundation.array.TBFArray");
+		Class<?> nsmutarray = Class.forName("org.treasureboat.foundation.array.TBFMutableArray");
 		Object entitiesarr = eomodel.getMethod("entities").invoke(_model);
 		Enumeration entitiesEnum = (Enumeration) nsarray.getMethod("objectEnumerator").invoke(entitiesarr);
 		while (entitiesEnum.hasMoreElements()) {
@@ -446,8 +457,8 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 	}
 
 	private void ensureSingleTableInheritanceParentEntitiesAreIncludedReflect(Object entity) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		Class<?> eoentity = Class.forName("com.webobjects.eoaccess.EOEntity");
-		Class<?> nsmutarray = Class.forName("com.webobjects.foundation.NSMutableArray");
+		Class<?> eoentity = Class.forName("org.treasureboat.enterprise.model.TBEntity");
+		Class<?> nsmutarray = Class.forName("org.treasureboat.foundation.array.TBFMutableArray");
 		if (isSingleTableInheritance(entity)) {
 			Object parentEntity = eoentity.getMethod("parentEntity").invoke(entity);
 			Boolean containsParent = (Boolean) nsmutarray.getMethod("containsObject", Object.class).invoke(_entities, parentEntity);
@@ -459,9 +470,9 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 	}
 
 	protected boolean isPrototype(Object _entity) throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		Class<?> eoentity = Class.forName("com.webobjects.eoaccess.EOEntity");
+		Class<?> eoentity = Class.forName("org.treasureboat.enterprise.model.TBEntity");
 		String entityName = (String) eoentity.getMethod("name").invoke(_entity);
-		boolean isPrototype = (entityName.startsWith("EO") && entityName.endsWith("Prototypes"));
+		boolean isPrototype = (entityName.startsWith(EO_PREFIX) && entityName.endsWith(PROTOTYPES_SUFFIX));
 		return isPrototype;
 	}
 
@@ -480,7 +491,7 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 	}
 
 	private boolean isSingleTableInheritanceReflect(Object entity) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		Class<?> eoentity = Class.forName("com.webobjects.eoaccess.EOEntity");
+		Class<?> eoentity = Class.forName("org.treasureboat.enterprise.model.TBEntity");
 		Object parentEntity = eoentity.getMethod("parentEntity").invoke(entity);
 		String entityExternalName = (String) eoentity.getMethod("externalName").invoke(entity);
 		String parentEntityExternalName = (String) eoentity.getMethod("externalName").invoke(parentEntity);
@@ -506,12 +517,12 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 	}
 
 	private void createLocalizedAttributesReflect(Object entity) throws ClassNotFoundException, IllegalAccessException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException, InstantiationException {
-		Class<?> eoentity = Class.forName("com.webobjects.eoaccess.EOEntity");
-		Class<?> eomodel = Class.forName("com.webobjects.eoaccess.EOModel");
-		Class<?> eoattribute = Class.forName("com.webobjects.eoaccess.EOAttribute");
-		Class<?> nsarray = Class.forName("com.webobjects.foundation.NSArray");
-		Class<?> nsdictionary = Class.forName("com.webobjects.foundation.NSDictionary");
-		Class<?> nsmutarray = Class.forName("com.webobjects.foundation.NSMutableArray");
+		Class<?> eoentity = Class.forName("org.treasureboat.enterprise.model.TBEntity");
+		Class<?> eomodel = Class.forName("org.treasureboat.enterprise.model.TBModel");
+		Class<?> eoattribute = Class.forName("org.treasureboat.enterprise.model.TBAttribute");
+		Class<?> nsarray = Class.forName("org.treasureboat.foundation.array.TBFArray");
+		Class<?> nsdictionary = Class.forName("org.treasureboat.foundation.dic.TBFDictionary");
+		Class<?> nsmutarray = Class.forName("org.treasureboat.foundation.array.TBFMutableArray");
 		
 		Object emptyarr = nsarray.getField("EmptyArray").get(null);
 
@@ -528,6 +539,7 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 		if (attributesUsedForLocking == null) {
 			attributesUsedForLocking = emptyarr;
 		}
+
 		Object mutableClassProperties = nsarray.getMethod("mutableClone").invoke(classProperties);
 		Object mutableAttributesUsedForLocking = nsarray.getMethod("mutableClone").invoke(attributesUsedForLocking);
 		for (Enumeration e = (Enumeration) nsarray.getMethod("objectEnumerator").invoke(attributes); e.hasMoreElements();) {
@@ -593,8 +605,8 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 	}
 
 	private boolean isInheritedReflect(Object attribute) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		Class<?> eoattribute = Class.forName("com.webobjects.eoaccess.EOAttribute");
-		Class<?> eoentity = Class.forName("com.webobjects.eoaccess.EOEntity");
+		Class<?> eoattribute = Class.forName("org.treasureboat.enterprise.model.TBAttribute");
+		Class<?> eoentity = Class.forName("org.treasureboat.enterprise.model.TBEntity");
 
 		boolean inherited = false;
 		Object entity = eoattribute.getMethod("entity").invoke(attribute);
@@ -626,12 +638,12 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 	}
 
 	private void fixDuplicateSingleTableInheritanceDropStatementsReflect(Object syncFactory, Object flags, StringBuffer sqlBuffer) throws ClassNotFoundException, IllegalAccessException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException, InstantiationException {
-		Class<?> eoschemageneration = Class.forName("com.webobjects.eoaccess.EOSchemaGeneration");
-		Class<?> eosynchronizationfactory = Class.forName("com.webobjects.eoaccess.EOSynchronizationFactory");
-		Class<?> nsarray = Class.forName("com.webobjects.foundation.NSArray");
-		Class<?> nsdictionary = Class.forName("com.webobjects.foundation.NSDictionary");
-		Class<?> nsmutarray = Class.forName("com.webobjects.foundation.NSMutableArray");
-		Class<?> nsmutdictionary = Class.forName("com.webobjects.foundation.NSMutableDictionary");
+		Class<?> eoschemageneration = Class.forName("org.treasureboat.enterprise.synchronization.TBSchemaGenerationOptions");
+		Class<?> eosynchronizationfactory = Class.forName("org.treasureboat.enterprise.synchronization.TBSchemaSynchronizationFactory");
+		Class<?> nsarray = Class.forName("org.treasureboat.foundation.array.TBFArray");
+		Class<?> nsdictionary = Class.forName("org.treasureboat.foundation.dic.TBFDictionary");
+		Class<?> nsmutarray = Class.forName("org.treasureboat.foundation.array.TBFMutableArray");
+		Class<?> nsmutdictionary = Class.forName("org.treasureboat.foundation.dic.TBFMutableDictionary");
 		String DropTablesKey = (String) eoschemageneration.getField("DropTablesKey").get(null);
 		Object flag = nsmutdictionary.getMethod("valueForKey", String.class).invoke(flags, DropTablesKey);
 		if ("YES".equals(flag)) {
@@ -682,8 +694,8 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 
 	private void fixClassPath() {
 		String classPath = getClassPath();
-		System.setProperty("java.class.path", classPath);
-		System.setProperty("com.webobjects.classpath", classPath);
+		System.setProperty(JAVA_CLASSPATH_KEY, classPath);
+		System.setProperty(TB_CLASSPATH_KEY, classPath);
 	}
 
 	public String generateSchemaCreationScript(Map flagsMap) {
@@ -705,17 +717,17 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 	private String generateSchemaCreationScriptReflect(Map flagsMap) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		fixClassPath();
 		
-		Class<?> eodatabasecontext = Class.forName("com.webobjects.eoaccess.EODatabaseContext");
-		Class<?> eodatabase = Class.forName("com.webobjects.eoaccess.EODatabase");
-		Class<?> eomodel = Class.forName("com.webobjects.eoaccess.EOModel");
-		Class<?> eosynchronizationfactory = Class.forName("com.webobjects.eoaccess.EOSynchronizationFactory");
-		Class<?> eoadaptorcontext = Class.forName("com.webobjects.eoaccess.EOAdaptorContext");
-		Class<?> jdbcadaptor = Class.forName("com.webobjects.jdbcadaptor.JDBCAdaptor");
-		Class<?> jdbcplugin = Class.forName("com.webobjects.jdbcadaptor.JDBCPlugIn");
-		Class<?> eoadaptorchannel = Class.forName("com.webobjects.eoaccess.EOAdaptorChannel");
-		Class<?> nsarray = Class.forName("com.webobjects.foundation.NSArray");
-		Class<?> nsdictionary = Class.forName("com.webobjects.foundation.NSDictionary");
-		Class<?> nsmutarray = Class.forName("com.webobjects.foundation.NSMutableArray");
+		Class<?> eodatabasecontext = Class.forName("org.treasureboat.enterprise.database.TBEnterpriseDatabaseContext");
+		Class<?> eodatabase = Class.forName("org.treasureboat.enterprise.database.TBEnterpriseDatabase");
+		Class<?> eomodel = Class.forName("org.treasureboat.enterprise.model.TBModel");
+		Class<?> eosynchronizationfactory = Class.forName("org.treasureboat.enterprise.synchronization.TBSchemaSynchronizationFactory");
+		Class<?> eoadaptorcontext = Class.forName("org.treasureboat.enterprise.access.adaptor.TBEnterpriseAdaptorContext");
+		Class<?> jdbcadaptor = Class.forName("org.treasureboat.enterprise.jdbc.TBEnterpriseJDBCAdaptor");
+		Class<?> jdbcplugin = Class.forName("com.webobjects.jdbcadaptor.JDBCPlugIn"); // FIXME
+		Class<?> eoadaptorchannel = Class.forName("org.treasureboat.enterprise.access.adaptor.TBEnterpriseAdaptorChannel");
+		Class<?> nsarray = Class.forName("org.treasureboat.foundation.array.TBFArray");
+		Class<?> nsdictionary = Class.forName("org.treasureboat.foundation.dic.TBFDictionary");
+		Class<?> nsmutarray = Class.forName("org.treasureboat.foundation.array.TBFMutableArray");
 
 		Object flags = EOFSQLUtils53.toWOCollections(flagsMap);
 
@@ -809,27 +821,13 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 	public void findModelProcessor(String modelProcessorClassName, boolean throwExceptionIfMissing) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		try {
 			Class modelProcessorClass = Class.forName(modelProcessorClassName);
-			_modelProcessor = modelProcessorClass.newInstance();
-		} catch (ClassNotFoundException e) {
-			// System.out.println("EOFSQLGenerator.getModelProcessor: Missing model processor "
-			// + modelProcessorClassName);
+			_modelProcessor = modelProcessorClass.getConstructor().newInstance();
+			
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | RuntimeException e) {
 			if (throwExceptionIfMissing) {
 				throw e;
 			}
-		} catch (InstantiationException e) {
-			if (throwExceptionIfMissing) {
-				throw e;
-			}
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			if (throwExceptionIfMissing) {
-				throw e;
-			}
-			e.printStackTrace();
-		} catch (RuntimeException e) {
-			if (throwExceptionIfMissing) {
-				throw e;
-			}
+		} catch (InvocationTargetException | NoSuchMethodException e) {
 			e.printStackTrace();
 		}
 	}
@@ -854,16 +852,16 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 
 	private void executeSQLReflect(String sql) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SQLException {
 		fixClassPath();
-		Class<?> eodatabasecontext = Class.forName("com.webobjects.eoaccess.EODatabaseContext");
-		Class<?> eodatabase = Class.forName("com.webobjects.eoaccess.EODatabase");
-		Class<?> eodatabasechannel = Class.forName("com.webobjects.eoaccess.EODatabaseChannel");
-		Class<?> eomodel = Class.forName("com.webobjects.eoaccess.EOModel");
-		Class<?> eoadaptorcontext = Class.forName("com.webobjects.eoaccess.EOAdaptorContext");
-		Class<?> eoadaptorchannel = Class.forName("com.webobjects.eoaccess.EOAdaptorChannel");
-		Class<?> jdbccontext = Class.forName("com.webobjects.jdbcadaptor.JDBCContext");
-		Class<?> nsarray = Class.forName("com.webobjects.foundation.NSArray");
-		Class<?> nsmutarray = Class.forName("com.webobjects.foundation.NSMutableArray");
-		
+		Class<?> eodatabasecontext = Class.forName("org.treasureboat.enterprise.database.TBEnterpriseDatabaseContext");
+		Class<?> eodatabase = Class.forName("org.treasureboat.enterprise.database.TBEnterpriseDatabase");
+		Class<?> eodatabasechannel = Class.forName("org.treasureboat.enterprise.database.TBEnterpriseDatabaseChannel");
+		Class<?> eomodel = Class.forName("org.treasureboat.enterprise.model.TBModel");
+		Class<?> eoadaptorcontext = Class.forName("org.treasureboat.enterprise.access.adaptor.TBEnterpriseAdaptorContext");
+		Class<?> eoadaptorchannel = Class.forName("org.treasureboat.enterprise.access.adaptor.TBEnterpriseAdaptorChannel");
+		Class<?> jdbccontext = Class.forName("org.treasureboat.enterprise.jdbc.TBEnterpriseJDBCContext");
+		Class<?> nsarray = Class.forName("org.treasureboat.foundation.array.TBFArray");
+		Class<?> nsmutarray = Class.forName("org.treasureboat.foundation.array.TBFMutableArray");
+	
 		Object db = eodatabase.getConstructor(eomodel).newInstance(_model);
 		Object dbc = eodatabasecontext.getConstructor(eodatabase).newInstance(db);
 		Object ac = eodatabasecontext.getMethod("adaptorContext").invoke(dbc);
@@ -934,12 +932,13 @@ public class EOFSQLGenerator53 implements IEOSQLGenerator {
 	}
 
 	private Map externalTypesReflect() throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		Class<?> eodatabasecontext = Class.forName("com.webobjects.eoaccess.EODatabaseContext");
-		Class<?> eodatabase = Class.forName("com.webobjects.eoaccess.EODatabase");
-		Class<?> eomodel = Class.forName("com.webobjects.eoaccess.EOModel");
-		Class<?> eoadaptorcontext = Class.forName("com.webobjects.eoaccess.EOAdaptorContext");
-		Class<?> jdbcadaptor = Class.forName("com.webobjects.jdbcadaptor.JDBCAdaptor");
-		Class<?> jdbcplugin = Class.forName("com.webobjects.jdbcadaptor.JDBCPlugIn");
+		Class<?> eodatabasecontext = Class.forName("org.treasureboat.enterprise.database.TBEnterpriseDatabaseContext");
+		Class<?> eodatabase = Class.forName("org.treasureboat.enterprise.database.TBEnterpriseDatabase");
+		Class<?> eomodel = Class.forName("org.treasureboat.enterprise.model.TBModel");
+		Class<?> eoadaptorcontext = Class.forName("org.treasureboat.enterprise.access.adaptor.TBEnterpriseAdaptorContext");
+		Class<?> jdbcadaptor = Class.forName("org.treasureboat.enterprise.jdbc.TBEnterpriseJDBCAdaptor");
+		Class<?> jdbcplugin = Class.forName("com.webobjects.jdbcadaptor.JDBCPlugIn"); // FIXME
+		
 		Object db = eodatabase.getConstructor(eomodel).newInstance(_model);
 		Object dbc = eodatabasecontext.getConstructor(eodatabase).newInstance(db);
 		Object ac = eodatabasecontext.getMethod("adaptorContext").invoke(dbc);

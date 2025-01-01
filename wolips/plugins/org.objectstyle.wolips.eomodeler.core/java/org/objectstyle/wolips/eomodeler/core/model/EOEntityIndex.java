@@ -54,7 +54,7 @@ import java.util.Set;
 
 public class EOEntityIndex extends UserInfoableEOModelObject<EOEntity> implements IEOEntityRelative, ISortableEOModelObject {
 	public static enum Constraint {
-		Distinct("distinct"), FullText("fulltext"), Spatial("spatial"), None("none");
+		Unique("unique"), Distinct("distinct"), FullText("fulltext"), Spatial("spatial"), None("none");
 
 		private String _externalName;
 

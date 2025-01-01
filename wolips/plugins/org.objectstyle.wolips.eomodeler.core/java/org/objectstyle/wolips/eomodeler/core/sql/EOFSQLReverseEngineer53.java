@@ -34,8 +34,8 @@ public class EOFSQLReverseEngineer53 implements IEOSQLReverseEngineer {
 	}
 
 	private void init(String adaptorName, Map connectionDictionary) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		eoadaptor = Class.forName("com.webobjects.eoaccess.EOAdaptor");
-		Class<?> nsdictionary = Class.forName("com.webobjects.foundation.NSDictionary");
+		eoadaptor = Class.forName("org.treasureboat.enterprise.access.adaptor.TBEnterpriseAdaptor");
+		Class<?> nsdictionary = Class.forName("org.treasureboat.foundation.dic.TBFDictionary");
 		_adaptorName = adaptorName;
 		_adaptor = eoadaptor.getMethod("adaptorWithName", String.class).invoke(null, adaptorName);
 		_connectionDictionary = EOFSQLUtils53.toWOCollections(connectionDictionary);
@@ -58,8 +58,8 @@ public class EOFSQLReverseEngineer53 implements IEOSQLReverseEngineer {
 	}
 
 	private void openReflect() throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		Class<?> eoadaptorcontext = Class.forName("com.webobjects.eoaccess.EOAdaptorContext");
-		eoadaptorchannel = Class.forName("com.webobjects.eoaccess.EOAdaptorChannel");
+		Class<?> eoadaptorcontext = Class.forName("org.treasureboat.enterprise.access.adaptor.TBEnterpriseAdaptorContext");
+		eoadaptorchannel = Class.forName("org.treasureboat.enterprise.access.adaptor.TBEnterpriseAdaptorChannel");
 		Object context = eoadaptor.getMethod("createAdaptorContext").invoke(_adaptor);
 		_channel =  eoadaptorcontext.getMethod("createAdaptorChannel").invoke(context);
 		eoadaptorchannel.getMethod("openChannel").invoke(_channel);
@@ -130,8 +130,8 @@ public class EOFSQLReverseEngineer53 implements IEOSQLReverseEngineer {
 	}
 
 	private File reverseEngineerWithTableNamesIntoModelReflect(List tableNamesList) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
-		Class<?> eomodel = Class.forName("com.webobjects.eoaccess.EOModel");
-		Class<?> nsarray = Class.forName("com.webobjects.foundation.NSArray");
+		Class<?> eomodel = Class.forName("org.treasureboat.enterprise.model.TBModel");
+		Class<?> nsarray = Class.forName("org.treasureboat.foundation.array.TBFArray");
 		open();
 		try {
 			Object tableNamesArray = EOFSQLUtils53.toWOCollections(tableNamesList);

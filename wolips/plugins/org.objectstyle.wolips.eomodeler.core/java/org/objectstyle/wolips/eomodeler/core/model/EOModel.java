@@ -52,10 +52,13 @@ package org.objectstyle.wolips.eomodeler.core.model;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -69,7 +72,7 @@ import org.objectstyle.wolips.eomodeler.core.model.history.ModelEvents;
 import org.objectstyle.wolips.eomodeler.core.utils.NamingConvention;
 
 public class EOModel extends UserInfoableEOModelObject<EOModelGroup> implements ISortableEOModelObject {
-	public static final String CURRENT_VERSION = "1.0.1";
+	public static final String CURRENT_VERSION = "1.0.2";
 
 	public static final String DIRTY = "dirty";
 
@@ -100,6 +103,20 @@ public class EOModel extends UserInfoableEOModelObject<EOModelGroup> implements 
 	public static final String MODEL_SAVING = "modelSaving";
 
 	public static final String REVERSE_ENGINEERED = "reverseEngineered";
+	
+	public static final String INDEX_EOMODELD = "index.eomodeld";
+	
+	public static final String EOMODELD_EXTENSION = ".eomodeld";
+
+	public static final String PLIST_EXTENSION = ".plist";
+	
+	public static final String FSPEC_EXTENSION = ".fspec";
+	
+	public static final String STORED_PROCEDURE_EXTENSION = ".storedProcedure";
+	
+	public static final String ID_ATTRIBUTE = "id";
+	
+	public static final String USERINFO_REFERENCE_EO_KEY = "referenceEO";
 
 	private EOModelGroup myModelGroup;
 
@@ -147,7 +164,7 @@ public class EOModel extends UserInfoableEOModelObject<EOModelGroup> implements 
 		myDeletedEntityNamesInObjectStore = new PropertyListSet<String>();
 		myDeletedEntityNames = new PropertyListSet<String>();
 		myDeletedStoredProcedureNames = new PropertyListSet<String>();
-		myVersion = "2.1";
+		myVersion = "2.2";
 		myModelMap = new EOModelMap();
 		_modelEvents = new ModelEvents();
 		_entityNamingConvention = NamingConvention.DEFAULT;
@@ -201,6 +218,17 @@ public class EOModel extends UserInfoableEOModelObject<EOModelGroup> implements 
 		return new HashSet<EOModelReferenceFailure>();
 	}
 
+	/**
+	 * TODO:  get the TBLipsContext.java's packageName() to be here as seed
+	 * @return
+	 */
+	public String defaultPackageName() {
+		String packagePrefix = "org.treasureboat.app";
+		// TODO:  TBLipsContext has packageName
+		// Does the project itself have the packageName?
+		return packagePrefix + ".eo";
+	}
+	
 	public String guessPackageName() {
 		return guessPackageName(getEntities());
 	}
@@ -251,6 +279,11 @@ public class EOModel extends UserInfoableEOModelObject<EOModelGroup> implements 
 				}
 			}
 		}
+		
+		if (guessPackageName == null || "".equals(guessPackageName)) {
+//			System.err.print("\n We didn't get a packageName from the existing entities ");
+			guessPackageName = defaultPackageName();
+		}
 		return guessPackageName;
 	}
 
@@ -259,21 +292,244 @@ public class EOModel extends UserInfoableEOModelObject<EOModelGroup> implements 
 		EOEntity entity = new EOEntity(newEntityName);
 		entity.guessExternalNameInModel(this);
 		entity.guessClassNameInModel(this);
+		entity.setCoreData(Boolean.TRUE);
 		addEntity(entity);
 
-		if (myModelGroup != null && myModelGroup.hasProjectWonder()) {
-			EOAttribute pk = new EOAttribute("id");
-			pk.setPrototype(getPrototypeAttributeNamed("id"));
-			pk.setColumnName("id");
+		if (myModelGroup != null && myModelGroup.hasTBPrototypes()) {
+			EOAttribute pk = new EOAttribute(ID_ATTRIBUTE);
+			pk.setPrototype(getPrototypeAttributeNamed(ID_ATTRIBUTE));
+			pk.setColumnName(ID_ATTRIBUTE);
 			pk.setPrimaryKey(Boolean.TRUE);
 			pk.setClassProperty(Boolean.FALSE);
 			pk.setUsedForLocking(Boolean.TRUE);
 			entity.addAttribute(pk);
-		}
+			
+			if (myModelGroup.hasTBBaseModel()) {
+				makeTimestampPropertiesForEntity(entity);
+			}
 
+			
+		}
 		return entity;
 	}
 
+
+	/**
+	 * Create a lookup (reference) table with displayName and displayCode
+	 * @param name
+	 * @return
+	 * @throws DuplicateNameException
+	 */
+	public EOEntity addBlankReferenceEntity(String name) throws DuplicateNameException {
+		String newEntityName = findUnusedEntityName(name);
+		EOEntity entity = new EOEntity(newEntityName);
+		entity.guessExternalNameInModel(this);
+		entity.guessClassNameInModel(this);
+		entity.setCoreData(Boolean.TRUE);
+		Map<Object, Object> userInfoMap = new HashMap();
+		userInfoMap.put(USERINFO_REFERENCE_EO_KEY, Boolean.TRUE);  // THis is a String
+		
+		entity.setUserInfo(userInfoMap);  //  Would like to be able to set the userInfo that this is a reference EO and relationships should not have inverses.
+		entity.setDevDocumentation("<p>This is a reference Entity.</p><p>There shouldn't be inverse relationships from the EO.</p>");
+		addEntity(entity);
+
+		if (myModelGroup != null && myModelGroup.hasTBPrototypes()) {
+			EOAttribute pk = new EOAttribute(ID_ATTRIBUTE);
+			pk.setPrototype(getPrototypeAttributeNamed(ID_ATTRIBUTE));
+			pk.setColumnName(ID_ATTRIBUTE);
+			pk.setPrimaryKey(Boolean.TRUE);
+			pk.setClassProperty(Boolean.FALSE);
+			pk.setUsedForLocking(Boolean.TRUE);
+			pk.setCoreData(Boolean.FALSE);
+			entity.addAttribute(pk);
+			
+			if (myModelGroup.hasTBBaseModel()) {
+				makeTimestampPropertiesForEntity(entity);
+				makeDisplayNamePropertiesForEntity(entity);
+			}
+
+			
+		}
+		return entity;
+	}
+	
+	/**
+	 * add displaySequence, displayCode, displayName attributes
+	 * to the Entity
+	 * @param entity
+	 * @throws DuplicateNameException
+	 */
+	public void makeDisplayNamePropertiesForEntity(EOEntity entity) throws DuplicateNameException {
+		
+		EOAttribute displaySequence = new EOAttribute("displaySequence");
+		displaySequence.setPrototype(getPrototypeAttributeNamed("intNumber"));
+		displaySequence.setColumnName("displaySequence");
+		displaySequence.setPrimaryKey(Boolean.FALSE);
+		displaySequence.setClassProperty(Boolean.TRUE);
+		displaySequence.setUsedForLocking(Boolean.TRUE);
+		displaySequence.setAllowsNull(Boolean.FALSE);
+		displaySequence.setCoreData(Boolean.TRUE);
+		entity.addAttribute(displaySequence);
+
+		EOAttribute displayCode = new EOAttribute("displayCode");
+		displayCode.setPrototype(getPrototypeAttributeNamed("varchar16"));
+		displayCode.setColumnName("displayCode");
+		displayCode.setPrimaryKey(Boolean.FALSE);
+		displayCode.setClassProperty(Boolean.TRUE);
+		displayCode.setUsedForLocking(Boolean.TRUE);
+		displayCode.setAllowsNull(Boolean.FALSE);
+		displayCode.setCoreData(Boolean.TRUE);
+		entity.addAttribute(displayCode);
+
+		EOAttribute displayName = new EOAttribute("displayName");
+		displayName.setPrototype(getPrototypeAttributeNamed("varchar100"));
+		displayName.setColumnName("displayName");
+		displayName.setPrimaryKey(Boolean.FALSE);
+		displayName.setClassProperty(Boolean.TRUE);
+		displayName.setUsedForLocking(Boolean.TRUE);
+		displayName.setAllowsNull(Boolean.FALSE);
+		displayName.setCoreData(Boolean.TRUE);
+		entity.addAttribute(displayName);
+
+	}
+
+	
+	/**
+	 * add the attributes idCreatedBy, idDeletedBy, idLastModifiedBy, created, deleted, lastModified
+	 * add the relationships createdBy, deletedBy, lastModifiedBy
+	 * to the Entity
+	 * @param entity
+	 * @throws DuplicateNameException
+	 */
+	public void makeTimestampPropertiesForEntity(EOEntity entity) throws DuplicateNameException {
+		//  PDY: There may be a better conditional here to decide if we should generate the id*By columns
+		// For Timestamp Support
+		// IDEALLY WE WOULD KNOW THAT THIS MODEL USES TIMESTAMP Support
+		EOAttribute idCreatedBy = new EOAttribute("idCreatedBy");
+		idCreatedBy.setPrototype(getPrototypeAttributeNamed("id"));
+		idCreatedBy.setColumnName("idCreatedBy");
+		idCreatedBy.setPrimaryKey(Boolean.FALSE);
+		idCreatedBy.setClassProperty(Boolean.FALSE);
+		idCreatedBy.setUsedForLocking(Boolean.FALSE);
+		idCreatedBy.setAllowsNull(Boolean.FALSE);
+		idCreatedBy.setCoreData(Boolean.FALSE);
+		entity.addAttribute(idCreatedBy);
+
+		EOAttribute idLastModifiedBy = new EOAttribute("idLastModifiedBy");
+		idLastModifiedBy.setPrototype(getPrototypeAttributeNamed("id"));
+		idLastModifiedBy.setColumnName("idLastModifiedBy");
+		idLastModifiedBy.setPrimaryKey(Boolean.FALSE);
+		idLastModifiedBy.setClassProperty(Boolean.FALSE);
+		idLastModifiedBy.setUsedForLocking(Boolean.FALSE);
+		idLastModifiedBy.setAllowsNull(Boolean.FALSE);
+		idLastModifiedBy.setCoreData(Boolean.FALSE);
+		entity.addAttribute(idLastModifiedBy);
+		
+		EOAttribute idDeletedBy = new EOAttribute("idDeletedBy");
+		idDeletedBy.setPrototype(getPrototypeAttributeNamed("id"));
+		idDeletedBy.setColumnName("idDeletedBy");
+		idDeletedBy.setPrimaryKey(Boolean.FALSE);
+		idDeletedBy.setClassProperty(Boolean.FALSE);
+		idDeletedBy.setUsedForLocking(Boolean.FALSE);
+		idDeletedBy.setAllowsNull(Boolean.TRUE);
+		idDeletedBy.setCoreData(Boolean.FALSE);
+		entity.addAttribute(idDeletedBy);
+
+		EOAttribute created = new EOAttribute("created");
+		created.setPrototype(getPrototypeAttributeNamed("zonedDateTime"));
+		created.setColumnName("created");
+		created.setPrimaryKey(Boolean.FALSE);
+		created.setClassProperty(Boolean.TRUE);
+		created.setUsedForLocking(Boolean.FALSE);
+		created.setAllowsNull(Boolean.FALSE);
+		created.setCoreData(Boolean.FALSE);
+		entity.addAttribute(created);
+
+		EOAttribute lastModified = new EOAttribute("lastModified");
+		lastModified.setPrototype(getPrototypeAttributeNamed("zonedDateTime"));
+		lastModified.setColumnName("lastModified");
+		lastModified.setPrimaryKey(Boolean.FALSE);
+		lastModified.setClassProperty(Boolean.TRUE);
+		lastModified.setUsedForLocking(Boolean.FALSE);
+		lastModified.setAllowsNull(Boolean.FALSE);
+		lastModified.setCoreData(Boolean.TRUE);
+		entity.addAttribute(lastModified);
+
+		EOAttribute deleted = new EOAttribute("deleted");
+		deleted.setPrototype(getPrototypeAttributeNamed("zonedDateTime"));
+		deleted.setColumnName("deleted");
+		deleted.setPrimaryKey(Boolean.FALSE);
+		deleted.setClassProperty(Boolean.TRUE);
+		deleted.setUsedForLocking(Boolean.FALSE);
+		deleted.setAllowsNull(Boolean.TRUE);
+		deleted.setCoreData(Boolean.FALSE);
+		entity.addAttribute(deleted);
+
+		EOEntity tbPersonEO = myModelGroup.getEntityNamed("TBPerson");
+		if (tbPersonEO != null) {
+			//  set the relationship if we have TBPerson is in the MODLEGROUP
+			// CREATED_BY
+			EORelationship createdBy = new EORelationship("createdBy");  // name
+			createdBy.setToOne(Boolean.TRUE);
+			createdBy.setClassProperty(Boolean.TRUE);
+			createdBy.setMandatory(Boolean.TRUE);
+//			createdBy._setEntity(entity); // Source EO
+			createdBy.setDestination(tbPersonEO); // Destination EO
+			createdBy.setCoreData(Boolean.FALSE);
+			
+			EOJoin createdByJoin = new EOJoin();
+			
+			createdByJoin.setDestinationAttribute(tbPersonEO.getAttributeNamed("id"));
+			createdByJoin.setSourceAttribute(idCreatedBy);
+			
+			List<EOJoin> joins = new ArrayList<EOJoin>();
+			joins.add(createdByJoin);
+			
+			createdBy.setJoins(joins);
+			entity.addRelationship(createdBy);
+
+			// LAST_MODIFIED_BY
+			EORelationship lastModifiedBy = new EORelationship("lastModifiedBy");  // name
+			lastModifiedBy.setToOne(Boolean.TRUE);
+			lastModifiedBy.setClassProperty(Boolean.TRUE);
+			lastModifiedBy.setMandatory(Boolean.TRUE);
+//			lastModifiedBy._setEntity(entity); // Source EO
+			lastModifiedBy.setDestination(tbPersonEO); // Destination EO
+			lastModifiedBy.setCoreData(Boolean.FALSE);
+			
+			EOJoin lastModifiedByJoin = new EOJoin();
+			
+			lastModifiedByJoin.setDestinationAttribute(tbPersonEO.getAttributeNamed("id"));
+			lastModifiedByJoin.setSourceAttribute(idLastModifiedBy);
+			
+			 joins = new ArrayList<EOJoin>();
+			joins.add(lastModifiedByJoin);
+			
+			lastModifiedBy.setJoins(joins);
+			entity.addRelationship(lastModifiedBy);
+
+			// DELETED_BY
+			EORelationship deletedBy = new EORelationship("deletedBy");  // name
+			deletedBy.setToOne(Boolean.TRUE);
+			deletedBy.setClassProperty(Boolean.TRUE);
+			deletedBy.setOptional(Boolean.TRUE);
+//			deletedBy._setEntity(entity); // Source EO
+			deletedBy.setDestination(tbPersonEO); // Destination EO
+			deletedBy.setCoreData(Boolean.FALSE);
+			
+			EOJoin deletedByJoin = new EOJoin();
+			
+			deletedByJoin.setDestinationAttribute(tbPersonEO.getAttributeNamed("id"));
+			deletedByJoin.setSourceAttribute(idDeletedBy);
+			
+			joins = new ArrayList<EOJoin>();
+			joins.add(deletedByJoin);
+			
+			deletedBy.setJoins(joins);
+			entity.addRelationship(deletedBy);
+		}
+	}
+	
 	public boolean isEditing() {
 		EOModelGroup modelGroup = getModelGroup();
 		boolean editing = (modelGroup == null || getName().equals(modelGroup.getEditingModelName()));
@@ -1148,7 +1404,8 @@ public class EOModel extends UserInfoableEOModelObject<EOModelGroup> implements 
 					throw new IOException("Failed to create folder '" + modelFolder + "'.");
 				}
 			}
-			myModelURL = modelFolder.toURL();
+			URI myModelURI = modelFolder.toURI();
+			myModelURL = myModelURI.toURL();
 			File indexFile = new File(modelFolder, "index.eomodeld");
 			EOModelMap modelMap = toMap();
 			WOLPropertyListSerialization.propertyListToFile("Entity Modeler v" + EOModel.CURRENT_VERSION, indexFile, modelMap);

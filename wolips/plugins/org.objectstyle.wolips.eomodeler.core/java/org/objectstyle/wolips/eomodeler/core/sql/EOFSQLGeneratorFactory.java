@@ -15,7 +15,7 @@ import org.objectstyle.wolips.eomodeler.core.model.EOModel;
 public class EOFSQLGeneratorFactory implements IEOSQLGeneratorFactory {
 	public IEOSQLGenerator sqlGenerator(EOModel model, List<String> entityNames, EODatabaseConfig databaseConfig, ClassLoader eomodelClassLoader, boolean runInEntityModeler) throws SecurityException, NoSuchMethodException, ClassNotFoundException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException {
 		WOUtils.setWOSystemProperties();
-		String className = "org.objectstyle.wolips.eomodeler.core.sql.EOFSQLGenerator53";
+		String className = EOFSQLGenerator53.class.getName();
 		Class sqlGeneratorClass = Class.forName(className, true, eomodelClassLoader);
 
 		List<URL> modelURLs = new LinkedList();

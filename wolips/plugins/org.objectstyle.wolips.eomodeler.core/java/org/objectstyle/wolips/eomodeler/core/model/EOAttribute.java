@@ -77,6 +77,10 @@ public class EOAttribute extends AbstractEOArgument<EOEntity> implements IEOAttr
 	public static final String READ_FORMAT = "readFormat";
 
 	public static final String WRITE_FORMAT = "writeFormat";
+	
+	public static final String VALIDATION = "validation";
+	
+	public static final String CONVERT = "convert";
 
 	public static final String CLIENT_CLASS_PROPERTY = "clientClassProperty";
 
@@ -87,7 +91,32 @@ public class EOAttribute extends AbstractEOArgument<EOEntity> implements IEOAttr
 	public static final String READ_ONLY = "readOnly";
 
 	public static final String GENERATE_SOURCE = "generateSource";
+	
+	public static final String CORE_DATA = "coreData";
 
+	public static final String QT_CLIENT = "qtClient";
+
+	public static final String COPY_TYPE = "copyType";
+
+	public static final String AUDIT = "audit";
+	
+	public static final String DEPRECATED = "deprecated";
+
+	public static final String D2WTYPE = "d2wType";	
+	
+	public static final String ENCRYPTION = "encryption";	
+	
+	public static final String ENGLISH = "english";
+	public static final String FRENCH = "french";
+	public static final String GERMAN = "german";
+	public static final String DUTCH = "dutch";
+	public static final String ITALIAN = "italian";
+	public static final String JAPANESE = "japanese";
+	public static final String CHINESE = "chinese";
+	public static final String SPANISH = "spanish";
+	public static final String PORTUGUESE = "portuguese";
+	public static final String BRAZILIAN = "brazilian";
+	
 	private static final String[] PROTOTYPED_PROPERTIES = { AbstractEOArgument.NAME, AbstractEOArgument.COLUMN_NAME, AbstractEOArgument.ALLOWS_NULL, AbstractEOArgument.ADAPTOR_VALUE_CONVERSION_CLASS_NAME, AbstractEOArgument.ADAPTOR_VALUE_CONVERSION_METHOD_NAME, AbstractEOArgument.EXTERNAL_TYPE, AbstractEOArgument.FACTORY_METHOD_ARGUMENT_TYPE, AbstractEOArgument.PRECISION, AbstractEOArgument.SCALE, AbstractEOArgument.VALUE_CLASS_NAME, AbstractEOArgument.CLASS_NAME, AbstractEOArgument.VALUE_FACTORY_CLASS_NAME, AbstractEOArgument.VALUE_FACTORY_METHOD_NAME, AbstractEOArgument.VALUE_TYPE, AbstractEOArgument.DEFINITION, AbstractEOArgument.WIDTH, EOAttribute.READ_FORMAT, EOAttribute.WRITE_FORMAT, EOAttribute.INDEXED, EOAttribute.READ_ONLY };
 
 	private static Map<String, IKey> myCachedPropertyKeys;
@@ -108,6 +137,8 @@ public class EOAttribute extends AbstractEOArgument<EOEntity> implements IEOAttr
 	private EOEntity myEntity;
 
 	private String myPrototypeName;
+	
+	private String myCopytypeName;
 
 	private EOAttribute myCachedPrototype;
 
@@ -125,10 +156,37 @@ public class EOAttribute extends AbstractEOArgument<EOEntity> implements IEOAttr
 
 	private Boolean myReadOnly;
 
+	private Boolean myCoreData;
+
+	private Boolean myQtClient;
+	
+	private Boolean myEncryption;
+	
+	private Boolean myAudit;
+	
+	private Boolean myDeprecated;
+
 	private String myReadFormat;
 
 	private String myWriteFormat;
+	
+	private String myValidation;
+	
+	private String myConvert;
+	
+	private String myD2wType;
 
+	private String myEnglish;
+	private String myFrench;
+	private String myGerman;
+	private String myDutch;
+	private String myItalian;
+	private String myJapanese;
+	private String myChinese;
+	private String mySpanish;
+	private String myPortuguese;
+	private String myBrazilian;
+	
 	private EOAttributePath myDefinitionPath;
 
 	private boolean _generateSource;
@@ -160,23 +218,6 @@ public class EOAttribute extends AbstractEOArgument<EOEntity> implements IEOAttr
 			myEntity._attributeChanged(this, _propertyName, _oldValue, _newValue);
 		}
 	}
-
-	// public int hashCode() {
-	// int hashCode = ((myEntity == null) ? 1 : myEntity.hashCode()) *
-	// super.hashCode();
-	// return hashCode;
-	// }
-	//
-	// public boolean equals(Object _obj) {
-	// boolean equals = false;
-	// if (_obj instanceof EOAttribute) {
-	// EOAttribute attribute = (EOAttribute) _obj;
-	// equals = (attribute == this) ||
-	// (ComparisonUtils.equals(attribute.myEntity, myEntity) &&
-	// ComparisonUtils.equals(attribute.getName(), getName()));
-	// }
-	// return equals;
-	// }
 
 	public void guessColumnNameInEntity(EOEntity entity) {
 		String columnName = getName();
@@ -485,6 +526,138 @@ public class EOAttribute extends AbstractEOArgument<EOEntity> implements IEOAttr
 		}
 	}
 
+	// added plotters, 11-Mar-2019
+	public Boolean getQtClient() {
+		return isQtClient();
+	}
+	
+	public Boolean isQtClient() {
+		return myQtClient;
+	}
+	
+	public void setQtClient(Boolean _qtClient) { setQtClient(_qtClient, true); }
+	
+	public void setQtClient(Boolean _qtClient, boolean _fireEvents) {
+		Boolean oldQtClient = getQtClient();
+		myQtClient = _qtClient;
+		if (_fireEvents) {
+			firePropertyChange(EOAttribute.QT_CLIENT, oldQtClient, getQtClient());
+		}
+	}
+    ///////////////////////////////
+
+	public Boolean getCoreData() {
+		return isCoreData();
+	}
+
+	public Boolean isCoreData() {
+		return myCoreData;
+	}
+
+	public void setCoreData(Boolean _coreData) {
+		setCoreData(_coreData, true);
+	}
+
+	public void setCoreData(Boolean _coreData, boolean _fireEvents) {
+		Boolean oldCoreData = getCoreData();
+		myCoreData = _coreData;
+		if (_fireEvents) {
+			firePropertyChange(EOAttribute.CORE_DATA, oldCoreData, getCoreData());
+		}
+	}
+
+	public Boolean getEncryption() {
+		return isEncryption();
+	}
+	
+	public Boolean isEncryption() {
+		return myEncryption;
+	}
+	
+	public void setEncryption(Boolean _encryption) {
+		setEncryption(_encryption, true);
+	}
+	
+	public void setEncryption(Boolean _encryption, boolean _fireEvents) {
+		Boolean oldEncryption = getEncryption();
+		myEncryption = _encryption;
+		if (_fireEvents) {
+			firePropertyChange(EOAttribute.ENCRYPTION, oldEncryption, getEncryption());
+		}
+	}	
+	
+	public Boolean getAudit() {
+		return isAudit();
+	}
+	
+	public Boolean isAudit() {
+		return myAudit;
+	}
+	
+	public void setAudit(Boolean _audit) {
+		setAudit(_audit, true);
+	}
+	
+	public void setAudit(Boolean _audit, boolean _fireEvents) {
+		Boolean oldAudit = getAudit();
+		myAudit = _audit;
+		if (_fireEvents) {
+			firePropertyChange(EOAttribute.AUDIT, oldAudit, myAudit);
+		}
+	}	
+	
+	public Boolean getDeprecated() {
+		return isDeprecated();
+	}
+	
+	public Boolean isDeprecated() {
+		return myDeprecated;
+	}
+	
+	public void setDeprecated(Boolean _deprecated) {
+		setDeprecated(_deprecated, true);
+	}
+	
+	public void setDeprecated(Boolean _deprecated, boolean _fireEvents) {
+		Boolean oldDeprecated = getDeprecated();
+		myDeprecated = _deprecated;
+		if (_fireEvents) {
+			firePropertyChange(EOAttribute.DEPRECATED, oldDeprecated, myDeprecated);
+		}
+	}		
+	
+	public String getCopyType() {
+		return myCopytypeName;
+	}
+		
+	public void setCopyType(String _copyType) {
+		setCopyType(_copyType, true);
+	}
+	
+	public void setCopyType(String _copyType, boolean _fireEvents) {
+		String oldCopyType = getCopyType();
+		myCopytypeName = _copyType;
+		if (_fireEvents) {
+			firePropertyChange(EOAttribute.COPY_TYPE, oldCopyType, getCopyType());
+		}
+	}		
+	
+	public String getD2wType() {
+		return myD2wType;
+	}
+	
+	public void setD2wType(String _d2wType) {
+		setD2wType(_d2wType, true);
+	}
+	
+	public void setD2wType(String _d2wType, boolean _fireEvents) {
+		String oldD2wType = getD2wType();
+		myD2wType = _d2wType;
+		if (_fireEvents) {
+			firePropertyChange(EOAttribute.D2WTYPE, oldD2wType, myD2wType);
+		}
+	}		
+	
 	public Boolean getIndexed() {
 		return isIndexed();
 	}
@@ -561,6 +734,10 @@ public class EOAttribute extends AbstractEOArgument<EOEntity> implements IEOAttr
 		setClassProperty(_classProperty, true);
 	}
 
+	/**
+	 * deal with Attribute classProperty attribute changed
+	 * TODO:  Should this deal with attribute.coreData() attribute?
+	 */
 	public void setClassProperty(Boolean _classProperty, boolean _fireEvents) {
 		Boolean oldClassProperty = getClassProperty();
 		// myClassProperty = (Boolean)
@@ -826,6 +1003,126 @@ public class EOAttribute extends AbstractEOArgument<EOEntity> implements IEOAttr
 		firePropertyChange(EOAttribute.WRITE_FORMAT, oldWriteFormat, getWriteFormat());
 	}
 
+	public String getValidation() {
+		return myValidation;
+	}
+
+	public void setValidation(String _validation) {
+		String oldValidation = getValidation();
+		myValidation = _validation;
+		firePropertyChange(EOAttribute.VALIDATION, oldValidation, getValidation());
+	}
+	
+	public String getConvert() {
+		return myConvert;
+	}
+
+	public void setConvert(String _convert) {
+		String oldConvert = getConvert();
+		myConvert = _convert;
+		firePropertyChange(EOAttribute.VALIDATION, oldConvert, getConvert());
+	}
+	
+	public String getEnglish() {
+		return myEnglish;
+	}
+	
+	public void setEnglish(String _English) {
+		String old = getEnglish();
+		myEnglish = _English;
+		firePropertyChange(EOAttribute.VALIDATION, old, getEnglish());
+	}
+	
+	public String getFrench() {
+		return myFrench;
+	}
+	
+	public void setFrench(String _French) {
+		String old = getFrench();
+		myFrench = _French;
+		firePropertyChange(EOAttribute.VALIDATION, old, getFrench());
+	}
+	
+	public String getGerman() {
+		return myGerman;
+	}
+	
+	public void setGerman(String _German) {
+		String old = getGerman();
+		myGerman = _German;
+		firePropertyChange(EOAttribute.VALIDATION, old, getGerman());
+	}
+	
+	public String getDutch() {
+		return myDutch;
+	}
+	
+	public void setDutch(String _Dutch) {
+		String old = getDutch();
+		myDutch = _Dutch;
+		firePropertyChange(EOAttribute.VALIDATION, old, getDutch());
+	}
+	
+	public String getItalian() {
+		return myItalian;
+	}
+	
+	public void setItalian(String _Italian) {
+		String old = getItalian();
+		myItalian = _Italian;
+		firePropertyChange(EOAttribute.VALIDATION, old, getItalian());
+	}
+	
+	public String getJapanese() {
+		return myJapanese;
+	}
+	
+	public void setJapanese(String _Japanese) {
+		String old = getJapanese();
+		myJapanese = _Japanese;
+		firePropertyChange(EOAttribute.VALIDATION, old, getJapanese());
+	}
+	
+	public String getChinese() {
+		return myChinese;
+	}
+	
+	public void setChinese(String _Chinese) {
+		String old = getChinese();
+		myChinese = _Chinese;
+		firePropertyChange(EOAttribute.VALIDATION, old, getChinese());
+	}
+	
+	public String getSpanish() {
+		return mySpanish;
+	}
+	
+	public void setSpanish(String _Spanish) {
+		String old = getSpanish();
+		mySpanish = _Spanish;
+		firePropertyChange(EOAttribute.VALIDATION, old, getSpanish());
+	}
+	
+	public String getPortuguese() {
+		return myPortuguese;
+	}
+	
+	public void setPortuguese(String _Portuguese) {
+		String old = getPortuguese();
+		myPortuguese = _Portuguese;
+		firePropertyChange(EOAttribute.VALIDATION, old, getPortuguese());
+	}
+	
+	public String getBrazilian() {
+		return myBrazilian;
+	}
+	
+	public void setBrazilian(String _Brazilian) {
+		String old = getBrazilian();
+		myBrazilian = _Brazilian;
+		firePropertyChange(EOAttribute.VALIDATION, old, getBrazilian());
+	}
+	
 	public void setCommonClassProperty(Boolean commonClassProperty) {
 		setCommonClassProperty(commonClassProperty, true);
 	}
@@ -852,9 +1149,6 @@ public class EOAttribute extends AbstractEOArgument<EOEntity> implements IEOAttr
 
 	public void setClientClassProperty(Boolean _clientClassProperty, boolean _fireEvents) {
 		Boolean oldClientClassProperty = getClientClassProperty();
-		// myClientClassProperty = (Boolean)
-		// _nullIfPrototyped(EOAttribute.CLIENT_CLASS_PROPERTY,
-		// _clientClassProperty);
 		myClientClassProperty = _clientClassProperty;
 		if (_fireEvents) {
 			firePropertyChange(EOAttribute.CLIENT_CLASS_PROPERTY, oldClientClassProperty, getClientClassProperty());
@@ -866,9 +1160,6 @@ public class EOAttribute extends AbstractEOArgument<EOEntity> implements IEOAttr
 	}
 
 	public Boolean isClientClassProperty() {
-		// return (Boolean)
-		// _prototypeValueIfNull(EOAttribute.CLIENT_CLASS_PROPERTY,
-		// myClientClassProperty);
 		return BooleanUtils.isTrue(myClientClassProperty);
 	}
 
@@ -950,6 +1241,28 @@ public class EOAttribute extends AbstractEOArgument<EOEntity> implements IEOAttr
 	public void loadFromMap(EOModelMap _attributeMap, Set<EOModelVerificationFailure> _failures) {
 		super.loadFromMap(_attributeMap, _failures);
 		myReadOnly = _attributeMap.getBoolean("isReadOnly");
+		myCoreData = _attributeMap.getBoolean(CORE_DATA);
+		myQtClient = _attributeMap.getBoolean(QT_CLIENT);
+		myEncryption = _attributeMap.getBoolean(ENCRYPTION);
+		myAudit = _attributeMap.getBoolean(AUDIT);
+		myDeprecated = _attributeMap.getBoolean("deprecated");
+		myCopytypeName = _attributeMap.getString(COPY_TYPE, true);
+		
+		myValidation = _attributeMap.getString("validation", true);
+		myConvert = _attributeMap.getString(CONVERT, true);
+		myD2wType = _attributeMap.getString(D2WTYPE, true);
+		
+		myEnglish = _attributeMap.getString(ENGLISH, true);
+		myFrench = _attributeMap.getString(FRENCH, true);
+		myGerman = _attributeMap.getString(GERMAN, true);
+		myDutch = _attributeMap.getString(DUTCH, true);
+		myItalian = _attributeMap.getString(ITALIAN, true);
+		myJapanese = _attributeMap.getString(JAPANESE, true);
+		myChinese = _attributeMap.getString(CHINESE, true);
+		mySpanish = _attributeMap.getString(SPANISH, true);
+		myPortuguese = _attributeMap.getString(PORTUGUESE, true);
+		myBrazilian = _attributeMap.getString(BRAZILIAN, true);
+		
 		myIndexed = _attributeMap.getBoolean("isIndexed");
 		if (_attributeMap.containsKey("selectFormat")) {
 			myReadFormat = _attributeMap.getString("selectFormat", true);
@@ -1010,6 +1323,85 @@ public class EOAttribute extends AbstractEOArgument<EOEntity> implements IEOAttr
 			attributeMap.remove("prototypeName");
 		}
 		attributeMap.setBoolean("isReadOnly", myReadOnly, EOModelMap.YN);
+		attributeMap.setBoolean("coreData", myCoreData, EOModelMap.YN);
+		attributeMap.setBoolean("qtClient", myQtClient, EOModelMap.YN);
+		attributeMap.setBoolean("encryption", myEncryption, EOModelMap.YN);
+		attributeMap.setBoolean("audit", myAudit, EOModelMap.YN);
+		attributeMap.setBoolean("deprecated", myDeprecated, EOModelMap.YN);
+		
+		if (myCopytypeName != null) {
+			attributeMap.setString("copyType", myCopytypeName, true);
+		} else {
+			attributeMap.remove("copyType");
+		}
+		if (myValidation != null) {
+			attributeMap.setString("validation", myValidation, true);
+		} else {
+			attributeMap.remove("validation");
+		}
+		if (myConvert != null) {
+			attributeMap.setString("convert", myConvert, true);
+		} else {
+			attributeMap.remove("convert");
+		}
+		
+		if (myEnglish != null) {
+			attributeMap.setString(ENGLISH, myEnglish, true);
+		} else {
+			attributeMap.remove(ENGLISH);
+		}
+		if (myFrench != null) {
+			attributeMap.setString(FRENCH, myFrench, true);
+		} else {
+			attributeMap.remove(FRENCH);
+		}
+		if (myGerman != null) {
+			attributeMap.setString(GERMAN, myGerman, true);
+		} else {
+			attributeMap.remove(GERMAN);
+		}
+		if (myDutch != null) {
+			attributeMap.setString(DUTCH, myDutch, true);
+		} else {
+			attributeMap.remove(DUTCH);
+		}
+		if (myItalian != null) {
+			attributeMap.setString(ITALIAN, myItalian, true);
+		} else {
+			attributeMap.remove(ITALIAN);
+		}
+		if (myJapanese != null) {
+			attributeMap.setString(JAPANESE, myJapanese, true);
+		} else {
+			attributeMap.remove(JAPANESE);
+		}
+		if (myChinese != null) {
+			attributeMap.setString(CHINESE, myChinese, true);
+		} else {
+			attributeMap.remove(CHINESE);
+		}
+		if (mySpanish != null) {
+			attributeMap.setString(SPANISH, mySpanish, true);
+		} else {
+			attributeMap.remove(SPANISH);
+		}
+		if (myPortuguese != null) {
+			attributeMap.setString(PORTUGUESE, myPortuguese, true);
+		} else {
+			attributeMap.remove(PORTUGUESE);
+		}
+		if (myBrazilian != null) {
+			attributeMap.setString(BRAZILIAN, myBrazilian, true);
+		} else {
+			attributeMap.remove(BRAZILIAN);
+		}
+		
+		if (myD2wType != null) {
+			attributeMap.setString("d2wType", myD2wType, true);
+		} else {
+			attributeMap.remove("d2wType");
+		}
+		
 		attributeMap.setBoolean("isIndexed", myIndexed, EOModelMap.YN);
 		attributeMap.setString("readFormat", myReadFormat, true);
 		attributeMap.remove("selectFormat");
@@ -1063,7 +1455,9 @@ public class EOAttribute extends AbstractEOArgument<EOEntity> implements IEOAttr
 			getEntity()._attributeChanged(this, AbstractEOArgument.VALUE_CLASS_NAME, null, null);
 		}
 		// MS: Yes.  I know.  It's a total hack fix for now ... I need to have some better support for type name aliases, but this is just a really common one
-		else if (("NSTimestamp".equals(super.getValueClassName()) || "com.webobjects.foundation.NSTimestamp".equals(super.getValueClassName())) && getPrototype() != null && _nullIfPrototyped(AbstractEOArgument.VALUE_CLASS_NAME, "NSCalendarDate") == null) {
+		else if (("TBFZonedDateTime".equals(super.getValueClassName()) || 
+				"org.treasureboat.foundation.date.TBFZonedDateTime".equals(super.getValueClassName())) && 
+				getPrototype() != null && _nullIfPrototyped(AbstractEOArgument.VALUE_CLASS_NAME, "NSCalendarDate") == null) {
 			if (!_inferredValueClassName) {
 				_failures.add(new EOModelVerificationFailure(getEntity().getModel(), this, "Removed redundant 'valueClassName' attribute that was defined in the prototype '" + getPrototype().getName() + "'.", true));
 			}
@@ -1157,8 +1551,29 @@ public class EOAttribute extends AbstractEOArgument<EOEntity> implements IEOAttr
 		attribute._commonClassProperty = _commonClassProperty;
 		attribute.myIndexed = myIndexed;
 		attribute.myReadOnly = myReadOnly;
+		attribute.myCoreData = myCoreData;
+		attribute.myQtClient = myQtClient;
+		attribute.myEncryption = myEncryption;
+		attribute.myAudit = myAudit;
+		attribute.myDeprecated = myDeprecated;
+		attribute.myD2wType = myD2wType;
+		attribute.myCopytypeName = myCopytypeName;
 		attribute.myReadFormat = myReadFormat;
 		attribute.myWriteFormat = myWriteFormat;
+		attribute.myValidation = myValidation;
+		attribute.myConvert = myConvert;
+		
+		attribute.myEnglish = myEnglish;
+		attribute.myFrench = myFrench;
+		attribute.myGerman = myGerman;
+		attribute.myDutch = myDutch;
+		attribute.myItalian = myItalian;
+		attribute.myJapanese = myJapanese;
+		attribute.myChinese = myChinese;
+		attribute.mySpanish = mySpanish;
+		attribute.myPortuguese = myPortuguese;
+		attribute.myBrazilian = myBrazilian;
+		
 		attribute._generateSource = _generateSource;
 	}
 

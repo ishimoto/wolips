@@ -11,6 +11,7 @@ public abstract class UserInfoableEOModelObject<T> extends EOModelObject<T> impl
 	public static final String ENTITY_MODELER_KEY = "_EntityModeler";
 
 	public static final String DOCUMENTATION_KEY = "documentation";
+	public static final String DEVELOPER_DOCUMENTATION_KEY = "devDocumentation";
 
 	public static final String USER_INFO = "userInfo";
 
@@ -78,7 +79,35 @@ public abstract class UserInfoableEOModelObject<T> extends EOModelObject<T> impl
 		String documentation = (String) entityModelerMap.get(UserInfoableEOModelObject.DOCUMENTATION_KEY);
 		return documentation;
 	}
+	
+	/**
+	 * Sets the documentation field on this object.  documentation writes
+	 * into userInfo=>_EntityModeler=>Documentation.
+	 * 
+	 * @param documentation the documentation for this object
+	 */
+	public void setDevDocumentation(String devDocumentation) {
+		String oldDevDocumentation = getDevDocumentation();
+		EOModelMap entityModelerMap = getEntityModelerMap(true);
+		if (devDocumentation == null) {
+			entityModelerMap.remove(UserInfoableEOModelObject.DEVELOPER_DOCUMENTATION_KEY);
+		} else {
+			entityModelerMap.put(UserInfoableEOModelObject.DEVELOPER_DOCUMENTATION_KEY, devDocumentation);
+		}
+		firePropertyChange(UserInfoableEOModelObject.DEVELOPER_DOCUMENTATION_KEY, oldDevDocumentation, devDocumentation);
+	}
 
+	/**
+	 * Returns the documentation for this object.
+	 * 
+	 * @return the documentation for this object
+	 */
+	public String getDevDocumentation() {
+		EOModelMap entityModelerMap = getEntityModelerMap(false);
+		String documentation = (String) entityModelerMap.get(UserInfoableEOModelObject.DEVELOPER_DOCUMENTATION_KEY);
+		return documentation;
+	}
+	
 	protected void writeUserInfo(EOModelMap modelMap) {
 		EOModelMap entityModelerMap = getEntityModelerMap(false);
 		if (entityModelerMap.isEmpty()) {

@@ -22,9 +22,10 @@ public class WOUtils {
 	}
 	
 	public static void setWOSystemProperties() {
-		System.setProperty("NSOpenProjectIDE", "WOLips");
+		System.setProperty("NSOpenProjectIDE", "TBLips");
 		System.setProperty("NSProjectBundleEnabled", "true");
 		System.setProperty("EOUseBundledJDBCInfo", "true");
 		System.setProperty("EOLookupEntityClasses", "false");
+//		System.setProperty("Dev", "Eclipse");
 	}
 }

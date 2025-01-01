@@ -96,6 +96,23 @@ public class EORelationship extends UserInfoableEOModelObject<EOEntity> implemen
 
 	public static final String JOIN = "join";
 
+	public static final String CORE_DATA = "coreData";
+
+	public static final String COPY_TYPE = "copyType";
+
+	public static final String D2WTYPE = "d2wType";	
+
+	public static final String ENGLISH = "english";
+	public static final String FRENCH = "french";
+	public static final String GERMAN = "german";
+	public static final String DUTCH = "dutch";
+	public static final String ITALIAN = "italian";
+	public static final String JAPANESE = "japanese";
+	public static final String CHINESE = "chinese";
+	public static final String SPANISH = "spanish";
+	public static final String PORTUGUESE = "portuguese";
+	public static final String BRAZILIAN = "brazilian";
+	
 	private EOEntity myEntity;
 
 	private EOEntity myDestination;
@@ -103,6 +120,10 @@ public class EORelationship extends UserInfoableEOModelObject<EOEntity> implemen
 	private String myName;
 
 	private String myDefinition;
+
+	private Boolean myCoreData;
+
+	private String myCopytypeName;
 
 	private EORelationshipPath myDefinitionPath;
 
@@ -131,6 +152,19 @@ public class EORelationship extends UserInfoableEOModelObject<EOEntity> implemen
 	private EOModelMap myRelationshipMap;
 
 	private EOEntity myEntityBeforeCloning;
+
+	private String myD2wType;
+
+	private String myEnglish;
+	private String myFrench;
+	private String myGerman;
+	private String myDutch;
+	private String myItalian;
+	private String myJapanese;
+	private String myChinese;
+	private String mySpanish;
+	private String myPortuguese;
+	private String myBrazilian;
 
 	public EORelationship() {
 		myJoins = new LinkedList<EOJoin>();
@@ -700,6 +734,218 @@ public class EORelationship extends UserInfoableEOModelObject<EOEntity> implemen
 		setToMany(BooleanUtils.negate(_toOne));
 	}
 
+	public Boolean getCoreData() {
+		return isCoreData();
+	}
+	
+	public Boolean isCoreData() {
+		return myCoreData;
+	}
+	
+	public void setCoreData(Boolean _coreData) {
+		setCoreData(_coreData, true);
+	}
+	
+	public void setCoreData(Boolean _coreData, boolean _fireEvents) {
+		Boolean oldCoreData = getCoreData();
+		myCoreData = _coreData;
+		if (_fireEvents) {
+			firePropertyChange(EORelationship.CORE_DATA, oldCoreData, getCoreData());
+		}
+	}	
+	
+	public String getCopyType() {
+		return myCopytypeName;
+	}
+		
+	public void setCopyType(String _copyType) {
+		setCopyType(_copyType, true);
+	}
+	
+	public void setCopyType(String _copyType, boolean _fireEvents) {
+		String oldCopyType = getCopyType();
+		myCopytypeName = _copyType;
+		if (_fireEvents) {
+			firePropertyChange(EORelationship.COPY_TYPE, oldCopyType, getCopyType());
+		}
+	}		
+	
+	public String getD2wType() {
+		return myD2wType;
+	}
+	
+	public void setD2wType(String _d2wType) {
+		setD2wType(_d2wType, true);
+	}
+	
+	public void setD2wType(String _d2wType, boolean _fireEvents) {
+		String oldD2wType = getD2wType();
+		myD2wType = _d2wType;
+		if (_fireEvents) {
+			firePropertyChange(EORelationship.D2WTYPE, oldD2wType, myD2wType);
+		}
+	}		
+
+	public String getEnglish() {
+		return myEnglish;
+	}
+	
+	public void setEnglish(String _English) {
+		setEnglish(_English, true);
+	}
+
+	public void setEnglish(String _English, boolean _fireEvents) {
+		String old = getEnglish();
+		myEnglish = _English;
+		if (_fireEvents) {
+			firePropertyChange(ENGLISH, old, myEnglish);
+		}
+	}		
+
+	public String getFrench() {
+		return myFrench;
+	}
+	
+	public void setFrench(String _French) {
+		setFrench(_French, true);
+	}
+	
+	public void setFrench(String _French, boolean _fireEvents) {
+		String old = getFrench();
+		myFrench = _French;
+		if (_fireEvents) {
+			firePropertyChange(FRENCH, old, myFrench);
+		}
+	}		
+	
+	public String getGerman() {
+		return myGerman;
+	}
+	
+	public void setGerman(String _German) {
+		setGerman(_German, true);
+	}
+	
+	public void setGerman(String _German, boolean _fireEvents) {
+		String old = getGerman();
+		myGerman = _German;
+		if (_fireEvents) {
+			firePropertyChange(GERMAN, old, myGerman);
+		}
+	}		
+	
+	public String getDutch() {
+		return myDutch;
+	}
+	
+	public void setDutch(String _Dutch) {
+		setDutch(_Dutch, true);
+	}
+	
+	public void setDutch(String _Dutch, boolean _fireEvents) {
+		String old = getDutch();
+		myDutch = _Dutch;
+		if (_fireEvents) {
+			firePropertyChange(DUTCH, old, myDutch);
+		}
+	}		
+	
+	public String getItalian() {
+		return myItalian;
+	}
+	
+	public void setItalian(String _Italian) {
+		setItalian(_Italian, true);
+	}
+	
+	public void setItalian(String _Italian, boolean _fireEvents) {
+		String old = getItalian();
+		myItalian = _Italian;
+		if (_fireEvents) {
+			firePropertyChange(ITALIAN, old, myItalian);
+		}
+	}		
+	
+	public String getJapanese() {
+		return myJapanese;
+	}
+	
+	public void setJapanese(String _Japanese) {
+		setJapanese(_Japanese, true);
+	}
+	
+	public void setJapanese(String _Japanese, boolean _fireEvents) {
+		String old = getJapanese();
+		myJapanese = _Japanese;
+		if (_fireEvents) {
+			firePropertyChange(JAPANESE, old, myJapanese);
+		}
+	}		
+	
+	public String getChinese() {
+		return myChinese;
+	}
+	
+	public void setChinese(String _Chinese) {
+		setChinese(_Chinese, true);
+	}
+	
+	public void setChinese(String _Chinese, boolean _fireEvents) {
+		String old = getChinese();
+		myChinese = _Chinese;
+		if (_fireEvents) {
+			firePropertyChange(CHINESE, old, myChinese);
+		}
+	}		
+	
+	public String getSpanish() {
+		return mySpanish;
+	}
+	
+	public void setSpanish(String _Spanish) {
+		setSpanish(_Spanish, true);
+	}
+	
+	public void setSpanish(String _Spanish, boolean _fireEvents) {
+		String old = getSpanish();
+		mySpanish = _Spanish;
+		if (_fireEvents) {
+			firePropertyChange(SPANISH, old, mySpanish);
+		}
+	}		
+	
+	public String getPortuguese() {
+		return myPortuguese;
+	}
+	
+	public void setPortuguese(String _Portuguese) {
+		setPortuguese(_Portuguese, true);
+	}
+	
+	public void setPortuguese(String _Portuguese, boolean _fireEvents) {
+		String old = getPortuguese();
+		myPortuguese = _Portuguese;
+		if (_fireEvents) {
+			firePropertyChange(PORTUGUESE, old, myPortuguese);
+		}
+	}		
+	
+	public String getBrazilian() {
+		return myBrazilian;
+	}
+	
+	public void setBrazilian(String _Brazilian) {
+		setBrazilian(_Brazilian, true);
+	}
+	
+	public void setBrazilian(String _Brazilian, boolean _fireEvents) {
+		String old = getBrazilian();
+		myBrazilian = _Brazilian;
+		if (_fireEvents) {
+			firePropertyChange(BRAZILIAN, old, myBrazilian);
+		}
+	}		
+	
 	public void setNumberOfToManyFaultsToBatchFetch(Integer _numberOfToManyFaultsToBatchFetch) {
 		Integer oldNumberOfToManyFaultsToBatchFetch = myNumberOfToManyFaultsToBatchFetch;
 		myNumberOfToManyFaultsToBatchFetch = _numberOfToManyFaultsToBatchFetch;
@@ -788,6 +1034,21 @@ public class EORelationship extends UserInfoableEOModelObject<EOEntity> implemen
 		myName = _relationshipMap.getString("name", true);
 		String deleteRuleID = _relationshipMap.getString("deleteRule", true);
 		myDeleteRule = EODeleteRule.getDeleteRuleByID(deleteRuleID);
+		myCoreData = _relationshipMap.getBoolean("coreData");
+		myCopytypeName = _relationshipMap.getString("copyType", true);
+		myD2wType = _relationshipMap.getString("d2wType", true);
+		
+		myEnglish = _relationshipMap.getString(ENGLISH, true);
+		myFrench = _relationshipMap.getString(FRENCH, true);
+		myGerman = _relationshipMap.getString(GERMAN, true);
+		myDutch = _relationshipMap.getString(DUTCH, true);
+		myItalian = _relationshipMap.getString(ITALIAN, true);
+		myJapanese = _relationshipMap.getString(JAPANESE, true);
+		myChinese = _relationshipMap.getString(CHINESE, true);
+		mySpanish = _relationshipMap.getString(SPANISH, true);
+		myPortuguese = _relationshipMap.getString(PORTUGUESE, true);
+		myBrazilian = _relationshipMap.getString(BRAZILIAN, true);
+		
 		myOwnsDestination = _relationshipMap.getBoolean("ownsDestination");
 		myNumberOfToManyFaultsToBatchFetch = _relationshipMap.getInteger("numberOfToManyFaultsToBatchFetch");
 		myPropagatesPrimaryKey = _relationshipMap.getBoolean("propagatesPrimaryKey");
@@ -826,6 +1087,79 @@ public class EORelationship extends UserInfoableEOModelObject<EOEntity> implemen
 			relationshipMap.setString("deleteRule", myDeleteRule.getID(), true);
 		} else {
 			relationshipMap.remove("deleteRule");
+		}
+		relationshipMap.setBoolean("coreData", myCoreData, EOModelMap.YN);
+		
+		if (myCopytypeName != null) {
+			relationshipMap.setString("copyType", myCopytypeName, true);
+		} else {
+			relationshipMap.remove("copyType");
+		}
+		
+		if (myD2wType != null) {
+			relationshipMap.setString("d2wType", myD2wType, true);
+		} else {
+			relationshipMap.remove("d2wType");
+		}
+		
+		if (myEnglish != null) {
+			relationshipMap.setString(ENGLISH, myEnglish, true);
+		} else {
+			relationshipMap.remove(ENGLISH);
+		}
+		
+		if (myFrench != null) {
+			relationshipMap.setString(FRENCH, myFrench, true);
+		} else {
+			relationshipMap.remove(FRENCH);
+		}
+		
+		if (myGerman != null) {
+			relationshipMap.setString(GERMAN, myGerman, true);
+		} else {
+			relationshipMap.remove(GERMAN);
+		}
+		
+		if (myDutch != null) {
+			relationshipMap.setString(DUTCH, myDutch, true);
+		} else {
+			relationshipMap.remove(DUTCH);
+		}
+		
+		if (myItalian != null) {
+			relationshipMap.setString(ITALIAN, myItalian, true);
+		} else {
+			relationshipMap.remove(ITALIAN);
+		}
+		
+		if (myJapanese != null) {
+			relationshipMap.setString(JAPANESE, myJapanese, true);
+		} else {
+			relationshipMap.remove(JAPANESE);
+		}
+		
+		if (myChinese != null) {
+			relationshipMap.setString(CHINESE, myChinese, true);
+		} else {
+			relationshipMap.remove(CHINESE);
+		}
+		
+		if (mySpanish != null) {
+			relationshipMap.setString(SPANISH, mySpanish, true);
+		} else {
+			relationshipMap.remove(SPANISH);
+		}
+		
+		if (myPortuguese != null) {
+			relationshipMap.setString(PORTUGUESE, myPortuguese, true);
+		} else {
+			relationshipMap.remove(PORTUGUESE);
+		}
+		
+		if (myBrazilian != null) {
+			relationshipMap.setString(BRAZILIAN, myBrazilian, true);
+		} else {
+			relationshipMap.remove(BRAZILIAN);
 		}
 		relationshipMap.setBoolean("ownsDestination", myOwnsDestination, EOModelMap.YNOptionalDefaultNo);
 		relationshipMap.setBoolean("propagatesPrimaryKey", myPropagatesPrimaryKey, EOModelMap.YNOptionalDefaultNo);
@@ -938,6 +1272,21 @@ public class EORelationship extends UserInfoableEOModelObject<EOEntity> implemen
 		relationship.myNumberOfToManyFaultsToBatchFetch = myNumberOfToManyFaultsToBatchFetch;
 		relationship.myDeleteRule = myDeleteRule;
 		relationship.myJoinSemantic = myJoinSemantic;
+		relationship.myCoreData = myCoreData;
+		relationship.myD2wType = myD2wType;
+		
+		relationship.myEnglish = myEnglish;
+		relationship.myFrench = myFrench;
+		relationship.myGerman = myGerman;
+		relationship.myDutch = myDutch;
+		relationship.myItalian = myItalian;
+		relationship.myJapanese = myJapanese;
+		relationship.myChinese = myChinese;
+		relationship.mySpanish = mySpanish;
+		relationship.myPortuguese = myPortuguese;
+		relationship.myBrazilian = myBrazilian;
+		
+		relationship.myCopytypeName = myCopytypeName;
 		for (EOJoin join : myJoins) {
 			EOJoin newJoin = join._cloneModelObject();
 			relationship.addJoin(newJoin, false);
