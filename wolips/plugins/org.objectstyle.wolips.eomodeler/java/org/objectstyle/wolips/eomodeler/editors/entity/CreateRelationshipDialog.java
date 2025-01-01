@@ -80,6 +80,7 @@ import org.objectstyle.wolips.eomodeler.Messages;
 import org.objectstyle.wolips.eomodeler.actions.NewManyToManyRelationshipOperation;
 import org.objectstyle.wolips.eomodeler.actions.NewOneToManyRelationshipOperation;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
+import org.objectstyle.wolips.eomodeler.core.model.EOModel;
 import org.objectstyle.wolips.eomodeler.core.model.EOModelGroup;
 import org.objectstyle.wolips.eomodeler.core.model.EORelationship;
 import org.objectstyle.wolips.eomodeler.core.utils.EOModelUtils;
@@ -165,6 +166,12 @@ public class CreateRelationshipDialog extends Dialog implements SelectionListene
 	private String _oldFKName;
 
 	private String _oldInverseFKName;
+//	
+//	public static final String fkPrefix = "id";
+//	
+//	public static final String fkSuffix = "ID";
+//	
+//	private boolean _useFKPrefix = true; 
 
 	public CreateRelationshipDialog(Shell shell, EOModelGroup modelGroup, EOEntity sourceEntity, EOEntity destinationEntity) {
 		super(shell);
@@ -510,6 +517,28 @@ public class CreateRelationshipDialog extends Dialog implements SelectionListene
 			_guessedJoinEntityName = _sourceEntity.getName() + _destinationEntity.getName();
 			_joinEntityNameText.setText(_guessedJoinEntityName);
 			_flattenedChanged();
+
+			// XXX
+			// IF Source Entity is not a Reference Entity and destination is a Lookup entity then disable create inverse relationship
+			if (_destinationEntity.isLookupEntity() && ( _sourceEntity != null && ! _sourceEntity.isLookupEntity())) {
+				System.err.print("\n createRelationship Dialog We have a reference entity as target in the relationship \n set _toOneButton and _toManyButton to not enabled ");
+				_createInverseButton.setEnabled(false);
+				_createInverseButton.setSelection(false);
+				_createInverseFKButton.setEnabled(false);
+				_createInverseFKButton.setSelection(false);
+				_inverseToOneButton.setEnabled(false);
+				_inverseToManyButton.setEnabled(false);
+				_destinationLabel.setText("From " + _destinationEntity.getName() + ":  Reference entity: No inverse relationshios...");
+			} else {
+				_createInverseButton.setEnabled(true);
+				_createInverseButton.setSelection(true);
+				_createInverseFKButton.setEnabled(true);
+				_createInverseFKButton.setSelection(true);
+				_inverseToOneButton.setEnabled(true);
+				_inverseToManyButton.setEnabled(true);
+				_destinationLabel.setText("From " + _destinationEntity.getName() );
+				
+			}
 		}
 
 		if (_sourceEntity != null && _destinationEntity != null) {
@@ -656,7 +685,10 @@ public class CreateRelationshipDialog extends Dialog implements SelectionListene
 		if (_sourceEntity != null && _destinationEntity != null) {
 			String fkName = _fkNameText.getText();
 			if (fkName == null || fkName.length() == 0) {
-				String newName = _sourceEntity.findUnusedAttributeName(StringUtils.toLowercaseFirstLetter(_destinationEntity.getName()) + "ID");
+				String newName = _sourceEntity.findUnusedAttributeName(EOEntity.fkPrefix + _destinationEntity.getName());
+				if ( ! EOEntity.useFKPrefix()) {
+					newName = _sourceEntity.findUnusedAttributeName(StringUtils.toLowercaseFirstLetter(_destinationEntity.getName()) + EOEntity.fkSuffix);
+				}
 				_fkNameText.setText(newName);
 				_oldFKName = newName;
 				_fkColumnNameText.setText(_sourceEntity.getModel().getAttributeNamingConvention().format(newName));
@@ -665,7 +697,10 @@ public class CreateRelationshipDialog extends Dialog implements SelectionListene
 
 			String inverseFKName = _inverseFKNameText.getText();
 			if (inverseFKName == null || inverseFKName.length() == 0) {
-				String newName = _destinationEntity.findUnusedAttributeName(StringUtils.toLowercaseFirstLetter(_sourceEntity.getName()) + "ID");
+				String newName = _destinationEntity.findUnusedAttributeName(EOEntity.fkPrefix + _sourceEntity.getName());
+				if ( ! EOEntity.useFKPrefix()) {
+					newName = _destinationEntity.findUnusedAttributeName(StringUtils.toLowercaseFirstLetter(_sourceEntity.getName()) + EOEntity.fkSuffix);
+				}
 				_inverseFKNameText.setText(newName);
 				_oldInverseFKName = newName;
 				_inverseFKColumnNameText.setText(_destinationEntity.getModel().getAttributeNamingConvention().format(newName));

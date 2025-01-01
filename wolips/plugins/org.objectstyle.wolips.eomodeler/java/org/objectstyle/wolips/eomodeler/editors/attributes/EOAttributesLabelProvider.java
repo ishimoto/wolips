@@ -73,6 +73,10 @@ public class EOAttributesLabelProvider extends TablePropertyLabelProvider implem
 
 	private Font _flattenedInheritedFont;
 	
+	private Color _inheritedColor;
+	private Color _flattenedColor;
+	private Color _flattenedInheritedColor;
+
 	private String _blankText;
 
 	public EOAttributesLabelProvider(String[] properties) {
@@ -110,6 +114,8 @@ public class EOAttributesLabelProvider extends TablePropertyLabelProvider implem
 			image = yesNoImage(attribute.isUsedForLocking(), Activator.getDefault().getImageRegistry().get(Activator.LOCKING_ICON), null, null);
 		} else if (EOAttribute.CLASS_PROPERTY.equals(_property)) {
 			image = yesNoImage(attribute.isClassProperty(), Activator.getDefault().getImageRegistry().get(Activator.CLASS_PROPERTY_ICON), null, null);
+		} else if (EOAttribute.CLIENT_CLASS_PROPERTY.equals(_property)) {
+			image = yesNoImage(attribute.isClientClassProperty(), Activator.getDefault().getImageRegistry().get(Activator.CLIENT_CLASS_PROPERTY_ICON), null, null);
 		} else if (AbstractEOArgument.ALLOWS_NULL.equals(_property)) {
 			image = yesNoImage(attribute.isAllowsNull(), Activator.getDefault().getImageRegistry().get(Activator.ALLOW_NULL_ICON), null, null);
 		}
@@ -128,6 +134,8 @@ public class EOAttributesLabelProvider extends TablePropertyLabelProvider implem
 		} else if (EOAttribute.USED_FOR_LOCKING.equals(_property)) {
 			// DO NOTHING
 		} else if (EOAttribute.CLASS_PROPERTY.equals(_property)) {
+			// DO NOTHING
+		} else if (EOAttribute.CLIENT_CLASS_PROPERTY.equals(_property)) {
 			// DO NOTHING
 		} else if (AbstractEOArgument.ALLOWS_NULL.equals(_property)) {
 			// DO NOTHING
@@ -148,28 +156,27 @@ public class EOAttributesLabelProvider extends TablePropertyLabelProvider implem
 	public Font getFont(Object _element, int _columnIndex) {
 		Font font = null;
 		if (_tableViewer != null) {
+
+			Font originalFont = _tableViewer.getTable().getFont();
+			FontData[] fontData = _tableViewer.getTable().getFont().getFontData();
+			int fontHeight = fontData[0].getHeight() + 2;
+		
 			EOAttribute attribute = (EOAttribute) _element;
 			boolean inherited = attribute.isInherited();
 			boolean flattened = attribute.isFlattened();
 			if (flattened && inherited) {
 				if (_flattenedInheritedFont == null) {
-					Font originalFont = _tableViewer.getTable().getFont();
-					FontData[] fontData = _tableViewer.getTable().getFont().getFontData();
 					_flattenedInheritedFont = new Font(originalFont.getDevice(), fontData[0].getName(), fontData[0].getHeight(), SWT.BOLD | SWT.ITALIC);
 				}
 				font = _flattenedInheritedFont;
 			}
 			else if (flattened) {
 				if (_flattenedFont == null) {
-					Font originalFont = _tableViewer.getTable().getFont();
-					FontData[] fontData = _tableViewer.getTable().getFont().getFontData();
 					_flattenedFont = new Font(originalFont.getDevice(), fontData[0].getName(), fontData[0].getHeight(), SWT.BOLD);
 				}
 				font = _flattenedFont;
 			} else if (inherited) {
 				if (_inheritedFont == null) {
-					Font originalFont = _tableViewer.getTable().getFont();
-					FontData[] fontData = _tableViewer.getTable().getFont().getFontData();
 					_inheritedFont = new Font(originalFont.getDevice(), fontData[0].getName(), fontData[0].getHeight(), SWT.ITALIC);
 				}
 				font = _inheritedFont;
@@ -179,8 +186,34 @@ public class EOAttributesLabelProvider extends TablePropertyLabelProvider implem
 	}
 
 	public Color getBackground(Object _element, int _columnIndex) {
-		// EOAttribute attribute = (EOAttribute) _element;
-		return null;
+		Color color = null;
+		if (_tableViewer != null) {
+			Font originalFont = _tableViewer.getTable().getFont();
+			
+			EOAttribute attribute = (EOAttribute) _element;
+			
+			boolean inherited = attribute.isInherited();
+			boolean flattened = attribute.isFlattened();
+
+			if (flattened && inherited) {
+				if (_flattenedInheritedColor == null) {
+				_flattenedInheritedColor = new Color(originalFont.getDevice(), 255, 245, 189);
+				}
+				color = _flattenedInheritedColor;
+			}
+			else if (flattened) {
+				if (_flattenedColor == null) {
+					_flattenedColor = new Color(originalFont.getDevice(), 255, 245, 189);
+				}
+				color = _flattenedColor;
+			} else if (inherited) {
+				if (_inheritedColor == null) {
+					_inheritedColor = new Color(originalFont.getDevice(), 255, 245, 189);
+				}
+				color = _inheritedColor;
+			}
+		}		
+		return color;
 	}
 
 	public Color getForeground(Object _element, int _columnIndex) {
@@ -210,6 +243,17 @@ public class EOAttributesLabelProvider extends TablePropertyLabelProvider implem
 		if (_flattenedInheritedFont != null) {
 			_flattenedInheritedFont.dispose();
 		}
+		
+		if (_inheritedColor != null) {
+			_inheritedColor.dispose();
+		}
+		if (_flattenedColor != null) {
+			_flattenedColor.dispose();
+		}
+		if (_flattenedInheritedColor != null) {
+			_flattenedInheritedColor.dispose();
+		}
+		
 		super.dispose();
 	}
 

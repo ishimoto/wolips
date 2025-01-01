@@ -55,12 +55,14 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.typed.BeanProperties;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPart;
@@ -70,7 +72,12 @@ import org.objectstyle.wolips.baseforplugins.util.ComparisonUtils;
 import org.objectstyle.wolips.eomodeler.Messages;
 import org.objectstyle.wolips.eomodeler.core.model.EORelationship;
 import org.objectstyle.wolips.eomodeler.core.model.EORelationshipPath;
+import org.objectstyle.wolips.eomodeler.editors.attribute.D2WTypeLabelProvider;
+import org.objectstyle.wolips.eomodeler.editors.attribute.D2WTypeRelationshipContentProvider;
+import org.objectstyle.wolips.eomodeler.editors.attribute.EOCopyTypeLabelProvider;
+import org.objectstyle.wolips.eomodeler.editors.attribute.EOCopyTypeRelationshipContentProvider;
 import org.objectstyle.wolips.eomodeler.utils.BooleanUpdateValueStrategy;
+import org.objectstyle.wolips.eomodeler.utils.ComboViewerBinding;
 import org.objectstyle.wolips.eomodeler.utils.FormUtils;
 import org.objectstyle.wolips.eomodeler.utils.UglyFocusHackWorkaroundListener;
 
@@ -90,6 +97,14 @@ public class EORelationshipAdvancedEditorSection extends AbstractPropertySection
 	private DataBindingContext _bindingContext;
 
 	private RelationshipPropertyChangeListener _relationshipPropertyChangeListener;
+	
+	private Button _coreDataButton;
+
+	private ComboViewer _copyTypeComboViewer;
+	private ComboViewerBinding _copyTypeBinding;
+
+	private ComboViewer _d2wTypeComboViewer;
+	private ComboViewerBinding _d2wTypeBinding;
 
 	public EORelationshipAdvancedEditorSection() {
 		_relationshipPropertyChangeListener = new RelationshipPropertyChangeListener();
@@ -124,6 +139,26 @@ public class EORelationshipAdvancedEditorSection extends AbstractPropertySection
 		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
 		_commonClassPropertyButton = new Button(topForm, SWT.CHECK);
 		_commonClassPropertyButton.setText(Messages.getString("EORelationship." + EORelationship.COMMON_CLASS_PROPERTY));
+		
+		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
+		_coreDataButton = new Button(topForm, SWT.CHECK);
+		_coreDataButton.setText(Messages.getString("EORelationship." + EORelationship.CORE_DATA));
+
+		getWidgetFactory().createCLabel(topForm, Messages.getString("EORelationship." + EORelationship.COPY_TYPE), SWT.NONE);
+		Combo copyTypeCombo = new Combo(topForm, SWT.BORDER | SWT.FLAT | SWT.READ_ONLY);
+		_copyTypeComboViewer = new ComboViewer(copyTypeCombo);
+		_copyTypeComboViewer.setLabelProvider(new EOCopyTypeLabelProvider());
+		_copyTypeComboViewer.setContentProvider(new EOCopyTypeRelationshipContentProvider());
+		_copyTypeComboViewer.setInput(EORelationship.CORE_DATA);
+		copyTypeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		getWidgetFactory().createCLabel(topForm, Messages.getString("EORelationship." + EORelationship.D2WTYPE), SWT.NONE);
+		Combo d2wTypeCombo = new Combo(topForm, SWT.BORDER | SWT.FLAT | SWT.READ_ONLY);
+		_d2wTypeComboViewer = new ComboViewer(d2wTypeCombo);
+		_d2wTypeComboViewer.setLabelProvider(new D2WTypeLabelProvider());
+		_d2wTypeComboViewer.setContentProvider(new D2WTypeRelationshipContentProvider());
+		_d2wTypeComboViewer.setInput(EORelationship.D2WTYPE);
+		d2wTypeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	}
 
 	public void setInput(IWorkbenchPart part, ISelection selection) {
@@ -175,6 +210,19 @@ public class EORelationshipAdvancedEditorSection extends AbstractPropertySection
 					//BeansObservables.observeValue(_relationship, EORelationship.COMMON_CLASS_PROPERTY),
 					BeanProperties.value(EORelationship.COMMON_CLASS_PROPERTY).observe(_relationship), 
 					null, new BooleanUpdateValueStrategy());
+			_bindingContext.bindValue(
+					//SWTObservables.observeSelection(_coreDataButton),
+					WidgetProperties.buttonSelection().observe(_coreDataButton), 
+					//BeansObservables.observeValue(_relationship, EORelationship.CORE_DATA),
+					BeanProperties.value(EORelationship.CORE_DATA).observe(_relationship), 
+					null, new BooleanUpdateValueStrategy());
+
+			_copyTypeComboViewer.setInput(_relationship);
+			_copyTypeBinding = new ComboViewerBinding(_copyTypeComboViewer, _relationship, EORelationship.COPY_TYPE, null, null, null);		
+			
+			_d2wTypeComboViewer.setInput(_relationship);
+			_d2wTypeBinding = new ComboViewerBinding(_d2wTypeComboViewer, _relationship, EORelationship.D2WTYPE, null, null, null);		
+			
 			updateCardinalityEnabled();
 		}
 	}
@@ -195,6 +243,13 @@ public class EORelationshipAdvancedEditorSection extends AbstractPropertySection
 		if (_bindingContext != null) {
 			_bindingContext.dispose();
 		}
+		if (_copyTypeBinding != null) {
+			_copyTypeBinding.dispose();
+		}
+		if (_d2wTypeBinding != null) {
+			_d2wTypeBinding.dispose();
+		}
+		
 		removeRelationshipListeners();
 	}
 

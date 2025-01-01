@@ -69,6 +69,8 @@ import org.objectstyle.wolips.baseforplugins.util.ComparisonUtils;
 import org.objectstyle.wolips.eomodeler.Messages;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
 import org.objectstyle.wolips.eomodeler.core.model.EOModel;
+import org.objectstyle.wolips.eomodeler.editors.attribute.EOCopyTypeEntityContentProvider;
+import org.objectstyle.wolips.eomodeler.editors.attribute.EOCopyTypeLabelProvider;
 import org.objectstyle.wolips.eomodeler.utils.BooleanUpdateValueStrategy;
 import org.objectstyle.wolips.eomodeler.utils.ComboViewerBinding;
 import org.objectstyle.wolips.eomodeler.utils.FormUtils;
@@ -83,6 +85,21 @@ public class EOEntityAdvancedEditorSection extends AbstractPropertySection {
 
 	private Button _readOnlyButton;
 	
+	private Button _coreDataButton;
+
+	private Button _restControllerButton;
+
+	private Button _qtClientButton;
+	
+	private Button _auditButton;
+	
+	private Button _subEntityButton;
+	
+	private Text _tagText;
+	
+	private ComboViewer _copyTypeComboViewer;
+	private ComboViewerBinding _copyTypeBinding;
+
 	private Button _immutableButton;
 
 	private Button _generateSourceButton;
@@ -127,6 +144,26 @@ public class EOEntityAdvancedEditorSection extends AbstractPropertySection {
 		_readOnlyButton.setText(Messages.getString("EOEntity." + EOEntity.READ_ONLY));
 
 		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
+		_coreDataButton = new Button(topForm, SWT.CHECK);
+		_coreDataButton.setText(Messages.getString("EOEntity." + EOEntity.CORE_DATA));
+
+		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
+		_restControllerButton = new Button(topForm, SWT.CHECK);
+		_restControllerButton.setText(Messages.getString("EOEntity." + EOEntity.REST_CONTROLLER));
+
+		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
+		_qtClientButton = new Button(topForm, SWT.CHECK);
+		_qtClientButton.setText(Messages.getString("EOEntity." + EOEntity.QT_CLIENT));
+
+		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
+		_auditButton = new Button(topForm, SWT.CHECK);
+		_auditButton.setText(Messages.getString("EOEntity." + EOEntity.AUDIT));
+		
+		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
+		_subEntityButton = new Button(topForm, SWT.CHECK);
+		_subEntityButton.setText(Messages.getString("EOEntity." + EOEntity.HAS_SUB_ENTITY));
+		
+		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
 		_immutableButton = new Button(topForm, SWT.CHECK);
 		_immutableButton.setText(Messages.getString("EOEntity." + EOEntity.IMMUTABLE));
 
@@ -156,6 +193,11 @@ public class EOEntityAdvancedEditorSection extends AbstractPropertySection {
 		_parentClassNameText.setLayoutData(parentClassNameLayoutData);
 		UglyFocusHackWorkaroundListener.addListener(_parentClassNameText);
 
+		getWidgetFactory().createCLabel(topForm, Messages.getString("EOEntity." + EOEntity.TAG), SWT.NONE);
+		_tagText = new Text(topForm, SWT.BORDER);
+		_tagText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		UglyFocusHackWorkaroundListener.addListener(_tagText);
+		
 		getWidgetFactory().createCLabel(topForm, Messages.getString("EOEntity." + EOEntity.PARTIAL_ENTITY), SWT.NONE);
 		Combo partialEntityCombo = new Combo(topForm, SWT.BORDER | SWT.FLAT | SWT.READ_ONLY);
 		_partialEntityComboViewer = new ComboViewer(partialEntityCombo);
@@ -163,6 +205,15 @@ public class EOEntityAdvancedEditorSection extends AbstractPropertySection {
 		_partialEntityComboViewer.setContentProvider(new EOEntityListContentProvider(true, false, false));
 		GridData entityComboLayoutData = new GridData(GridData.FILL_HORIZONTAL);
 		partialEntityCombo.setLayoutData(entityComboLayoutData);
+		
+		getWidgetFactory().createCLabel(topForm, Messages.getString("EOEntity." + EOEntity.COPY_TYPE), SWT.NONE);
+		Combo copyTypeCombo = new Combo(topForm, SWT.BORDER | SWT.FLAT | SWT.READ_ONLY);
+		_copyTypeComboViewer = new ComboViewer(copyTypeCombo);
+		_copyTypeComboViewer.setLabelProvider(new EOCopyTypeLabelProvider());
+		_copyTypeComboViewer.setContentProvider(new EOCopyTypeEntityContentProvider());
+		_copyTypeComboViewer.setInput(EOEntity.CORE_DATA);
+		GridData copyTypeComboLayoutData = new GridData(GridData.FILL_HORIZONTAL);
+		copyTypeCombo.setLayoutData(copyTypeComboLayoutData);
 	}
 
 	public void setInput(IWorkbenchPart part, ISelection selection) {
@@ -196,6 +247,36 @@ public class EOEntityAdvancedEditorSection extends AbstractPropertySection {
 					WidgetProperties.buttonSelection().observe(_readOnlyButton), 
 					//BeansObservables.observeValue(_entity, EOEntity.READ_ONLY),
 					BeanProperties.value(EOEntity.READ_ONLY).observe(_entity), 
+					null, new BooleanUpdateValueStrategy());
+			_bindingContext.bindValue(
+					//SWTObservables.observeSelection(_coreDataButton),
+					WidgetProperties.buttonSelection().observe(_coreDataButton), 
+					//BeansObservables.observeValue(_entity, EOEntity.CORE_DATA),
+					BeanProperties.value(EOEntity.CORE_DATA).observe(_entity), 
+					null, new BooleanUpdateValueStrategy());
+			_bindingContext.bindValue(
+					//SWTObservables.observeSelection(_restControllerButton),
+					WidgetProperties.buttonSelection().observe(_restControllerButton), 
+					//BeansObservables.observeValue(_entity, EOEntity.REST_CONTROLLER),
+					BeanProperties.value(EOEntity.REST_CONTROLLER).observe(_entity), 
+					null, new BooleanUpdateValueStrategy());
+			_bindingContext.bindValue(
+					//SWTObservables.observeSelection(_qtClientButton),
+					WidgetProperties.buttonSelection().observe(_qtClientButton), 
+					//BeansObservables.observeValue(_entity, EOEntity.QT_CLIENT),
+					BeanProperties.value(EOEntity.QT_CLIENT).observe(_entity), 
+					null, new BooleanUpdateValueStrategy());
+			_bindingContext.bindValue(
+					//SWTObservables.observeSelection(_auditButton),
+					WidgetProperties.buttonSelection().observe(_auditButton), 
+					//BeansObservables.observeValue(_entity, EOEntity.AUDIT),
+					BeanProperties.value(EOEntity.AUDIT).observe(_entity), 
+					null, new BooleanUpdateValueStrategy());
+			_bindingContext.bindValue(
+					//SWTObservables.observeSelection(_subEntityButton),
+					WidgetProperties.buttonSelection().observe(_subEntityButton), 
+					//BeansObservables.observeValue(_entity, EOEntity.HAS_SUB_ENTITY),
+					BeanProperties.value(EOEntity.HAS_SUB_ENTITY).observe(_entity), 
 					null, new BooleanUpdateValueStrategy());
 			_bindingContext.bindValue(
 					//SWTObservables.observeSelection(_immutableButton),
@@ -233,9 +314,18 @@ public class EOEntityAdvancedEditorSection extends AbstractPropertySection {
 					//BeansObservables.observeValue(_entity, EOEntity.PARENT_CLASS_NAME),
 					BeanProperties.value(EOEntity.PARENT_CLASS_NAME).observe(_entity), 
 					null, null);
+			_bindingContext.bindValue(
+					//SWTObservables.observeText(_tagText, SWT.Modify),
+					WidgetProperties.text(SWT.Modify).observe(_tagText), 
+					//BeansObservables.observeValue(_entity, EOEntity.TAG),
+					BeanProperties.value(EOEntity.TAG).observe(_entity), 
+					null, null);
 
 			_partialEntityComboViewer.setInput(_entity);
 			_partialEntityBinding = new ComboViewerBinding(_partialEntityComboViewer, _entity, EOEntity.PARTIAL_ENTITY, _entity.getModel(), EOModel.ENTITIES, EOEntityListContentProvider.BLANK_ENTITY);
+
+			_copyTypeComboViewer.setInput(_entity);
+			_copyTypeBinding = new ComboViewerBinding(_copyTypeComboViewer, _entity, EOEntity.COPY_TYPE, null, null, null);		
 		}
 	}
 
@@ -243,6 +333,9 @@ public class EOEntityAdvancedEditorSection extends AbstractPropertySection {
 		if (_bindingContext != null) {
 			_bindingContext.dispose();
 			_partialEntityBinding.dispose();
+		}
+		if (_copyTypeBinding != null) {
+			_copyTypeBinding.dispose();
 		}
 	}
 

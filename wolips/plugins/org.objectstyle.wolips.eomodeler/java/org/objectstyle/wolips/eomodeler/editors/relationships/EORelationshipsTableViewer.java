@@ -74,9 +74,11 @@ import org.objectstyle.wolips.baseforuiplugins.utils.TableRowDoubleClickHandler;
 import org.objectstyle.wolips.baseforuiplugins.utils.WOTextCellEditor;
 import org.objectstyle.wolips.eomodeler.Activator;
 import org.objectstyle.wolips.eomodeler.Messages;
+import org.objectstyle.wolips.eomodeler.core.model.EOAttribute;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
 import org.objectstyle.wolips.eomodeler.core.model.EOModelObject;
 import org.objectstyle.wolips.eomodeler.core.model.EORelationship;
+import org.objectstyle.wolips.eomodeler.editors.attribute.AbstractEOArgumentBasicEditorSection;
 import org.objectstyle.wolips.eomodeler.utils.StayEditingCellEditorListener;
 import org.objectstyle.wolips.eomodeler.utils.TableRefreshPropertyListener;
 import org.objectstyle.wolips.eomodeler.utils.TableRowRefreshPropertyListener;
@@ -119,6 +121,12 @@ public class EORelationshipsTableViewer extends Composite implements ISelectionP
 			classPropertyColumn.setText("");
 			classPropertyColumn.setImage(Activator.getDefault().getImageRegistry().get(Activator.CLASS_PROPERTY_ICON));
 		}
+		
+		TableColumn clientClassPropertyColumn = TableUtils.getColumn(myRelationshipsTableViewer, EORelationship.class.getName(), EORelationship.CLIENT_CLASS_PROPERTY);
+		if (clientClassPropertyColumn != null) {
+			clientClassPropertyColumn.setText("");
+			clientClassPropertyColumn.setImage(Activator.getDefault().getImageRegistry().get(Activator.CLIENT_CLASS_PROPERTY_ICON));
+		}
 
 		TableColumn allowNullColumn = TableUtils.getColumn(myRelationshipsTableViewer, EORelationship.class.getName(), EORelationship.OPTIONAL);
 		if (allowNullColumn != null) {
@@ -132,6 +140,7 @@ public class EORelationshipsTableViewer extends Composite implements ISelectionP
 		CellEditor[] cellEditors = new CellEditor[TableUtils.getColumnsForTableNamed(EORelationship.class.getName()).length];
 		TableUtils.setCellEditor(EORelationship.class.getName(), EORelationship.TO_MANY, new CheckboxCellEditor(), cellEditors);
 		TableUtils.setCellEditor(EORelationship.class.getName(), EORelationship.CLASS_PROPERTY, new CheckboxCellEditor(), cellEditors);
+		TableUtils.setCellEditor(EORelationship.class.getName(), EORelationship.CLIENT_CLASS_PROPERTY, new CheckboxCellEditor(), cellEditors);
 		TableUtils.setCellEditor(EORelationship.class.getName(), EORelationship.OPTIONAL, new CheckboxCellEditor(), cellEditors);
 		TableUtils.setCellEditor(EORelationship.class.getName(), EORelationship.NAME, new WOTextCellEditor(relationshipsTable), cellEditors);
 		myRelationshipsTableViewer.setCellModifier(new EORelationshipsCellModifier(myRelationshipsTableViewer));

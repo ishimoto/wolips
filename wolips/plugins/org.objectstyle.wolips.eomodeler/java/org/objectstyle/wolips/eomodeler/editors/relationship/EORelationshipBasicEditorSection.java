@@ -128,6 +128,8 @@ public class EORelationshipBasicEditorSection extends AbstractPropertySection {
 	private ComboViewerBinding _entityBinding;
 
 	private Button _classPropertyButton;
+	
+	private Button _clientClassPropertyButton;
 
 	public EORelationshipBasicEditorSection() {
 		_joinsListener = new JoinsListener();
@@ -175,6 +177,10 @@ public class EORelationshipBasicEditorSection extends AbstractPropertySection {
 		_classPropertyButton = new Button(settingsComposite, SWT.CHECK);
 		_classPropertyButton.setToolTipText(Messages.getString("EORelationship." + EORelationship.CLASS_PROPERTY));
 		_classPropertyButton.setImage(Activator.getDefault().getImageRegistry().get(Activator.CLASS_PROPERTY_ICON));
+		
+		_clientClassPropertyButton = new Button(settingsComposite, SWT.TOGGLE | SWT.FLAT);
+		_clientClassPropertyButton.setToolTipText(Messages.getString("EORelationship." + EORelationship.CLIENT_CLASS_PROPERTY));
+		_clientClassPropertyButton.setImage(Activator.getDefault().getImageRegistry().get(Activator.CLIENT_CLASS_PROPERTY_ICON));
 
 		new Label(settingsComposite, SWT.SEPARATOR | SWT.VERTICAL);
 		_optionalButton = new Button(settingsComposite, SWT.CHECK);
@@ -288,6 +294,7 @@ public class EORelationshipBasicEditorSection extends AbstractPropertySection {
 				}
 
 				_bindingContext = new DataBindingContext();
+				
 				_bindingContext.bindValue(
 						//SWTObservables.observeText(_nameText, SWT.Modify),
 						WidgetProperties.text(SWT.Modify).observe(_nameText), 

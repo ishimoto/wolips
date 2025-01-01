@@ -79,6 +79,8 @@ public class EOEntityBasicEditorSection extends AbstractPropertySection {
 
 	private Text myNameText;
 
+	private Text myExternalSchemaText;
+
 	private Text myExternalNameText;
 
 	private Text myClassNameText;
@@ -92,6 +94,8 @@ public class EOEntityBasicEditorSection extends AbstractPropertySection {
 	private DataBindingContext myBindingContext;
 
 	private ComboViewerBinding myParentEntityBinding;
+	
+	public static final String EOEntityPrefix = "EOEntity.";
 
 	public void createControls(Composite _parent, TabbedPropertySheetPage _tabbedPropertySheetPage) {
 		super.createControls(_parent, _tabbedPropertySheetPage);
@@ -101,25 +105,31 @@ public class EOEntityBasicEditorSection extends AbstractPropertySection {
 
 		Composite topForm = FormUtils.createForm(getWidgetFactory(), form);
 
-		getWidgetFactory().createCLabel(topForm, Messages.getString("EOEntity." + EOEntity.NAME), SWT.NONE);
+		getWidgetFactory().createCLabel(topForm, Messages.getString(EOEntityPrefix + EOEntity.NAME), SWT.NONE);
 		myNameText = new Text(topForm, SWT.BORDER);
 		GridData nameFieldLayoutData = new GridData(GridData.FILL_HORIZONTAL);
 		myNameText.setLayoutData(nameFieldLayoutData);
 		UglyFocusHackWorkaroundListener.addListener(myNameText);
 
-		getWidgetFactory().createCLabel(topForm, Messages.getString("EOEntity." + EOEntity.EXTERNAL_NAME), SWT.NONE);
+		getWidgetFactory().createCLabel(topForm, Messages.getString(EOEntityPrefix + EOEntity.EXTERNAL_SCHEMA), SWT.NONE);
+		myExternalSchemaText = new Text(topForm, SWT.BORDER);
+		GridData externalSchemaFieldLayoutData = new GridData(GridData.FILL_HORIZONTAL);
+		myExternalSchemaText.setLayoutData(externalSchemaFieldLayoutData);
+		UglyFocusHackWorkaroundListener.addListener(myExternalSchemaText);
+
+		getWidgetFactory().createCLabel(topForm, Messages.getString(EOEntityPrefix + EOEntity.EXTERNAL_NAME), SWT.NONE);
 		myExternalNameText = new Text(topForm, SWT.BORDER);
 		GridData externalNameFieldLayoutData = new GridData(GridData.FILL_HORIZONTAL);
 		myExternalNameText.setLayoutData(externalNameFieldLayoutData);
 		UglyFocusHackWorkaroundListener.addListener(myExternalNameText);
 
-		getWidgetFactory().createCLabel(topForm, Messages.getString("EOEntity." + EOEntity.CLASS_NAME), SWT.NONE);
+		getWidgetFactory().createCLabel(topForm, Messages.getString(EOEntityPrefix + EOEntity.CLASS_NAME), SWT.NONE);
 		myClassNameText = new Text(topForm, SWT.BORDER);
 		GridData classNameFieldLayoutData = new GridData(GridData.FILL_HORIZONTAL);
 		myClassNameText.setLayoutData(classNameFieldLayoutData);
 		UglyFocusHackWorkaroundListener.addListener(myClassNameText);
 
-		getWidgetFactory().createCLabel(topForm, Messages.getString("EOEntity." + EOEntity.PARENT), SWT.NONE);
+		getWidgetFactory().createCLabel(topForm, Messages.getString(EOEntityPrefix + EOEntity.PARENT), SWT.NONE);
 		Combo parentEntityCombo = new Combo(topForm, SWT.BORDER | SWT.FLAT | SWT.READ_ONLY);
 		myParentEntityComboViewer = new ComboViewer(parentEntityCombo);
 		myParentEntityComboViewer.setLabelProvider(new EOEntityLabelProvider());
@@ -127,7 +137,7 @@ public class EOEntityBasicEditorSection extends AbstractPropertySection {
 		GridData entityComboLayoutData = new GridData(GridData.FILL_HORIZONTAL);
 		parentEntityCombo.setLayoutData(entityComboLayoutData);
 
-		getWidgetFactory().createCLabel(topForm, Messages.getString("EOEntity." + EOEntity.RESTRICTING_QUALIFIER), SWT.NONE);
+		getWidgetFactory().createCLabel(topForm, Messages.getString(EOEntityPrefix + EOEntity.RESTRICTING_QUALIFIER), SWT.NONE);
 		myRestrictingQualifierText = new Text(topForm, SWT.BORDER);
 		GridData restrictingQualifierFieldLayoutData = new GridData(GridData.FILL_HORIZONTAL);
 		myRestrictingQualifierText.setLayoutData(restrictingQualifierFieldLayoutData);
@@ -135,7 +145,7 @@ public class EOEntityBasicEditorSection extends AbstractPropertySection {
 
 		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
 		myAbstractButton = new Button(topForm, SWT.CHECK);
-		myAbstractButton.setText(Messages.getString("EOEntity." + EOEntity.ABSTRACT_ENTITY));
+		myAbstractButton.setText(Messages.getString(EOEntityPrefix + EOEntity.ABSTRACT_ENTITY));
 }
 
 	public void setInput(IWorkbenchPart part, ISelection selection) {
@@ -158,6 +168,14 @@ public class EOEntityBasicEditorSection extends AbstractPropertySection {
 						//BeansObservables.observeValue(myEntity, EOEntity.NAME),
 						BeanProperties.value(EOEntity.NAME).observe(myEntity), 
 						null, null);
+				myBindingContext.bindValue(
+						//SWTObservables.observeText(myExternalSchemaText, SWT.Modify),
+						WidgetProperties.text(SWT.Modify).observe(myExternalSchemaText), 
+						//BeansObservables.observeValue(myEntity, EOEntity.EXTERNAL_SCHEMA),
+						BeanProperties.value(EOEntity.EXTERNAL_SCHEMA).observe(myEntity), 
+						null, null);
+				
+				
 				myBindingContext.bindValue(
 						//SWTObservables.observeText(myExternalNameText, SWT.Modify),
 						WidgetProperties.text(SWT.Modify).observe(myExternalNameText), 

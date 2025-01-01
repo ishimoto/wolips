@@ -351,6 +351,14 @@ public class EOModelEditor extends MultiPageEditorPart implements IResourceChang
 			EOModelEditor.this.setActivePage(getPageNum(EOModelEditor.EOMODEL_PAGE));
 		}
 	}
+	
+
+	protected class EODiagramSelectionChangedListener implements ISelectionChangedListener {
+		public void selectionChanged(final SelectionChangedEvent _event) {
+			IStructuredSelection selection = (IStructuredSelection) _event.getSelection();
+			setSelection(selection);
+		}
+	}
 
 	public static final String EOMODEL_EDITOR_ID = "org.objectstyle.wolips.eomodeler.editors.EOModelEditor";
 
@@ -1087,13 +1095,11 @@ public class EOModelEditor extends MultiPageEditorPart implements IResourceChang
 			IWorkbench workbench = Activator.getDefault().getWorkbench();
 			IWorkbenchWindow activeWindow = workbench.getActiveWorkbenchWindow();
 			if (activeWindow != null) {
-				if (activeWindow != null) {
-					IWorkbenchPage workbenchPage = activeWindow.getActivePage();
-					if (workbenchPage != null) {
-						IEditorReference[] editorReferences = workbenchPage.getEditorReferences();
-						if (editorReferences.length > 1) {
-							shouldSwitchToEntityModeler = true;
-						}
+				IWorkbenchPage workbenchPage = activeWindow.getActivePage();
+				if (workbenchPage != null) {
+					IEditorReference[] editorReferences = workbenchPage.getEditorReferences();
+					if (editorReferences.length > 1) {
+						shouldSwitchToEntityModeler = true;
 					}
 				}
 			}
@@ -1223,6 +1229,9 @@ public class EOModelEditor extends MultiPageEditorPart implements IResourceChang
 						getContentOutlinePage().setSelection(selection);
 					}
 					fireSelectionChanged(selection);
+					
+					updateEntitiesTab(selectedObject);
+					updatePartName();
 				}
 			}
 		} finally {
@@ -1332,5 +1341,30 @@ public class EOModelEditor extends MultiPageEditorPart implements IResourceChang
 			partName = Messages.getString("EOModelEditor.partName");
 		}
 		setPartName(partName);
+	}
+	
+	// SAVAS Hier wird das gewählte Model dem EOmodeller und meinem Tab weitergegeben.
+	private void updateEntitiesTab(Object selectedObject) {
+
+		if (selectedObject instanceof EOModel) {
+			myModel = (EOModel) selectedObject;
+		} else if (selectedObject instanceof EOEntity) {
+			myModel = ((EOEntity) selectedObject)._getModelParent();
+		} else if (selectedObject instanceof EOAttribute) {
+			myModel = ((EOAttribute) selectedObject).getEntity()._getModelParent();
+		} else if (selectedObject instanceof EORelationship) {
+			myModel = ((EORelationship) selectedObject).getEntity()._getModelParent();
+		} else if (selectedObject instanceof TBEnterpriseFetchSpecification) {
+			myModel = ((TBEnterpriseFetchSpecification) selectedObject).getEntity()._getModelParent();
+		} else if (selectedObject instanceof AbstractEOAttributePath) {
+			myModel = ((AbstractEOAttributePath) selectedObject).getChildIEOAttribute().getEntity()._getModelParent();
+		} else if (selectedObject instanceof EODatabaseConfig) {
+			myModel = ((EODatabaseConfig) selectedObject)._getModelParent();
+		}
+
+		// Erneuert die Entitäten Tabele (wird gebraucht, falls man mehrere Models hat)
+		if (myEntitiesTableEditor != null) { 
+			myEntitiesTableEditor.setModel(myModel);
+		}
 	}
 }

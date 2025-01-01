@@ -55,6 +55,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
@@ -62,9 +63,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.part.EditorPart;
+import org.objectstyle.wolips.eomodeler.core.model.EOAttribute;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
 import org.objectstyle.wolips.eomodeler.core.model.EOModel;
 import org.objectstyle.wolips.eomodeler.editors.IEntityEditor;
+import org.objectstyle.wolips.eomodeler.editors.attribute.AbstractEOArgumentBasicEditorSection;
 import org.objectstyle.wolips.eomodeler.editors.attributes.EOAttributesTableViewer;
 import org.objectstyle.wolips.eomodeler.editors.relationships.EORelationshipsTableViewer;
 
@@ -174,6 +177,18 @@ public class EOEntityEditor extends EditorPart implements IEntityEditor, ISelect
 	public void setSelection(ISelection _selection) {
 		myAttributesTableViewer.setSelection(_selection);
 		myRelationshipsTableViewer.setSelection(_selection);
+	
+		if (getSelection() != null && getSelection() instanceof StructuredSelection) {
+			StructuredSelection sel = (StructuredSelection) getSelection();
+			Object o = sel.getFirstElement();
+			if (o != null && o instanceof EOAttribute) {
+				EOAttribute attribute = (EOAttribute) o;
+				AbstractEOArgumentBasicEditorSection delegate = AbstractEOArgumentBasicEditorSection.delegate;
+				if (delegate != null) {
+					delegate.setArgument(attribute);
+				}
+			}
+		}
 	}
 
 	public ISelection getSelection() {

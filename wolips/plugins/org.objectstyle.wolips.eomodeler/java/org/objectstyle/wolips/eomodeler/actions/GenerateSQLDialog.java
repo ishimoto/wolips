@@ -42,7 +42,7 @@ import org.objectstyle.wolips.eomodeler.core.sql.IEOSQLGeneratorFactory;
 import org.objectstyle.wolips.eomodeler.core.utils.SQLUtils;
 
 public class GenerateSQLDialog extends Dialog {
-	private Button _dropDatabaseButton;
+//	private Button _dropDatabaseButton;
 
 	private Button _dropTablesButton;
 
@@ -60,7 +60,7 @@ public class GenerateSQLDialog extends Dialog {
 
 	private Button _createForeignKeyConstraintsButton;
 
-	private Button _createDatabaseButton;
+//	private Button _createDatabaseButton;
 
 	private Button _createIndexesButton;
 
@@ -128,12 +128,15 @@ public class GenerateSQLDialog extends Dialog {
 			_databaseConfigComboViewer.addSelectionChangedListener(_flagChangeHander);
 		}
 
-		_dropDatabaseButton = new Button(control, SWT.CHECK);
-		_dropDatabaseButton.setText("Drop Database");
-		_dropDatabaseButton.addSelectionListener(_flagChangeHander);
-		_createDatabaseButton = new Button(control, SWT.CHECK);
-		_createDatabaseButton.setText("Create Database");
-		_createDatabaseButton.addSelectionListener(_flagChangeHander);
+//		_dropDatabaseButton = new Button(control, SWT.CHECK);
+//		_dropDatabaseButton.setText("Drop Database");
+//		_dropDatabaseButton.addSelectionListener(_flagChangeHander);
+//		_createDatabaseButton = new Button(control, SWT.CHECK);
+//		_createDatabaseButton.setText("Create Database");
+//		_createDatabaseButton.addSelectionListener(_flagChangeHander);
+		
+		// TODO:
+		// If Postgresql create schema?  
 
 		_dropTablesButton = new Button(control, SWT.CHECK);
 		_dropTablesButton.setText("Drop Tables");
@@ -267,9 +270,10 @@ public class GenerateSQLDialog extends Dialog {
 		flags.put("createTables", yesNo(_createTablesButton));
 		flags.put("createPrimaryKeySupport", yesNo(_createPrimaryKeySupportButton));
 		flags.put("primaryKeyConstraints", yesNo(_createPrimaryKeyConstraintsButton));
+		// System.err.print("\n createForeignKeyContraints " + yesNo(_createForeignKeyConstraintsButton));
 		flags.put("foreignKeyConstraints", yesNo(_createForeignKeyConstraintsButton));
-		flags.put("createDatabase", yesNo(_createDatabaseButton));
-		flags.put("dropDatabase", yesNo(_dropDatabaseButton));
+//		flags.put("createDatabase", yesNo(_createDatabaseButton));
+//		flags.put("dropDatabase", yesNo(_dropDatabaseButton));
 		flags.put("createIndexes", yesNo(_createIndexesButton));
 		flags.put("dropIndexes", yesNo(_dropIndexesButton));
 		final EODatabaseConfig selectedDatabaseConfig = getSelectedDatabaseConfig();
@@ -294,7 +298,12 @@ public class GenerateSQLDialog extends Dialog {
 					getExecuteSqlButton().setEnabled(false);
 				}
 			});
-			IEOSQLGenerator sqlGenerator = IEOSQLGeneratorFactory.Utility.sqlGeneratorFactory().sqlGenerator(_model, getEntityNames(), selectedDatabaseConfig, getEOModelClassLoader(), runInEntityModeler);
+			
+			List<String> entityNames =  getEntityNames();
+			
+			IEOSQLGenerator sqlGenerator = IEOSQLGeneratorFactory.Utility.sqlGeneratorFactory().sqlGenerator(_model, entityNames, selectedDatabaseConfig, getEOModelClassLoader(), runInEntityModeler);
+
+			
 			final String sqlScript = sqlGenerator.generateSchemaCreationScript(flags);
 			Display.getDefault().syncExec(new Runnable() {
 				public void run() {
@@ -359,6 +368,12 @@ public class GenerateSQLDialog extends Dialog {
 			});
 			IEOSQLGenerator sqlGenerator = IEOSQLGeneratorFactory.Utility.sqlGeneratorFactory().sqlGenerator(_model, getEntityNames(), selectedDatabaseConfig, getEOModelClassLoader(), runInEntityModeler);
 			String url = selectedDatabaseConfig.getURL();
+			
+			
+			if (url == null) {
+				System.err.println("Database configuration URL can not be null ...");
+				
+			}
 			char commandSeparatorChar;
 			// yes. This sucks.
 			if (url != null && url.toLowerCase().contains("oracle")) {

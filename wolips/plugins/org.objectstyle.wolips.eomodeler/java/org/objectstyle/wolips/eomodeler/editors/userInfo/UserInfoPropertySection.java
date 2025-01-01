@@ -67,6 +67,10 @@ import org.objectstyle.wolips.eomodeler.core.model.IUserInfoable;
 import org.objectstyle.wolips.eomodeler.core.model.UserInfoableEOModelObject;
 import org.objectstyle.wolips.eomodeler.core.utils.NotificationMap;
 
+/**
+ * this is the part on the left bottom side. after you click the 'User Info' Tab,
+ * this code get executed.
+ */
 public class UserInfoPropertySection extends AbstractPropertySection implements IPropertyListChangeListener, PropertyChangeListener {
 	private IUserInfoable _userInfoable;
 

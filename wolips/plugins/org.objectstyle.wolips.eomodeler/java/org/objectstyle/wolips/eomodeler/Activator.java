@@ -64,10 +64,18 @@ public class Activator extends AbstractBaseUIActivator {
 	public static final String EOMODEL_ICON = "eoModel";
 
 	public static final String EOENTITY_ICON = "eoEntity";
+	
+	public static final String EOENTITY_ABSTRACT_ICON = "eoEntityAbstract";
+	
+	public static final String EOENTITY_SUBCLASS_ICON = "eoEntitySubclass";
+
+	public static final String EOENTITY_LOOKUP_ICON = "eoEntityReference";  // EOENTITY_REFERENCE_ICON
 
 	public static final String EOENTITYINDEX_ICON = "eoEntityIndex";
 
 	public static final String EOATTRIBUTE_ICON = "eoAttribute";
+
+	public static final String EOATTRIBUTE_NONCLASS_ICON = "eoAttributeNonClassProperty";
 
 	public static final String EORELATIONSHIP_ICON = "eoRelationship";
 
@@ -86,6 +94,8 @@ public class Activator extends AbstractBaseUIActivator {
 	public static final String LOCKING_ICON = "locking";
 
 	public static final String CLASS_PROPERTY_ICON = "classProperty";
+	
+	public static final String CLIENT_CLASS_PROPERTY_ICON = "clientClassProperty";
 
 	public static final String ALLOW_NULL_ICON = "allowNull";
 
@@ -94,6 +104,8 @@ public class Activator extends AbstractBaseUIActivator {
 	public static final String DESCENDING_ICON = "descending";
 
 	public static final String SQL_ICON = "sql";
+	
+	public static final String SUBCLASS_ENTITY_ICON = "subclassEntity";
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.objectstyle.wolips.eomodeler";
@@ -154,10 +166,15 @@ public class Activator extends AbstractBaseUIActivator {
 		_reg.put(Activator.PRIMARY_KEY_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "/icons/primaryKey.png"));
 		_reg.put(Activator.LOCKING_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "/icons/locking.png"));
 		_reg.put(Activator.CLASS_PROPERTY_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "/icons/classProperty.png"));
+		_reg.put(Activator.CLIENT_CLASS_PROPERTY_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "/icons/clientClassProperty@2x.png"));
 		_reg.put(Activator.CHECK_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/check.png"));
 		_reg.put(Activator.EOMODEL_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/eoModel.png"));
 		_reg.put(Activator.EOATTRIBUTE_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/eoAttribute.png"));
+		_reg.put(Activator.EOATTRIBUTE_NONCLASS_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/eoAttributeNonClassProperty.png"));
 		_reg.put(Activator.EOENTITY_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/eoEntity.png"));
+		_reg.put(Activator.EOENTITY_ABSTRACT_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/eoEntityAbstract.png"));
+		_reg.put(Activator.EOENTITY_SUBCLASS_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/eoEntitySubclass.png"));
+		_reg.put(Activator.EOENTITY_LOOKUP_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/eoEntityReference.png"));
 		_reg.put(Activator.EOENTITYINDEX_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/eoEntityIndex.png"));
 		_reg.put(Activator.EOFETCHSPEC_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/eoFetchSpecification.png"));
 		_reg.put(Activator.EOSTOREDPROCEDURE_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/eoStoredProcedure.png"));
@@ -168,5 +185,6 @@ public class Activator extends AbstractBaseUIActivator {
 		_reg.put(Activator.ASCENDING_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/ascending.png"));
 		_reg.put(Activator.DESCENDING_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/descending.png"));
 		_reg.put(Activator.SQL_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/sql.png"));
+		_reg.put(Activator.SUBCLASS_ENTITY_ICON, AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/subclassEntity.png"));
 	}
 }

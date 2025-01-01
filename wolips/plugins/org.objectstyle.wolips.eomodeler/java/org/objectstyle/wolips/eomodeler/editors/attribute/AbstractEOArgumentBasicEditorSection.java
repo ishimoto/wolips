@@ -106,7 +106,7 @@ public abstract class AbstractEOArgumentBasicEditorSection extends AbstractPrope
 	private ComboViewer _derivedComboViewer;
 
 	private Text _columnNameText;
-
+	private Text _defaultValueText;
 	private Text _definitionText;
 
 	private Text _externalTypeText;
@@ -135,8 +135,12 @@ public abstract class AbstractEOArgumentBasicEditorSection extends AbstractPrope
 
 	public AbstractEOArgumentBasicEditorSection() {
 		_dataTypeChangeListener = new DataTypeChangeListener();
+		
+		delegate = this;
 	}
 
+	public static AbstractEOArgumentBasicEditorSection delegate = null;
+	
 	public AbstractEOArgument getArgument() {
 		return _argument;
 	}
@@ -221,6 +225,12 @@ public abstract class AbstractEOArgumentBasicEditorSection extends AbstractPrope
 		GridData externalTypeFieldLayoutData = new GridData(GridData.FILL_HORIZONTAL);
 		_externalTypeText.setLayoutData(externalTypeFieldLayoutData);
 		UglyFocusHackWorkaroundListener.addListener(_externalTypeText);
+
+		getWidgetFactory().createCLabel(topForm, Messages.getString("AbstractEOArgument." + AbstractEOArgument.DEFAULT_VALUE), SWT.NONE);
+		_defaultValueText = new Text(topForm, SWT.BORDER);
+		GridData defaultValueFieldLayoutData = new GridData(GridData.FILL_HORIZONTAL);
+		_defaultValueText.setLayoutData(defaultValueFieldLayoutData);
+		UglyFocusHackWorkaroundListener.addListener(_defaultValueText);
 
 		getWidgetFactory().createCLabel(topForm, Messages.getString("AbstractEOArgument." + AbstractEOArgument.CLASS_NAME), SWT.NONE);
 		_classNameText = new Text(topForm, SWT.BORDER);
@@ -312,13 +322,23 @@ public abstract class AbstractEOArgumentBasicEditorSection extends AbstractPrope
 						BeanProperties.value(AbstractEOArgument.ALLOWS_NULL).observe(_argument),
 						null, new BooleanUpdateValueStrategy());
 
+				
+				_bindingContext.bindValue(
+						//SWTObservables.observeText(_defaultValueText, SWT.Modify),
+						WidgetProperties.text(SWT.Modify).observe(_defaultValueText),
+						//BeansObservables.observeValue(_argument, AbstractEOArgument.DEFAULT_VALUE),
+						BeanProperties.value(AbstractEOArgument.DEFAULT_VALUE).observe(_argument),
+						null, null);
+								
 				_argumentChanged(argument);
 
-				_dataTypeBinding = new ComboViewerBinding(_dataTypeComboViewer, _argument, AbstractEOArgument.DATA_TYPE, null, null, null);
-				if (_argument.getDefinition() == null) {
-					_derivedComboViewer.setSelection(new StructuredSelection(AbstractEOArgumentBasicEditorSection.COLUMN));
-				} else {
-					_derivedComboViewer.setSelection(new StructuredSelection(AbstractEOArgumentBasicEditorSection.DERIVED));
+				if (_dataTypeComboViewer != null) {
+					_dataTypeBinding = new ComboViewerBinding(_dataTypeComboViewer, _argument, AbstractEOArgument.DATA_TYPE, null, null, null);
+					if (_argument.getDefinition() == null) {
+						_derivedComboViewer.setSelection(new StructuredSelection(AbstractEOArgumentBasicEditorSection.COLUMN));
+					} else {
+						_derivedComboViewer.setSelection(new StructuredSelection(AbstractEOArgumentBasicEditorSection.DERIVED));
+					}
 				}
 
 				// Iterator dataTypePanelsIter =
@@ -355,13 +375,16 @@ public abstract class AbstractEOArgumentBasicEditorSection extends AbstractPrope
 	}
 
 	public void dispose() {
+		super.dispose();
+
 		disposeBindings();
 		if (_dataTypeToDataTypePanel != null) {
 			for (Composite dataTypePanel : _dataTypeToDataTypePanel.values()) {
 				((IDataTypePanel) dataTypePanel).setArgument(null);
 			}
 		}
-		super.dispose();
+		
+		delegate = null;
 	}
 
 	protected void updateTextfromDerivedComboViewer() {
@@ -384,18 +407,30 @@ public abstract class AbstractEOArgumentBasicEditorSection extends AbstractPrope
 		// updateAttributePanel");
 		if (_argument != null) {
 			EODataType dataType = _argument.getDataType();
-			Composite dataTypePanel = _dataTypeToDataTypePanel.get(dataType);
-			if (dataTypePanel == null) {
-				dataTypePanel = _dataTypeToDataTypePanel.get(EODataType.CUSTOM);
+			
+			if (_dataTypeToDataTypePanel != null) {
+				Composite dataTypePanel = _dataTypeToDataTypePanel.get(dataType);
+				if (dataTypePanel == null) {
+					dataTypePanel = _dataTypeToDataTypePanel.get(EODataType.CUSTOM);
+				}
+				if (_dataTypeStackLayout.topControl instanceof IDataTypePanel) {
+					((IDataTypePanel) _dataTypeStackLayout.topControl).setArgument(null);
+				}
+				if (dataTypePanel instanceof IDataTypePanel) {
+					((IDataTypePanel) dataTypePanel).setArgument(_argument);
+				}
+				_dataTypeStackLayout.topControl = dataTypePanel;
+				_classNameText.setEnabled(dataTypePanel != _dataTypeToDataTypePanel.get(EODataType.CUSTOM));
+				_dataTypePanel.layout();
 			}
 			if (_dataTypeStackLayout.topControl instanceof IDataTypePanel) {
 				((IDataTypePanel) _dataTypeStackLayout.topControl).setArgument(null);
 			}
-			if (dataTypePanel instanceof IDataTypePanel) {
-				((IDataTypePanel) dataTypePanel).setArgument(_argument);
+			if (_dataTypePanel instanceof IDataTypePanel) {
+				((IDataTypePanel) _dataTypePanel).setArgument(_argument);
 			}
-			_dataTypeStackLayout.topControl = dataTypePanel;
-			_classNameText.setEnabled(dataTypePanel != _dataTypeToDataTypePanel.get(EODataType.CUSTOM));
+			_dataTypeStackLayout.topControl = _dataTypePanel;
+			_classNameText.setEnabled(_dataTypePanel != _dataTypeToDataTypePanel.get(EODataType.CUSTOM));
 			_dataTypePanel.layout();
 		}
 	}
@@ -409,8 +444,6 @@ public abstract class AbstractEOArgumentBasicEditorSection extends AbstractPrope
 	protected class DataTypeChangeListener implements PropertyChangeListener {
 		public void propertyChange(PropertyChangeEvent event) {
 			EODataType oldDataType = (EODataType) event.getOldValue();
-			// System.out.println("DataTypeChangeListener.propertyChange: " +
-			// _event.getNewValue());
 			AbstractEOArgumentBasicEditorSection.this.updateAttributePanel(oldDataType);
 		}
 	}

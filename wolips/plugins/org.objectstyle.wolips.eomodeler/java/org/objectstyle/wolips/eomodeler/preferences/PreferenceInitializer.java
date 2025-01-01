@@ -50,10 +50,10 @@ import org.objectstyle.wolips.eomodeler.core.model.AbstractEOArgument;
 import org.objectstyle.wolips.eomodeler.core.model.EOArgument;
 import org.objectstyle.wolips.eomodeler.core.model.EOAttribute;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
-import org.objectstyle.wolips.eomodeler.core.model.EOFetchSpecification;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseFetchSpecification;
 import org.objectstyle.wolips.eomodeler.core.model.EOJoin;
 import org.objectstyle.wolips.eomodeler.core.model.EORelationship;
-import org.objectstyle.wolips.eomodeler.core.model.EOSortOrdering;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseSortOrdering;
 import org.objectstyle.wolips.eomodeler.utils.TableUtils;
 
 /**
@@ -63,20 +63,20 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
   @Override
   public void initializeDefaultPreferences() {
     IPreferenceStore prefs = Activator.getDefault().getPreferenceStore();
-    prefs.setDefault(PreferenceConstants.ALLOWS_NULL_DEFAULT_KEY, false);
-    prefs.setDefault(PreferenceConstants.USED_FOR_LOCKING_DEFAULT_KEY, true);
-    prefs.setDefault(PreferenceConstants.CHANGE_PERSPECTIVES_KEY, true);
+    prefs.setDefault(PreferenceConstants.ALLOWS_NULL_DEFAULT_KEY, true);  // New Attributes should allow null
+    prefs.setDefault(PreferenceConstants.USED_FOR_LOCKING_DEFAULT_KEY, false);  // New Attributes should not be used for locking
+    prefs.setDefault(PreferenceConstants.CHANGE_PERSPECTIVES_KEY, false);  // Don't switch perspective in main Eclipse Window
     prefs.setDefault(PreferenceConstants.OPEN_IN_WINDOW_KEY, true);
     prefs.setDefault(PreferenceConstants.SHOW_RELATIONSHIP_ATTRIBUTE_OPTIONALITY_MISMATCH, false);
     prefs.setDefault(PreferenceConstants.SHOW_ERRORS_IN_PROBLEMS_VIEW_KEY, true);
     prefs.setDefault(PreferenceConstants.OPEN_WINDOW_ON_VERIFICATION_ERRORS_KEY, true);
     prefs.setDefault(PreferenceConstants.OPEN_WINDOW_ON_VERIFICATION_WARNINGS_KEY, true);
     TableUtils.setColumnsForTableNamed(EOArgument.class.getName(), new String[] { AbstractEOArgument.NAME, AbstractEOArgument.COLUMN_NAME, EOArgument.DIRECTION }, false);
-    TableUtils.setColumnsForTableNamed(EOAttribute.class.getName(), new String[] { EOAttribute.PRIMARY_KEY, EOAttribute.CLASS_PROPERTY, EOAttribute.USED_FOR_LOCKING, AbstractEOArgument.ALLOWS_NULL, EOAttribute.PROTOTYPE, AbstractEOArgument.NAME, AbstractEOArgument.COLUMN_NAME, AbstractEOArgument.WIDTH, AbstractEOArgument.PRECISION, AbstractEOArgument.SCALE }, false);
-    TableUtils.setColumnsForTableNamed(EOEntity.class.getName(), new String[] { EOEntity.NAME, EOEntity.EXTERNAL_NAME, EOEntity.CLASS_NAME, EOEntity.PARENT }, false);
-    TableUtils.setColumnsForTableNamed(EOFetchSpecification.class.getName(), new String[] { EOFetchSpecification.SHARES_OBJECTS, EOFetchSpecification.NAME }, false);
-    TableUtils.setColumnsForTableNamed(EOSortOrdering.class.getName(), new String[] { EOSortOrdering.KEY, EOSortOrdering.ASCENDING, EOSortOrdering.CASE_INSENSITIVE }, false);
+    TableUtils.setColumnsForTableNamed(EOAttribute.class.getName(), new String[] { EOAttribute.PRIMARY_KEY, EOAttribute.CLASS_PROPERTY, EOAttribute.CLIENT_CLASS_PROPERTY, EOAttribute.USED_FOR_LOCKING, AbstractEOArgument.ALLOWS_NULL, EOAttribute.PROTOTYPE, AbstractEOArgument.NAME, AbstractEOArgument.COLUMN_NAME, AbstractEOArgument.WIDTH, AbstractEOArgument.PRECISION, AbstractEOArgument.SCALE }, false);
+    TableUtils.setColumnsForTableNamed(EOEntity.class.getName(), new String[] { EOEntity.NAME, EOEntity.EXTERNAL_NAME, EOEntity.CLASS_NAME, EOEntity.CLIENT_CLASS_NAME, EOEntity.PARENT }, false);
+    TableUtils.setColumnsForTableNamed(TBEnterpriseFetchSpecification.class.getName(), new String[] { TBEnterpriseFetchSpecification.SHARES_OBJECTS, TBEnterpriseFetchSpecification.NAME }, false);
+    TableUtils.setColumnsForTableNamed(TBEnterpriseSortOrdering.class.getName(), new String[] { TBEnterpriseSortOrdering.KEY, TBEnterpriseSortOrdering.ASCENDING, TBEnterpriseSortOrdering.CASE_INSENSITIVE }, false);
     TableUtils.setColumnsForTableNamed(EOJoin.class.getName(), new String[] { EOJoin.SOURCE_ATTRIBUTE_NAME, EOJoin.DESTINATION_ATTRIBUTE_NAME }, false);
-    TableUtils.setColumnsForTableNamed(EORelationship.class.getName(), new String[] { EORelationship.TO_MANY, EORelationship.CLASS_PROPERTY, EORelationship.OPTIONAL, EORelationship.NAME, EORelationship.DESTINATION, EOJoin.SOURCE_ATTRIBUTE, EOJoin.DESTINATION_ATTRIBUTE }, false);
+    TableUtils.setColumnsForTableNamed(EORelationship.class.getName(), new String[] { EORelationship.TO_MANY, EORelationship.CLASS_PROPERTY, EORelationship.CLIENT_CLASS_PROPERTY, EORelationship.OPTIONAL, EORelationship.NAME, EORelationship.DESTINATION, EOJoin.SOURCE_ATTRIBUTE, EOJoin.DESTINATION_ATTRIBUTE }, false);
   }
 }

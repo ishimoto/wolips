@@ -80,6 +80,8 @@ public class EOAttributeBasicEditorSection extends AbstractEOArgumentBasicEditor
 	private Button _primaryKeyButton;
 
 	private Button _classPropertyButton;
+	
+	private Button _clientClassPropertyButton;
 
 	private Button _lockingButton;
 
@@ -93,6 +95,10 @@ public class EOAttributeBasicEditorSection extends AbstractEOArgumentBasicEditor
 		_classPropertyButton = new Button(settings, SWT.CHECK);
 		_classPropertyButton.setToolTipText(Messages.getString("EOAttribute." + EOAttribute.CLASS_PROPERTY));
 		_classPropertyButton.setImage(Activator.getDefault().getImageRegistry().get(Activator.CLASS_PROPERTY_ICON));
+		
+		_clientClassPropertyButton = new Button(settings, SWT.TOGGLE | SWT.FLAT);
+		_clientClassPropertyButton.setToolTipText(Messages.getString("EOAttribute." + EOAttribute.CLIENT_CLASS_PROPERTY));
+		_clientClassPropertyButton.setImage(Activator.getDefault().getImageRegistry().get(Activator.CLIENT_CLASS_PROPERTY_ICON));
 
 		new Label(settings, SWT.SEPARATOR | SWT.VERTICAL);
 		_lockingButton = new Button(settings, SWT.CHECK);
@@ -113,9 +119,12 @@ public class EOAttributeBasicEditorSection extends AbstractEOArgumentBasicEditor
 	protected void _argumentChanged(AbstractEOArgument argument) {
 		EOAttribute attribute = (EOAttribute) argument;
 		if (attribute != null) {
-			_prototypeComboViewer.setInput(attribute);
-			_prototypeBinding = new ComboViewerBinding(_prototypeComboViewer, attribute, EOAttribute.PROTOTYPE, attribute.getEntity().getModel(), EOModel.ENTITIES, EOEntityListContentProvider.BLANK_ENTITY);
-
+			
+			if (_prototypeComboViewer != null) {
+				_prototypeComboViewer.setInput(attribute);
+				_prototypeBinding = new ComboViewerBinding(_prototypeComboViewer, attribute, EOAttribute.PROTOTYPE, attribute.getEntity().getModel(), EOModel.ENTITIES, EOEntityListContentProvider.BLANK_ENTITY);
+			}
+			
 			getBindingContext().bindValue(
 					//SWTObservables.observeSelection(_primaryKeyButton),
 					WidgetProperties.buttonSelection().observe(_primaryKeyButton),
@@ -127,6 +136,12 @@ public class EOAttributeBasicEditorSection extends AbstractEOArgumentBasicEditor
 					WidgetProperties.buttonSelection().observe(_classPropertyButton),
 					//BeansObservables.observeValue(attribute, EOAttribute.CLASS_PROPERTY),
 					BeanProperties.value(EOAttribute.CLASS_PROPERTY).observe(attribute),
+					null, new BooleanUpdateValueStrategy());
+			getBindingContext().bindValue(
+					//SWTObservables.observeSelection(_clientClassPropertyButton),
+					WidgetProperties.buttonSelection().observe(_clientClassPropertyButton),
+					//BeansObservables.observeValue(attribute, EOAttribute.CLIENT_CLASS_PROPERTY),
+					BeanProperties.value(EOAttribute.CLIENT_CLASS_PROPERTY).observe(attribute),
 					null, new BooleanUpdateValueStrategy());
 			getBindingContext().bindValue(
 					//SWTObservables.observeSelection(_lockingButton),

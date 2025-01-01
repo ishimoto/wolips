@@ -17,10 +17,10 @@
  * and/or other materials provided with the distribution.
  * 
  * 3. The end-user documentation included with the redistribution, if any, must
- * include the following acknowlegement: "This product includes software
+ * include the following acknowledgement: "This product includes software
  * developed by the ObjectStyle Group (http://objectstyle.org/)." Alternately,
- * this acknowlegement may appear in the software itself, if and wherever such
- * third-party acknowlegements normally appear.
+ * this acknowledgement may appear in the software itself, if and wherever such
+ * third-party acknowledgement normally appear.
  * 
  * 4. The names "ObjectStyle Group" and "Cayenne" must not be used to endorse or
  * promote products derived from this software without prior written permission.
@@ -51,39 +51,30 @@ package org.objectstyle.wolips.eomodeler.actions;
 
 import java.util.Set;
 
-import org.objectstyle.wolips.eomodeler.Activator;
 import org.objectstyle.wolips.eomodeler.Messages;
-import org.objectstyle.wolips.eomodeler.core.model.DuplicateNameException;
-import org.objectstyle.wolips.eomodeler.core.model.EOAttribute;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
+import org.objectstyle.wolips.eomodeler.core.model.EOModel;
 import org.objectstyle.wolips.eomodeler.core.model.EOModelException;
 import org.objectstyle.wolips.eomodeler.core.model.EOModelVerificationFailure;
-import org.objectstyle.wolips.eomodeler.preferences.PreferenceConstants;
 
-public class NewAttributeAction extends AbstractNewObjectAction<EOEntity, EOAttribute> {
-	public NewAttributeAction() {
-		super(EOEntity.class, Messages.getString("EOAttribute.newName"));
-	}
-
-	@Override
-	protected EOAttribute createChild(EOEntity parent, Set<EOModelVerificationFailure> failures) throws EOModelException {
-		return createAttribute(parent);
+public class NewEntityReferenceAction extends AbstractNewObjectAction<EOModel, EOEntity> {
+	public NewEntityReferenceAction() {
+		super(EOModel.class, Messages.getString("EOEntity.newReferenceName"));
 	}
 	
-	public static final EOAttribute createAttribute(EOEntity entity) throws DuplicateNameException {
-		EOAttribute newAttribute = entity.addBlankAttribute(Messages.getString("EOAttribute.newName"));  // TODO ideally this could have the correct prefix
-		newAttribute.setAllowsNull(Boolean.valueOf(Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.ALLOWS_NULL_DEFAULT_KEY)));
-		newAttribute.setUsedForLocking(Boolean.valueOf(Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.USED_FOR_LOCKING_DEFAULT_KEY)));
-		return newAttribute;
+
+	@Override
+	protected EOEntity createChild(EOModel parent, Set<EOModelVerificationFailure> failures) throws EOModelException {
+		return parent.addBlankReferenceEntity(Messages.getString("EOEntity.newReferenceName"));
 	}
 
 	@Override
 	protected String getNoSelectionMessage() {
-		return Messages.getString("EOAttribute.noEntitySelectedMessage");
+		return Messages.getString("EOEntity.noModelSelectedMessage");
 	}
 
 	@Override
 	protected String getNoSelectionTitle() {
-		return Messages.getString("EOAttribute.noEntitySelectedTitle");
+		return Messages.getString("EOEntity.noModelSelectedTitle");
 	}
 }

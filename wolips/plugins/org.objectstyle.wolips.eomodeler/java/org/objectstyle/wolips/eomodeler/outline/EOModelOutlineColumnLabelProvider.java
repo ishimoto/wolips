@@ -65,7 +65,7 @@ import org.objectstyle.wolips.eomodeler.core.model.EOAttributePath;
 import org.objectstyle.wolips.eomodeler.core.model.EODatabaseConfig;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntityIndex;
-import org.objectstyle.wolips.eomodeler.core.model.EOFetchSpecification;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseFetchSpecification;
 import org.objectstyle.wolips.eomodeler.core.model.EOModel;
 import org.objectstyle.wolips.eomodeler.core.model.EORelationship;
 import org.objectstyle.wolips.eomodeler.core.model.EORelationshipPath;
@@ -114,16 +114,31 @@ public class EOModelOutlineColumnLabelProvider extends ColumnLabelProvider {
 		} else if (element instanceof EOModel) {
 			image = Activator.getDefault().getImageRegistry().get(Activator.EOMODEL_ICON);
 		} else if (element instanceof EOEntity) {
-			image = Activator.getDefault().getImageRegistry().get(Activator.EOENTITY_ICON);
+			EOEntity entity = (EOEntity) element;
+			if (entity.isLookupEntity()) {
+				image = Activator.getDefault().getImageRegistry().get(Activator.EOENTITY_LOOKUP_ICON);				
+			} else if (entity.isAbstractEntity()) {				
+				image = Activator.getDefault().getImageRegistry().get(Activator.EOENTITY_ABSTRACT_ICON);
+			}  else if (entity.isInherited()) {
+				image = Activator.getDefault().getImageRegistry().get(Activator.EOENTITY_SUBCLASS_ICON);
+			} else {
+				image = Activator.getDefault().getImageRegistry().get(Activator.EOENTITY_ICON);
+			}
 		} else if (element instanceof EOAttribute) {
-			image = Activator.getDefault().getImageRegistry().get(Activator.EOATTRIBUTE_ICON);
+			EOAttribute attribute = (EOAttribute) element;
+			
+			if (attribute.isClassProperty()) {
+				image = Activator.getDefault().getImageRegistry().get(Activator.EOATTRIBUTE_ICON);
+			} else {
+				image = Activator.getDefault().getImageRegistry().get(Activator.EOATTRIBUTE_NONCLASS_ICON);				
+			}
 		} else if (element instanceof EORelationship) {
 			image = Activator.getDefault().getImageRegistry().get(Activator.EORELATIONSHIP_ICON);
 		} else if (element instanceof EORelationshipPath) {
 			image = Activator.getDefault().getImageRegistry().get(Activator.EORELATIONSHIP_ICON);
 		} else if (element instanceof EOAttributePath) {
 			image = Activator.getDefault().getImageRegistry().get(Activator.EOATTRIBUTE_ICON);
-		} else if (element instanceof EOFetchSpecification) {
+		} else if (element instanceof TBEnterpriseFetchSpecification) {
 			image = Activator.getDefault().getImageRegistry().get(Activator.EOFETCHSPEC_ICON);
 		} else if (element instanceof EOStoredProcedure) {
 			image = Activator.getDefault().getImageRegistry().get(Activator.EOSTOREDPROCEDURE_ICON);
@@ -164,8 +179,8 @@ public class EOModelOutlineColumnLabelProvider extends ColumnLabelProvider {
 		} else if (_element instanceof EOAttributePath) {
 			EOAttributePath attributePath = (EOAttributePath) _element;
 			text = attributePath.getChildAttribute().getName();
-		} else if (_element instanceof EOFetchSpecification) {
-			EOFetchSpecification fetchSpec = (EOFetchSpecification) _element;
+		} else if (_element instanceof TBEnterpriseFetchSpecification) {
+			TBEnterpriseFetchSpecification fetchSpec = (TBEnterpriseFetchSpecification) _element;
 			text = fetchSpec.getName();
 		} else if (_element instanceof EOArgument) {
 			EOArgument argument = (EOArgument) _element;

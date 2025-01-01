@@ -74,6 +74,14 @@ public class EORelationshipsLabelProvider extends TablePropertyLabelProvider imp
 
 	private Font _flattenedInheritedFont;
 
+	private Color _inheritedColor;
+	private Color _flattenedColor;
+	private Color _flattenedInheritedColor;
+	
+	//********************************************************************
+	//	Constructor : コンストラクタ
+	//********************************************************************
+
 	public EORelationshipsLabelProvider(TableViewer tableViewer, String tableName) {
 		super(tableName);
 		_tableViewer = tableViewer;
@@ -86,6 +94,8 @@ public class EORelationshipsLabelProvider extends TablePropertyLabelProvider imp
 			image = yesNoImage(relationship.isToMany(), Activator.getDefault().getImageRegistry().get(Activator.TO_MANY_ICON), Activator.getDefault().getImageRegistry().get(Activator.TO_ONE_ICON), Activator.getDefault().getImageRegistry().get(Activator.TO_ONE_ICON));
 		} else if (EORelationship.CLASS_PROPERTY.equals(property)) {
 			image = yesNoImage(relationship.isClassProperty(), Activator.getDefault().getImageRegistry().get(Activator.CLASS_PROPERTY_ICON), null, null);
+		} else if (EORelationship.CLIENT_CLASS_PROPERTY.equals(property)) {
+			image = yesNoImage(relationship.isClientClassProperty(), Activator.getDefault().getImageRegistry().get(Activator.CLIENT_CLASS_PROPERTY_ICON), null, null);			
 		} else if (EORelationship.OPTIONAL.equals(property)) {
 			image = yesNoImage(relationship.isOptional(), Activator.getDefault().getImageRegistry().get(Activator.ALLOW_NULL_ICON), null, null);
 		}
@@ -100,6 +110,8 @@ public class EORelationshipsLabelProvider extends TablePropertyLabelProvider imp
 		} else if (EORelationship.CLASS_PROPERTY.equals(property)) {
 			// DO NOTHING
 		} else if (EORelationship.OPTIONAL.equals(property)) {
+			// DO NOTHING
+		} else if (EORelationship.CLIENT_CLASS_PROPERTY.equals(property)) {
 			// DO NOTHING
 		} else if (EORelationship.DESTINATION.equals(property)) {
 			EOEntity destination = relationship.getDestination();
@@ -129,39 +141,76 @@ public class EORelationshipsLabelProvider extends TablePropertyLabelProvider imp
 	}
 
 	public Font getFont(Object element, int columnIndex) {
-		EORelationship relationship = (EORelationship) element;
 		Font font = null;
-		boolean inherited = relationship.isInherited();
-		boolean flattened = relationship.isFlattened();
-		if (flattened && inherited) {
-			if (_flattenedInheritedFont == null) {
-				Font originalFont = _tableViewer.getTable().getFont();
-				FontData[] fontData = _tableViewer.getTable().getFont().getFontData();
-				_flattenedInheritedFont = new Font(originalFont.getDevice(), fontData[0].getName(), fontData[0].getHeight(), SWT.BOLD | SWT.ITALIC);
+		if (_tableViewer != null) {
+
+			String osName = System.getProperty("os.name").toLowerCase();
+//			plotters: do we still need this on macOS?
+//			if (osName.contains("mac")) {
+//				NSTableView view = (NSTableView) _tableViewer.getTable().view;
+//				view.setRowHeight(20.0);
+//			}
+
+			Font originalFont = _tableViewer.getTable().getFont();
+			FontData[] fontData = _tableViewer.getTable().getFont().getFontData();
+			int fontHeight = fontData[0].getHeight() + 2;
+
+			EORelationship relationship = (EORelationship) element;
+
+			boolean inherited = relationship.isInherited();
+			boolean flattened = relationship.isFlattened();
+			if (flattened && inherited) {
+				if (_flattenedInheritedFont == null) {
+					_flattenedInheritedFont = new Font(originalFont.getDevice(), fontData[0].getName(), fontHeight, SWT.BOLD | SWT.ITALIC);
+				}
+				font = _flattenedInheritedFont;
+
+			} else if (flattened) {
+				if (_flattenedFont == null) {
+					_flattenedFont = new Font(originalFont.getDevice(), fontData[0].getName(), fontHeight, SWT.BOLD);
+				}
+				font = _flattenedFont;
+
+			} else if (inherited) {
+				if (_inheritedFont == null) {
+					_inheritedFont = new Font(originalFont.getDevice(), fontData[0].getName(), fontHeight, SWT.ITALIC);
+				}
+				font = _inheritedFont;
 			}
 			font = _flattenedInheritedFont;
-		}
-		else if (flattened) {
-			if (_flattenedFont == null) {
-				Font originalFont = _tableViewer.getTable().getFont();
-				FontData[] fontData = _tableViewer.getTable().getFont().getFontData();
-				_flattenedFont = new Font(originalFont.getDevice(), fontData[0].getName(), fontData[0].getHeight(), SWT.BOLD);
-			}
-			font = _flattenedFont;
-		} else if (inherited) {
-			if (_inheritedFont == null) {
-				Font originalFont = _tableViewer.getTable().getFont();
-				FontData[] fontData = _tableViewer.getTable().getFont().getFontData();
-				_inheritedFont = new Font(originalFont.getDevice(), fontData[0].getName(), fontData[0].getHeight(), SWT.ITALIC);
-			}
-			font = _inheritedFont;
 		}
 		return font;
 	}
 
 	public Color getBackground(Object element, int columnIndex) {
-		// EORelationship relationship = (EORelationship) element;
-		return null;
+		Color color = null;
+		if (_tableViewer != null) {
+			Font originalFont = _tableViewer.getTable().getFont();
+			
+			EORelationship relationship = (EORelationship) element;
+			
+			boolean inherited = relationship.isInherited();
+			boolean flattened = relationship.isFlattened();
+
+			if (flattened && inherited) {
+				if (_flattenedInheritedColor == null) {
+				_flattenedInheritedColor = new Color(originalFont.getDevice(), 255, 245, 189);
+				}
+				color = _flattenedInheritedColor;
+			}
+			else if (flattened) {
+				if (_flattenedColor == null) {
+					_flattenedColor = new Color(originalFont.getDevice(), 255, 245, 189);
+				}
+				color = _flattenedColor;
+			} else if (inherited) {
+				if (_inheritedColor == null) {
+					_inheritedColor = new Color(originalFont.getDevice(), 255, 245, 189);
+				}
+				color = _inheritedColor;
+			}
+		}		
+		return color;
 	}
 
 	public Color getForeground(Object element, int columnIndex) {
@@ -184,6 +233,17 @@ public class EORelationshipsLabelProvider extends TablePropertyLabelProvider imp
 		if (_flattenedInheritedFont != null) {
 			_flattenedInheritedFont.dispose();
 		}
+		
+		if (_inheritedColor != null) {
+			_inheritedColor.dispose();
+		}
+		if (_flattenedColor != null) {
+			_flattenedColor.dispose();
+		}
+		if (_flattenedInheritedColor != null) {
+			_flattenedInheritedColor.dispose();
+		}
+
 		super.dispose();
 	}
 }

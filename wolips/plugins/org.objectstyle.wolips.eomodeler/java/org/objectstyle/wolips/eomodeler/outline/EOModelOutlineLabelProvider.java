@@ -67,7 +67,7 @@ import org.objectstyle.wolips.eomodeler.core.model.EOAttributePath;
 import org.objectstyle.wolips.eomodeler.core.model.EODatabaseConfig;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntityIndex;
-import org.objectstyle.wolips.eomodeler.core.model.EOFetchSpecification;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseFetchSpecification;
 import org.objectstyle.wolips.eomodeler.core.model.EOModel;
 import org.objectstyle.wolips.eomodeler.core.model.EORelationship;
 import org.objectstyle.wolips.eomodeler.core.model.EORelationshipPath;
@@ -116,16 +116,31 @@ public class EOModelOutlineLabelProvider implements ILabelProvider, IFontProvide
 		} else if (element instanceof EOModel) {
 			image = Activator.getDefault().getImageRegistry().get(Activator.EOMODEL_ICON);
 		} else if (element instanceof EOEntity) {
-			image = Activator.getDefault().getImageRegistry().get(Activator.EOENTITY_ICON);
+			EOEntity entity = (EOEntity) element;
+			if (entity.isLookupEntity()) {
+				image = Activator.getDefault().getImageRegistry().get(Activator.EOENTITY_LOOKUP_ICON);				
+			} else if (entity.isAbstractEntity()) {				
+				image = Activator.getDefault().getImageRegistry().get(Activator.EOENTITY_ABSTRACT_ICON);
+			} else if (entity.isInherited()) {
+				image = Activator.getDefault().getImageRegistry().get(Activator.EOENTITY_SUBCLASS_ICON);
+			} else {
+				image = Activator.getDefault().getImageRegistry().get(Activator.EOENTITY_ICON);
+			}
 		} else if (element instanceof EOAttribute) {
-			image = Activator.getDefault().getImageRegistry().get(Activator.EOATTRIBUTE_ICON);
+			EOAttribute attribute = (EOAttribute) element;
+			
+			if (attribute.isClassProperty()) {
+				image = Activator.getDefault().getImageRegistry().get(Activator.EOATTRIBUTE_ICON);
+			} else {
+				image = Activator.getDefault().getImageRegistry().get(Activator.EOATTRIBUTE_NONCLASS_ICON);				
+			}
 		} else if (element instanceof EORelationship) {
 			image = Activator.getDefault().getImageRegistry().get(Activator.EORELATIONSHIP_ICON);
 		} else if (element instanceof EORelationshipPath) {
 			image = Activator.getDefault().getImageRegistry().get(Activator.EORELATIONSHIP_ICON);
 		} else if (element instanceof EOAttributePath) {
 			image = Activator.getDefault().getImageRegistry().get(Activator.EOATTRIBUTE_ICON);
-		} else if (element instanceof EOFetchSpecification) {
+		} else if (element instanceof TBEnterpriseFetchSpecification) {
 			image = Activator.getDefault().getImageRegistry().get(Activator.EOFETCHSPEC_ICON);
 		} else if (element instanceof EOStoredProcedure) {
 			image = Activator.getDefault().getImageRegistry().get(Activator.EOSTOREDPROCEDURE_ICON);
@@ -141,45 +156,45 @@ public class EOModelOutlineLabelProvider implements ILabelProvider, IFontProvide
 		return image;
 	}
 
-	public String getText(Object _element) {
+	public String getText(Object element) {
 		String text;
-		if (_element instanceof String) {
-			text = (String) _element;
-		} else if (_element instanceof EOModel) {
-			EOModel model = (EOModel) _element;
+		if (element instanceof String) {
+			text = (String) element;
+		} else if (element instanceof EOModel) {
+			EOModel model = (EOModel) element;
 			text = model.getName();
 			if (model.isDirty()) {
 				text = text + "*";
 			}
-		} else if (_element instanceof EOEntity) {
-			EOEntity entity = (EOEntity) _element;
+		} else if (element instanceof EOEntity) {
+			EOEntity entity = (EOEntity) element;
 			text = entity.getName();
-		} else if (_element instanceof EOAttribute) {
-			EOAttribute attribute = (EOAttribute) _element;
+		} else if (element instanceof EOAttribute) {
+			EOAttribute attribute = (EOAttribute) element;
 			text = attribute.getName();
-		} else if (_element instanceof EORelationship) {
-			EORelationship relationship = (EORelationship) _element;
+		} else if (element instanceof EORelationship) {
+			EORelationship relationship = (EORelationship) element;
 			text = relationship.getName();
-		} else if (_element instanceof EORelationshipPath) {
-			EORelationshipPath relationshipPath = (EORelationshipPath) _element;
+		} else if (element instanceof EORelationshipPath) {
+			EORelationshipPath relationshipPath = (EORelationshipPath) element;
 			text = relationshipPath.getChildRelationship().getName();
-		} else if (_element instanceof EOAttributePath) {
-			EOAttributePath attributePath = (EOAttributePath) _element;
+		} else if (element instanceof EOAttributePath) {
+			EOAttributePath attributePath = (EOAttributePath) element;
 			text = attributePath.getChildAttribute().getName();
-		} else if (_element instanceof EOFetchSpecification) {
-			EOFetchSpecification fetchSpec = (EOFetchSpecification) _element;
+		} else if (element instanceof TBEnterpriseFetchSpecification) {
+			TBEnterpriseFetchSpecification fetchSpec = (TBEnterpriseFetchSpecification) element;
 			text = fetchSpec.getName();
-		} else if (_element instanceof EOArgument) {
-			EOArgument argument = (EOArgument) _element;
+		} else if (element instanceof EOArgument) {
+			EOArgument argument = (EOArgument) element;
 			text = argument.getName();
-		} else if (_element instanceof EOStoredProcedure) {
-			EOStoredProcedure storedProcedure = (EOStoredProcedure) _element;
+		} else if (element instanceof EOStoredProcedure) {
+			EOStoredProcedure storedProcedure = (EOStoredProcedure) element;
 			text = storedProcedure.getName();
-		} else if (_element instanceof EODatabaseConfig) {
-			EODatabaseConfig databaseConfig = (EODatabaseConfig) _element;
+		} else if (element instanceof EODatabaseConfig) {
+			EODatabaseConfig databaseConfig = (EODatabaseConfig) element;
 			text = databaseConfig.getName();
-		} else if (_element instanceof EOEntityIndex) {
-			EOEntityIndex entityIndex = (EOEntityIndex) _element;
+		} else if (element instanceof EOEntityIndex) {
+			EOEntityIndex entityIndex = (EOEntityIndex) element;
 			text = entityIndex.getName();
 		} else {
 			text = null;

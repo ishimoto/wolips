@@ -13,7 +13,8 @@ import org.objectstyle.wolips.eomodeler.core.model.EOAttributePath;
 import org.objectstyle.wolips.eomodeler.core.model.EODatabaseConfig;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntityIndex;
-import org.objectstyle.wolips.eomodeler.core.model.EOFetchSpecification;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseFetchSpecification;
+
 import org.objectstyle.wolips.eomodeler.core.model.EOModel;
 import org.objectstyle.wolips.eomodeler.core.model.EORelationship;
 import org.objectstyle.wolips.eomodeler.core.model.EORelationshipPath;
@@ -33,7 +34,7 @@ public class EOModelOutlineViewerSorter extends ViewerSorter {
 		myOrder.put(EOArgument.class, Integer.valueOf(4));
 		myOrder.put(EORelationship.class, Integer.valueOf(5));
 		myOrder.put(EORelationshipPath.class, Integer.valueOf(5));
-		myOrder.put(EOFetchSpecification.class, Integer.valueOf(6));
+		myOrder.put(TBEnterpriseFetchSpecification.class, Integer.valueOf(6));
 		myOrder.put(EOStoredProcedure.class, Integer.valueOf(7));
 		myOrder.put(EOEntityIndex.class, Integer.valueOf(20));
 		myOrder.put(EODatabaseConfig.class, Integer.valueOf(30));

@@ -62,7 +62,8 @@ import org.objectstyle.wolips.eomodeler.core.model.EOAttributePath;
 import org.objectstyle.wolips.eomodeler.core.model.EODatabaseConfig;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntity;
 import org.objectstyle.wolips.eomodeler.core.model.EOEntityIndex;
-import org.objectstyle.wolips.eomodeler.core.model.EOFetchSpecification;
+import org.objectstyle.wolips.eomodeler.core.model.TBEnterpriseFetchSpecification;
+
 import org.objectstyle.wolips.eomodeler.core.model.EOModel;
 import org.objectstyle.wolips.eomodeler.core.model.EOModelContainer;
 import org.objectstyle.wolips.eomodeler.core.model.EOModelGroup;
@@ -215,8 +216,8 @@ public class EOModelOutlineContentProvider implements ITreeContentProvider {
 			parent = ((EOEntity) _element).getModel();
 		} else if (_element instanceof EOAttribute) {
 			parent = ((EOAttribute) _element).getEntity();
-		} else if (_element instanceof EOFetchSpecification) {
-			parent = ((EOFetchSpecification) _element).getEntity();
+		} else if (_element instanceof TBEnterpriseFetchSpecification) {
+			parent = ((TBEnterpriseFetchSpecification) _element).getEntity();
 		} else if (_element instanceof EORelationship) {
 			parent = ((EORelationship) _element).getEntity();
 		} else if (_element instanceof EOStoredProcedure) {
@@ -244,7 +245,7 @@ public class EOModelOutlineContentProvider implements ITreeContentProvider {
 		boolean hasChildren = true;
 		if (_element instanceof EOModelLoading) {
 			hasChildren = false;
-		} else if (_element instanceof EOFetchSpecification) {
+		} else if (_element instanceof TBEnterpriseFetchSpecification) {
 			hasChildren = false;
 		} else if (_element instanceof EOAttribute) {
 			hasChildren = false;

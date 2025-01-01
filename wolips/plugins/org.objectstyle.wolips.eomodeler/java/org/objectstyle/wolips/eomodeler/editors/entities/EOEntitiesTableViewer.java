@@ -98,6 +98,7 @@ public class EOEntitiesTableViewer extends Composite implements ISelectionProvid
 		TableUtils.setCellEditor(EOEntity.class.getName(), EOEntity.NAME, new WOTextCellEditor(entitiesTable), cellEditors);
 		TableUtils.setCellEditor(EOEntity.class.getName(), EOEntity.EXTERNAL_NAME, new WOTextCellEditor(entitiesTable), cellEditors);
 		TableUtils.setCellEditor(EOEntity.class.getName(), EOEntity.CLASS_NAME, new WOTextCellEditor(entitiesTable), cellEditors);
+		TableUtils.setCellEditor(EOEntity.class.getName(), EOEntity.CLIENT_CLASS_NAME, new WOTextCellEditor(entitiesTable), cellEditors);
 		TableUtils.setCellEditor(EOEntity.class.getName(), EOEntity.PARENT, new KeyComboBoxCellEditor(entitiesTable, new String[0], SWT.READ_ONLY), cellEditors);
 		myEntitiesTableViewer.setCellModifier(new EOEntitiesCellModifier(myEntitiesTableViewer, cellEditors));
 		myEntitiesTableViewer.setCellEditors(cellEditors);
@@ -105,6 +106,7 @@ public class EOEntitiesTableViewer extends Composite implements ISelectionProvid
 		new StayEditingCellEditorListener(myEntitiesTableViewer, EOEntity.class.getName(), EOEntity.NAME);
 		new StayEditingCellEditorListener(myEntitiesTableViewer, EOEntity.class.getName(), EOEntity.EXTERNAL_NAME);
 		new StayEditingCellEditorListener(myEntitiesTableViewer, EOEntity.class.getName(), EOEntity.CLASS_NAME);
+		new StayEditingCellEditorListener(myEntitiesTableViewer, EOEntity.class.getName(), EOEntity.CLIENT_CLASS_NAME);
 		new StayEditingCellEditorListener(myEntitiesTableViewer, EOEntity.class.getName(), EOEntity.PARENT);
 
 		myTableRefresher = new TableRefreshPropertyListener("EntitiesChanged", myEntitiesTableViewer);
@@ -131,6 +133,10 @@ public class EOEntitiesTableViewer extends Composite implements ISelectionProvid
 		TableColumn className = TableUtils.getColumn(myEntitiesTableViewer, EOEntity.class.getName(), EOEntity.CLASS_NAME);
 		if (className != null) {
 			className.setWidth(Math.max(className.getWidth(), 100));
+		}
+		TableColumn clientClassName = TableUtils.getColumn(myEntitiesTableViewer, EOEntity.class.getName(), EOEntity.CLIENT_CLASS_NAME);
+		if (clientClassName != null) {
+			clientClassName.setWidth(Math.max(clientClassName.getWidth(), 100));
 		}
 		TableColumn parentName = TableUtils.getColumn(myEntitiesTableViewer, EOEntity.class.getName(), EOEntity.PARENT);
 		if (parentName != null) {

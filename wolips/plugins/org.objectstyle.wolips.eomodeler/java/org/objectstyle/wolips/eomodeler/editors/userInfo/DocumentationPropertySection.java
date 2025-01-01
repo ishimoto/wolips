@@ -68,13 +68,13 @@ import org.objectstyle.wolips.eomodeler.core.model.IUserInfoable;
 import org.objectstyle.wolips.eomodeler.core.model.UserInfoableEOModelObject;
 
 public class DocumentationPropertySection extends AbstractPropertySection {
-	private Text _documentationText;
-
+	
+	private Text _documentationEndUserText;
+	private Text _documentationDeveloperText;
+	
 	private DataBindingContext _bindingContext;
 
 	private UserInfoableEOModelObject _userInfoable;
-
-	private Browser _browser;
 
 	public void createControls(Composite parent, TabbedPropertySheetPage tabbedPropertySheetPage) {
 		super.createControls(parent, tabbedPropertySheetPage);
@@ -83,42 +83,44 @@ public class DocumentationPropertySection extends AbstractPropertySection {
 		int leftMargin = 13;
 		int rightMargin = 10;
 		
-		Label documentationLabel = new Label(composite, SWT.NONE);
-		documentationLabel.setBackground(composite.getBackground());
-		documentationLabel.setText("Documentation");
+		Label documentationLabelForEndUser = new Label(composite, SWT.NONE);
+		documentationLabelForEndUser.setBackground(composite.getBackground());
+		documentationLabelForEndUser.setText("End-user Documentation (markdown)");
 		FormData documentationLabelFormData = new FormData();
 		documentationLabelFormData.left = new FormAttachment(0, leftMargin - 3);
 		documentationLabelFormData.right = new FormAttachment(100, -rightMargin);
 		documentationLabelFormData.top = new FormAttachment(0, 11);
-		documentationLabel.setLayoutData(documentationLabelFormData);
+		documentationLabelForEndUser.setLayoutData(documentationLabelFormData);
 
-		_documentationText = getWidgetFactory().createText(composite, "", SWT.BORDER | SWT.WRAP | SWT.MULTI | SWT.V_SCROLL);
+		_documentationEndUserText = getWidgetFactory().createText(composite, "", SWT.BORDER | SWT.WRAP | SWT.MULTI | SWT.V_SCROLL);
 		FormData textFormData = new FormData();
 		textFormData.left = new FormAttachment(0, leftMargin);
 		textFormData.right = new FormAttachment(100, -rightMargin);
-		textFormData.top = new FormAttachment(documentationLabel, -3);
+		textFormData.top = new FormAttachment(documentationLabelForEndUser, -3);
 		textFormData.bottom = new FormAttachment(50, 0);
 		textFormData.width = 100;
 		textFormData.height = 50;
-		_documentationText.setLayoutData(textFormData);
+		_documentationEndUserText.setLayoutData(textFormData);
 
-		Label previewLabel = new Label(composite, SWT.NONE);
-		previewLabel.setBackground(composite.getBackground());
-		previewLabel.setText("HTML Preview");
+		Label documentationLabelForDeveloper = new Label(composite, SWT.NONE); // HTML Preview
+		documentationLabelForDeveloper.setBackground(composite.getBackground());
+		documentationLabelForDeveloper.setText("Developer Documentation (markdown)");
 		FormData labelFormData = new FormData();
 		labelFormData.left = new FormAttachment(0, leftMargin - 3);
 		labelFormData.right = new FormAttachment(100, -rightMargin);
-		labelFormData.top = new FormAttachment(_documentationText, 5);
-		previewLabel.setLayoutData(labelFormData);
+		labelFormData.top = new FormAttachment(_documentationEndUserText, 5);
+		documentationLabelForDeveloper.setLayoutData(labelFormData);
+		
+		_documentationDeveloperText = getWidgetFactory().createText(composite, "", SWT.BORDER | SWT.WRAP | SWT.MULTI | SWT.V_SCROLL);
+		FormData textDeveloperFormData = new FormData();
+		textDeveloperFormData.left = new FormAttachment(0, leftMargin);
+		textDeveloperFormData.right = new FormAttachment(100, -rightMargin);
+		textDeveloperFormData.top = new FormAttachment(documentationLabelForDeveloper, -3);
+		textDeveloperFormData.bottom = new FormAttachment(100, -5);
+		textDeveloperFormData.width = 100;
+		textDeveloperFormData.height = 50;
+		_documentationDeveloperText.setLayoutData(textDeveloperFormData);
 
-		_browser = new Browser(composite, SWT.NONE);
-		FormData browserFormData = new FormData();
-		browserFormData.left = new FormAttachment(0, leftMargin);
-		browserFormData.right = new FormAttachment(100, -rightMargin);
-		browserFormData.top = new FormAttachment(previewLabel, -3);
-		browserFormData.bottom = new FormAttachment(100, -5);
-		browserFormData.width = 100;
-		_browser.setLayoutData(browserFormData);
 	}
 
 	public void setInput(IWorkbenchPart part, ISelection selection) {
@@ -128,17 +130,11 @@ public class DocumentationPropertySection extends AbstractPropertySection {
 			_userInfoable = (UserInfoableEOModelObject) ((IStructuredSelection) selection).getFirstElement();
 
 			_bindingContext = new DataBindingContext();
-			_bindingContext.bindValue(
-					//SWTObservables.observeText(_documentationText, SWT.Modify),
-					WidgetProperties.text(SWT.Modify).observe(_documentationText),
-					//BeansObservables.observeValue(_userInfoable, UserInfoableEOModelObject.DOCUMENTATION_KEY),
-					BeanProperties.value(UserInfoableEOModelObject.DOCUMENTATION_KEY).observe(_userInfoable),
-					null, null);
-			_bindingContext.bindValue(
-					new BrowserTextObservableValue(_browser, "body { margin: 0px; margin-right: 10px; font-size: 0.8em; }"),
-					//BeansObservables.observeValue(_userInfoable, UserInfoableEOModelObject.DOCUMENTATION_KEY),
-					BeanProperties.value(UserInfoableEOModelObject.DOCUMENTATION_KEY).observe(_userInfoable),
-					null, null);
+			
+			
+			_bindingContext.bindValue( WidgetProperties.text(SWT.Modify).observe(_documentationEndUserText), BeanProperties.value(UserInfoableEOModelObject.DOCUMENTATION_KEY).observe(_userInfoable), null, null);
+			_bindingContext.bindValue( WidgetProperties.text(SWT.Modify).observe(_documentationDeveloperText), BeanProperties.value(UserInfoableEOModelObject.DEVELOPER_DOCUMENTATION_KEY).observe(_userInfoable), null, null);
+			
 		} else {
 			_userInfoable = null;
 		}

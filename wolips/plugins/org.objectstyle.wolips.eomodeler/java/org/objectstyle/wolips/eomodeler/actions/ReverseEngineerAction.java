@@ -86,7 +86,13 @@ public class ReverseEngineerAction extends EMAction {
 				IEOSQLReverseEngineer reverseEngineer = IEOSQLReverseEngineerFactory.Utility.reverseEngineerFactory().reverseEngineer(activeDatabaseConfig, eomodelClassLoader);
 				List<String> tableNames = reverseEngineer.reverseEngineerTableNames();
 
-				ListSelectionDialog dlg = new ListSelectionDialog(getWindow().getShell(), tableNames, new StringContentProvider(), new StringLabelProvider(), "Select the tables to reverse engineer:");
+				//ListSelectionDialog dlg = new ListSelectionDialog(getWindow().getShell(), tableNames, new StringContentProvider(), new StringLabelProvider(), "Select the tables to reverse engineer:");
+				ListSelectionDialog dlg = ListSelectionDialog.of(tableNames)
+															 .contentProvider(new StringContentProvider())
+															 .labelProvider(new StringLabelProvider())
+															 .message("Select the tables to reverse engineer:")
+															 .create(getWindow().getShell());
+
 				dlg.setInitialSelections(tableNames.toArray());
 				dlg.setTitle("Reverse Engineer");
 				if (dlg.open() == Window.OK) {
@@ -94,7 +100,13 @@ public class ReverseEngineerAction extends EMAction {
 					String[] selectedTableNames = new String[selectedTableNameObjs.length];
 					System.arraycopy(selectedTableNameObjs, 0, selectedTableNames, 0, selectedTableNameObjs.length);
 					List<String> selectedTableNamesList = Arrays.asList(selectedTableNames);
+					System.err.print("\n reverseEngineer class =  " + reverseEngineer.getClass());
 					File reverseEngineeredEOModelFolder = reverseEngineer.reverseEngineerWithTableNamesIntoModel(selectedTableNamesList);
+					if (reverseEngineeredEOModelFolder == null) {
+						System.err.print("\n NULL Folder returned \n ");
+					} else {
+						System.err.print("\n reverseEngineer reverseEngineeredEOModelFolder =  " + reverseEngineeredEOModelFolder.toURI());
+					}
 					Set<EOModelVerificationFailure> failures = new HashSet<EOModelVerificationFailure>();
 					model.importEntitiesFromModel(reverseEngineeredEOModelFolder.toURI().toURL(), failures);
 					if (failures.size() > 0) {

@@ -84,15 +84,26 @@ public class EOAttributeAdvancedEditorSection extends AbstractPropertySection {
 	private Button _readOnlyButton;
 
 	private Button _clientClassPropertyButton;
-
-	private Button _commonClassPropertyButton;
-
 	private Button _generateSourceButton;
+	private Button _coreDataButton;
+	private Button _qtClientButton;
+	private Button _auditButton;
+	private Button _deprecatedButton;
+	private Button _encryptionButton;
 
+	private ComboViewer _copyTypeComboViewer;
+	private ComboViewerBinding _copyTypeBinding;
+
+	private ComboViewer _d2wTypeComboViewer;
+	private ComboViewerBinding _d2wTypeBinding;
+	
 	private Text _readFormatText;
 
 	private Text _writeFormatText;
 
+	private Text _validationText;
+	private Text _convertText;
+		
 	private DataBindingContext _bindingContext;
 
 	public EOAttributeAdvancedEditorSection() {
@@ -119,6 +130,24 @@ public class EOAttributeAdvancedEditorSection extends AbstractPropertySection {
 		_writeFormatText.setLayoutData(writeFormatFieldLayoutData);
 		UglyFocusHackWorkaroundListener.addListener(_writeFormatText);
 
+		getWidgetFactory().createCLabel(topForm, Messages.getString("EOAttribute." + EOAttribute.VALIDATION), SWT.NONE);
+		_validationText = new Text(topForm, SWT.BORDER);
+		_validationText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		UglyFocusHackWorkaroundListener.addListener(_validationText);
+		
+		getWidgetFactory().createCLabel(topForm, Messages.getString("EOAttribute." + EOAttribute.CONVERT), SWT.NONE);
+		_convertText = new Text(topForm, SWT.BORDER);
+		_convertText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		UglyFocusHackWorkaroundListener.addListener(_convertText);
+
+		getWidgetFactory().createCLabel(topForm, Messages.getString("EOAttribute." + EOAttribute.D2WTYPE), SWT.NONE);
+		Combo d2wTypeCombo = new Combo(topForm, SWT.BORDER | SWT.FLAT | SWT.READ_ONLY);
+		d2wTypeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		_d2wTypeComboViewer = new ComboViewer(d2wTypeCombo);
+		_d2wTypeComboViewer.setLabelProvider(new D2WTypeLabelProvider());
+		_d2wTypeComboViewer.setContentProvider(new D2WTypeAttributeContentProvider());
+		_d2wTypeComboViewer.setInput(EOAttribute.D2WTYPE);
+
 		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
 		_readOnlyButton = new Button(topForm, SWT.CHECK);
 		_readOnlyButton.setText(Messages.getString("EOAttribute." + EOAttribute.READ_ONLY));
@@ -128,12 +157,37 @@ public class EOAttributeAdvancedEditorSection extends AbstractPropertySection {
 		_clientClassPropertyButton.setText(Messages.getString("EOAttribute." + EOAttribute.CLIENT_CLASS_PROPERTY));
 
 		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
-		_commonClassPropertyButton = new Button(topForm, SWT.CHECK);
-		_commonClassPropertyButton.setText(Messages.getString("EOAttribute." + EOAttribute.COMMON_CLASS_PROPERTY));
-
-		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
 		_generateSourceButton = new Button(topForm, SWT.CHECK);
 		_generateSourceButton.setText(Messages.getString("EOAttribute." + EOAttribute.GENERATE_SOURCE));
+		
+		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
+		_coreDataButton = new Button(topForm, SWT.CHECK);
+		_coreDataButton.setText(Messages.getString("EOAttribute." + EOAttribute.CORE_DATA));
+
+		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
+		_qtClientButton = new Button(topForm, SWT.CHECK);
+		_qtClientButton.setText(Messages.getString("EOAttribute." + EOAttribute.QT_CLIENT));
+
+		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
+		_auditButton = new Button(topForm, SWT.CHECK);
+		_auditButton.setText(Messages.getString("EOAttribute." + EOAttribute.AUDIT));
+		
+		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
+		_deprecatedButton = new Button(topForm, SWT.CHECK);
+		_deprecatedButton.setText(Messages.getString("EOAttribute." + EOAttribute.DEPRECATED));
+		
+		getWidgetFactory().createCLabel(topForm, "", SWT.NONE);
+		_encryptionButton = new Button(topForm, SWT.CHECK);
+		_encryptionButton.setText(Messages.getString("EOAttribute." + EOAttribute.ENCRYPTION));
+		
+		getWidgetFactory().createCLabel(topForm, Messages.getString("EOAttribute." + EOAttribute.COPY_TYPE), SWT.NONE);
+		Combo copyTypeCombo = new Combo(topForm, SWT.BORDER | SWT.FLAT | SWT.READ_ONLY);
+		copyTypeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		_copyTypeComboViewer = new ComboViewer(copyTypeCombo);
+		_copyTypeComboViewer.setLabelProvider(new EOCopyTypeLabelProvider());
+		_copyTypeComboViewer.setContentProvider(new EOCopyTypeAttributeContentProvider());
+		_copyTypeComboViewer.setInput(EOAttribute.COPY_TYPE);
+		
 	}
 
 	public void setInput(IWorkbenchPart part, ISelection selection) {
@@ -160,23 +214,48 @@ public class EOAttributeAdvancedEditorSection extends AbstractPropertySection {
 					BeanProperties.value(EOAttribute.READ_ONLY).observe(_attribute),
 					null, new BooleanUpdateValueStrategy());
 			_bindingContext.bindValue(
+					//SWTObservables.observeSelection(_generateSourceButton),
+					WidgetProperties.buttonSelection().observe(_generateSourceButton),
+					//BeansObservables.observeValue(_attribute, EOAttribute.GENERATE_SOURCE),
+					BeanProperties.value(EOAttribute.GENERATE_SOURCE).observe(_attribute),
+					null, new BooleanUpdateValueStrategy());
+			_bindingContext.bindValue(
 					//SWTObservables.observeSelection(_clientClassPropertyButton),
 					WidgetProperties.buttonSelection().observe(_clientClassPropertyButton),
 					//BeansObservables.observeValue(_attribute, EOAttribute.CLIENT_CLASS_PROPERTY),
 					BeanProperties.value(EOAttribute.CLIENT_CLASS_PROPERTY).observe(_attribute),
 					null, new BooleanUpdateValueStrategy());
 			_bindingContext.bindValue(
-					//SWTObservables.observeSelection(_commonClassPropertyButton),
-					WidgetProperties.buttonSelection().observe(_commonClassPropertyButton),
-					//BeansObservables.observeValue(_attribute, EOAttribute.COMMON_CLASS_PROPERTY),
-					BeanProperties.value(EOAttribute.COMMON_CLASS_PROPERTY).observe(_attribute),
+					//SWTObservables.observeSelection(_coreDataButton),
+					WidgetProperties.buttonSelection().observe(_coreDataButton),
+					//BeansObservables.observeValue(_attribute, EOAttribute.CORE_DATA),
+					BeanProperties.value(EOAttribute.CORE_DATA).observe(_attribute),
 					null, new BooleanUpdateValueStrategy());
 			_bindingContext.bindValue(
-					//SWTObservables.observeSelection(_generateSourceButton),
-					WidgetProperties.buttonSelection().observe(_generateSourceButton),
-					//BeansObservables.observeValue(_attribute, EOAttribute.GENERATE_SOURCE),
-					BeanProperties.value(EOAttribute.GENERATE_SOURCE).observe(_attribute),
+					//SWTObservables.observeSelection(_qtClientButton),
+					WidgetProperties.buttonSelection().observe(_qtClientButton),
+					//BeansObservables.observeValue(_attribute, EOAttribute.QT_CLIENT),
+					BeanProperties.value(EOAttribute.QT_CLIENT).observe(_attribute),
 					null, new BooleanUpdateValueStrategy());
+			_bindingContext.bindValue(
+					//SWTObservables.observeSelection(_auditButton),
+					WidgetProperties.buttonSelection().observe(_auditButton),
+					//BeansObservables.observeValue(_attribute, EOAttribute.AUDIT),
+					BeanProperties.value(EOAttribute.AUDIT).observe(_attribute),
+					null, new BooleanUpdateValueStrategy());
+			_bindingContext.bindValue(
+					//SWTObservables.observeSelection(_deprecatedButton),
+					WidgetProperties.buttonSelection().observe(_deprecatedButton),
+					//BeansObservables.observeValue(_attribute, EOAttribute.DEPRECATED),
+					BeanProperties.value(EOAttribute.DEPRECATED).observe(_attribute),
+					null, new BooleanUpdateValueStrategy());
+			_bindingContext.bindValue(
+					//SWTObservables.observeSelection(_encryptionButton),
+					WidgetProperties.buttonSelection().observe(_encryptionButton),
+					//BeansObservables.observeValue(_attribute, EOAttribute.ENCRYPTION),
+					BeanProperties.value(EOAttribute.ENCRYPTION).observe(_attribute),
+					null, new BooleanUpdateValueStrategy());
+
 			_bindingContext.bindValue(
 					//SWTObservables.observeText(_readFormatText, SWT.Modify),
 					WidgetProperties.text(SWT.Modify).observe(_readFormatText),
@@ -189,12 +268,36 @@ public class EOAttributeAdvancedEditorSection extends AbstractPropertySection {
 					//BeansObservables.observeValue(_attribute, EOAttribute.WRITE_FORMAT),
 					BeanProperties.value(EOAttribute.WRITE_FORMAT).observe(_attribute),
 					null, null);
+			_bindingContext.bindValue(
+					//SWTObservables.observeText(_validationText, SWT.Modify),
+					WidgetProperties.text(SWT.Modify).observe(_validationText),
+					//BeansObservables.observeValue(_attribute, EOAttribute.VALIDATION),
+					BeanProperties.value(EOAttribute.VALIDATION).observe(_attribute),
+					null, null);
+			_bindingContext.bindValue(
+					//SWTObservables.observeText(_convertText, SWT.Modify),
+					WidgetProperties.text(SWT.Modify).observe(_convertText),
+					//BeansObservables.observeValue(_attribute, EOAttribute.CONVERT),
+					BeanProperties.value(EOAttribute.CONVERT).observe(_attribute),
+					null, null);
+			
+			_copyTypeComboViewer.setInput(_attribute);
+			_copyTypeBinding = new ComboViewerBinding(_copyTypeComboViewer, _attribute, EOAttribute.COPY_TYPE, null, null, null);
+			
+			_d2wTypeComboViewer.setInput(_attribute);
+			_d2wTypeBinding = new ComboViewerBinding(_d2wTypeComboViewer, _attribute, EOAttribute.D2WTYPE, null, null, null);
 		}
 	}
 
 	protected void disposeBindings() {
 		if (_bindingContext != null) {
 			_bindingContext.dispose();
+		}
+		if (_copyTypeBinding != null) {
+			_copyTypeBinding.dispose();
+		}
+		if (_d2wTypeBinding != null) {
+			_d2wTypeBinding.dispose();
 		}
 	}
 

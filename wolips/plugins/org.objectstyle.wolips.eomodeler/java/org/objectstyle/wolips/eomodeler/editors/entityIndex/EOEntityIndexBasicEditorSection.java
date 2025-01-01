@@ -172,15 +172,6 @@ public class EOEntityIndexBasicEditorSection extends AbstractPropertySection imp
 					//BeansObservables.observeValue(_entityIndex, EOEntityIndex.NAME),
 					BeanProperties.value(EOEntityIndex.NAME).observe(_entityIndex), 
 					null, null);
-			// _bindingContext.bindValue(ViewersObservables.observeSingleSelection(_constraintCombo),
-			// BeansObservables.observeValue(_entityIndex,
-			// EOEntityIndex.CONSTRAINT), null, null);
-			// _bindingContext.bindValue(ViewersObservables.observeSingleSelection(_indexTypeCombo),
-			// BeansObservables.observeValue(_entityIndex,
-			// EOEntityIndex.INDEX_TYPE), null, null);
-			// _bindingContext.bindValue(ViewersObservables.observeSingleSelection(_orderCombo),
-			// BeansObservables.observeValue(_entityIndex, EOEntityIndex.ORDER),
-			// null, null);
 
 			_constraintBinding = new ComboViewerBinding(_constraintCombo, _entityIndex, EOEntityIndex.CONSTRAINT, null, null, null);
 			_indexTypeBinding = new ComboViewerBinding(_indexTypeCombo, _entityIndex, EOEntityIndex.INDEX_TYPE, null, null, null);

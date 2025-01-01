@@ -121,6 +121,12 @@ public class EOAttributesTableViewer extends Composite implements ISelectionProv
 			//classPropertyColumn.setAlignment(SWT.CENTER);
 			classPropertyColumn.setImage(Activator.getDefault().getImageRegistry().get(Activator.CLASS_PROPERTY_ICON));
 		}
+		
+		TableColumn clientClassPropertyColumn = TableUtils.getColumn(myAttributesTableViewer, EOAttribute.class.getName(), EOAttribute.CLIENT_CLASS_PROPERTY);
+		if (clientClassPropertyColumn != null) {
+			clientClassPropertyColumn.setText("");
+			clientClassPropertyColumn.setImage(Activator.getDefault().getImageRegistry().get(Activator.CLIENT_CLASS_PROPERTY_ICON));
+		}
 
 		TableColumn allowNullColumn = TableUtils.getColumn(myAttributesTableViewer, EOAttribute.class.getName(), AbstractEOArgument.ALLOWS_NULL);
 		if (allowNullColumn != null) {
@@ -190,11 +196,13 @@ public class EOAttributesTableViewer extends Composite implements ISelectionProv
 		if (myEntity != null && myEntity.isPrototype()) {
 			TableUtils.setCellEditor(EOAttribute.class.getName(), EOAttribute.PRIMARY_KEY, new TriStateCellEditor(attributesTable), _cellEditors);
 			TableUtils.setCellEditor(EOAttribute.class.getName(), EOAttribute.CLASS_PROPERTY, new TriStateCellEditor(attributesTable), _cellEditors);
+			TableUtils.setCellEditor(EOAttribute.class.getName(), EOAttribute.CLIENT_CLASS_PROPERTY, new TriStateCellEditor(attributesTable), _cellEditors);
 			TableUtils.setCellEditor(EOAttribute.class.getName(), EOAttribute.USED_FOR_LOCKING, new TriStateCellEditor(attributesTable), _cellEditors);
 			TableUtils.setCellEditor(EOAttribute.class.getName(), AbstractEOArgument.ALLOWS_NULL, new TriStateCellEditor(attributesTable), _cellEditors);
 		} else {
 			TableUtils.setCellEditor(EOAttribute.class.getName(), EOAttribute.PRIMARY_KEY, new CheckboxCellEditor(attributesTable), _cellEditors);
 			TableUtils.setCellEditor(EOAttribute.class.getName(), EOAttribute.CLASS_PROPERTY, new CheckboxCellEditor(attributesTable), _cellEditors);
+			TableUtils.setCellEditor(EOAttribute.class.getName(), EOAttribute.CLIENT_CLASS_PROPERTY, new CheckboxCellEditor(attributesTable), _cellEditors);
 			TableUtils.setCellEditor(EOAttribute.class.getName(), EOAttribute.USED_FOR_LOCKING, new CheckboxCellEditor(attributesTable), _cellEditors);
 			TableUtils.setCellEditor(EOAttribute.class.getName(), AbstractEOArgument.ALLOWS_NULL, new CheckboxCellEditor(attributesTable), _cellEditors);
 		}
