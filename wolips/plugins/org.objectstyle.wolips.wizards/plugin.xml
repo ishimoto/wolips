@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?>
+<?eclipse version="4.14"?>
 <plugin>
-
 
 <!-- =================================================================================== -->
 <!-- Extension: Project Wizards                                                          -->
@@ -9,15 +8,15 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <category
-            name="WOLips"
+            name="TBLips"
             id="org.objectstyle.wolips.wizards">
       </category>
       <wizard
-            name="WOComponent"
-            icon="icons/wobuilder/TBComponentBundle.png"
+            name="TBComponent Controller/View"
+            icon="icons/tbwizard/new-component-controller.png"
             category="org.objectstyle.wolips.wizards"
-            id="org.objectstyle.wolips.wizards.new.wo.5.1.component">
-            <class class="org.objectstyle.wolips.wizards.WOComponentCreationWizard">
+            id="org.objectstyle.wolips.wizards.tbcomponentview">
+            <class class="org.objectstyle.wolips.wizards.component.NewComponentCreationWizard">
               <parameter name="javatype" value="true"/>
             </class>
          <description>
@@ -26,208 +25,112 @@
                class="org.eclipse.core.resources.IResource">
          </selection>
       </wizard>
+	  <wizard
+	        name="TB Application (Extended)"
+	        category="org.objectstyle.wolips.wizards"
+	        icon="icons/woproject/woapplication_wiz.gif"
+	        id="org.objectstyle.tblips.wizards.TBApplicationExtendedWizard"
+	        project="true">
+	        <class class="org.objectstyle.wolips.wizards.TBApplicationExtendedWizard">
+	          <parameter name="wotype" value="true"/>
+	        </class>
+	     <description>
+	        Build a TreasureBoat Extended Application. Contains Gumby Design and Dashboard.
+	     </description>
+	  </wizard>
+	  <wizard
+	        name="TB Application (Gradle)"
+	        category="org.objectstyle.wolips.wizards"
+	        icon="icons/woproject/woapplication_wiz.gif"
+	        id="org.objectstyle.tblips.wizards.TBApplicationGradleWizard"
+	        project="true">
+	        <class class="org.objectstyle.wolips.wizards.TBApplicationGradleWizard">
+	          <parameter name="wotype" value="true"/>
+	        </class>
+	     <description>
+	        Build a TreasureBoat Extended Application with Gradle Build Stuff.
+	     </description>
+	  </wizard>
       <wizard
-            name="WOComponent Controller/View"
-            icon="icons/action/new-component-controller.png"
+            name="TB Application (Basic)"
             category="org.objectstyle.wolips.wizards"
-            id="org.objectstyle.wolips.wizards.new.wo.5.2.wocomponentview">
-            <class class="org.objectstyle.wolips.wizards.NewComponentCreationWizard">
-              <parameter name="javatype" value="true"/>
-            </class>
-         <description>
-         </description>
-         <selection
-               class="org.eclipse.core.resources.IResource">
-         </selection>
-      </wizard>
-      <wizard
-            category="org.objectstyle.wolips.wizards"
-            helpHref="http://developer.apple.com/documentation/WebObjects/Web_Applications/index.html"
             icon="icons/woproject/woapplication_wiz.gif"
-            id="org.objectstyle.wolips.wizards.new.wo.5.1.application"
-            name="WebObjects Application"
+            id="org.objectstyle.tblips.wizards.TBApplicationWizard"
             project="true">
-            <class class="org.objectstyle.wolips.wizards.WOApplicationWizard">
+            <class class="org.objectstyle.wolips.wizards.TBApplicationWizard">
               <parameter name="wotype" value="true"/>
             </class>
          <description>
-            Build a basic WebObjects Application.
+            Build a TreasureBoat Basic Application.
          </description>
       </wizard>
       <wizard
-            name="WebObjects Framework"
+            name="TB Framework"
+            category="org.objectstyle.wolips.wizards"
             icon="icons/woproject/woframework_wiz.gif"
-            category="org.objectstyle.wolips.wizards"
-            project="true"
-            id="org.objectstyle.wolips.wizards.new.wo.5.1.framework">
-            <class class="org.objectstyle.wolips.wizards.WOFrameworkWizard">
-              <parameter name="wotype" value="true"/>
-            </class>
-         <description>
-         </description>
-      </wizard>
-      <!--
-      <wizard
-            category="org.objectstyle.wolips.wizards"
-            helpHref="http://developer.apple.com/documentation/WebObjects/Developing_With_D2W/Introduction/chapter_1_section_1.html"
-            icon="icons/woproject/d2wapplication_wiz.gif"
-            id="org.objectstyle.wolips.wizards.new.wo.5.1.d2wapplication"
-            name="Direct To Web Application"
+            id="org.objectstyle.tblips.wizards.TBFrameworkWizard"
             project="true">
-            <class class="org.objectstyle.wolips.wizards.D2WApplicationWizard">
+            <class class="org.objectstyle.wolips.wizards.TBFrameworkWizard">
               <parameter name="wotype" value="true"/>
             </class>
          <description>
-            Build a Direct To Web Application
+             Create an Empty TreasureBoat Framework.
          </description>
       </wizard>
-      -->
-            <wizard
-            category="org.objectstyle.wolips.wizards"
-            helpHref="http://developer.apple.com/DOCUMENTATION/WebObjects/Web_Services/index.html?http://developer.apple.com/DOCUMENTATION/WebObjects/Web_Services/About/chapter_1_section_1.html"
-            icon="icons/woproject/d2wapplication_wiz.gif"
-            id="org.objectstyle.wolips.wizards.new.wo.5.1.d2wsapplication"
-            name="Direct To WebService Application"
-            project="true">
-            <class class="org.objectstyle.wolips.wizards.D2WebServiceApplicationWizard">
-              <parameter name="wotype" value="true"/>
-            </class>
-         <description>
-            Build a Direct To WebService Application
-         </description>
-      </wizard>
-      <wizard
-            name="WO Project from Template"
-            icon="icons/woproject/woapplication_wiz.gif"
-            category="org.objectstyle.wolips.wizards"
-            project="true"
-            id="org.objectstyle.wolips.wizards.new.projectFromTemplate">
-            <class class="org.objectstyle.wolips.wizards.template.NewProjectFromTemplateWizard">
-              <parameter name = "wotype" value = "true"/>
-            </class>
-         <description>
-         </description>
-      </wizard>
-      <wizard
-            name="ERRest Application"
-            icon="icons/woproject/woapplication_wiz.gif"
-            category="org.objectstyle.wolips.wizards"
-            project="true"
-            id="org.objectstyle.wolips.wizards.new.wo.5.1.errestapplication">
-            <class class="org.objectstyle.wolips.wizards.ERRestApplicationWizard">
-              <parameter name="wotype" value="true"/>
-            </class>
-         <description>
-         </description>
-      </wizard>      
-      <wizard
-            name="Wonder Application"
-            icon="icons/woproject/woapplication_wiz.gif"
-            category="org.objectstyle.wolips.wizards"
-            project="true"
-            id="org.objectstyle.wolips.wizards.new.wo.5.1.wonderapplication">
-            <class class="org.objectstyle.wolips.wizards.WOnderApplicationWizard">
-              <parameter name="wotype" value="true"/>
-            </class>
-         <description>
-         </description>
-      </wizard>
-      <wizard
-            name="Wonder Framework"
-            icon="icons/woproject/woframework_wiz.gif"
-            category="org.objectstyle.wolips.wizards"
-            project="true"
-            id="org.objectstyle.wolips.wizards.new.wo.5.1.wonderframework">
-            <class class="org.objectstyle.wolips.wizards.WOnderFrameworkWizard">
-              <parameter name="wotype" value="true"/>
-            </class>
-         <description>
-         </description>
-      </wizard>
-      <wizard
-            name="Wonder D2W Application"
-            icon="icons/woproject/d2wapplication_wiz.gif"
-            category="org.objectstyle.wolips.wizards"
-            project="true"
-            id="org.objectstyle.wolips.wizards.new.wo.5.1.wonderd2wapplication">
-            <class class="org.objectstyle.wolips.wizards.WOnderD2WApplicationWizard">
-              <parameter name="wotype" value="true"/>
-            </class>
-         <description>
-         </description>
-      </wizard>
-      <wizard
-            name="Direct To Java Client WebStart Project"
-            icon="icons/woproject/d2wapplication_wiz.gif"
-            category="org.objectstyle.wolips.wizards"
-            project="true"
-            id="org.objectstyle.wolips.wizards.d2jcapplication">
-            <class class="org.objectstyle.wolips.wizards.D2JCApplicationWizard">
-              <parameter name="wotype" value="true"/>
-            </class>
-         <description>
-         </description>
-      </wizard>
-      <wizard
-            name="Jar Project"
-            icon="icons/woproject/jar_project_wiz.gif"
-            category="org.objectstyle.wolips.wizards"
-            project="true"
-            id="org.objectstyle.wolips.wizards.new.wo.5.1.jarproject">
-            <class class="org.objectstyle.wolips.wizards.JarProjectWizard">
-              <parameter name="wotype" value="true"/>
-            </class>
-         <description>
-         </description>
-      </wizard>
-      <wizard
-            name="Subproject"
-            icon="icons/woproject/wosubproject_wiz.gif"
-            category="org.objectstyle.wolips.wizards"
-            id="org.objectstyle.wolips.wizards.new.wo.5.1.subproject">
-            <class class="org.objectstyle.wolips.wizards.WOSubprojectCreationWizard">
-              <parameter name="wotype" value="true"/>
-            </class>
-         <description>
-         </description>
-         <selection
-               class="org.eclipse.core.resources.IResource">
-         </selection>
-      </wizard>
+	  <wizard
+			name="TB Project from Template"
+			icon="icons/woproject/woapplication_wiz.gif"
+			category="org.objectstyle.wolips.wizards"
+			project="true"
+			id="org.objectstyle.wolips.wizards.new.projectFromTemplate">
+			<class class="org.objectstyle.wolips.wizards.template.NewProjectFromTemplateWizard">
+			  <parameter name = "wotype" value = "true"/>
+			</class>
+		 <description>
+		 	Create TreasureBoat project form teamplate
+		 </description>
+	  </wizard>
       <wizard
             name="EOModel"
-            icon="icons/woproject/EOModelBundle.png"
             category="org.objectstyle.wolips.wizards"
+            icon="icons/woproject/ModelBundle.png"
             id="org.objectstyle.wolips.wizards.new.wo.5.1.eomodel">
             <class class="org.objectstyle.wolips.wizards.EOModelCreationWizard">
               <parameter name="eotype" value="true"/>
             </class>
          <description>
+         	Create an EOModel (Object-Relational-Mapping model)
          </description>
          <selection
                class="org.eclipse.core.resources.IResource">
          </selection>
       </wizard>
-      <wizard
+      <wizard 
+            name="EOGenerator"
             category="org.objectstyle.wolips.wizards"
-            icon="icons/woproject/eogenerator_wiz.gif"
+            icon="icons/woproject/EOGenerator.png"
             id="org.objectstyle.wolips.wizards.new.eogen"
-            name="EOGenerator">
+            >
             <class class="org.objectstyle.wolips.wizards.EOGeneratorWizard">
               <parameter name="eotype" value="true"/>
             </class>
-         <description/>
+         <description>
+         	Run EOGenerator to create Entity and _Entity Java Class files
+         </description>
          <selection class="org.eclipse.core.resources.IResource"/>
       </wizard>
       <wizard
+            name="EOModelGroup"
             category="org.objectstyle.wolips.wizards"
-            icon="icons/woproject/eomodelGroup_wiz.gif"
+            icon="icons/woproject/ModelGroup.png"
             id="org.objectstyle.wolips.wizards.new.eomodelgroup"
-            name="EOModelGroup">
+            >
             <class class="org.objectstyle.wolips.wizards.EOModelGroupWizard">
               <parameter name="eotype" value="true"/>
             </class>
-         <description/>
+         <description>
+         	Run EOModelGroup Wizard
+         </description>
          <selection class="org.eclipse.core.resources.IResource"/>
       </wizard>
    </extension>
@@ -237,22 +140,22 @@
    <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
-            label="WOLips Wizards"
-            description="WOLips Wizards"
+            label="TBLips Wizards"
+            description="TBLips Wizards"
             visible="false"
             id="org.objectstyle.wolips.wizards.ElementCreationActionSet">
         <action
               class="org.objectstyle.wolips.wizards.actions.NewWODropDown"
               icon="icons/wolips/TBLips16x16.png"
               id="org.objectstyle.wolips.wizards.actions.NewWODropDown"
-              label="WO"
+              label="TB"
               style="pulldown"
               toolbarPath="Normal/WOLipsWizards"
               tooltip="Create new project">
          </action>
         <action
               class="org.objectstyle.wolips.wizards.actions.NewEODropDown"
-              icon="icons/woproject/eomodelGroup_wiz.gif"
+              icon="icons/woproject/ModelGroup.png"
               id="org.objectstyle.wolips.wizards.actions.NewEODropDown"
               label="EO"
               style="pulldown"
@@ -273,13 +176,13 @@
             objectClass="org.eclipse.core.resources.IResource">
          <action
                class="org.objectstyle.wolips.wizards.actions.CreateEOGenFromEOModelAction"
-               icon="icons/woproject/eogenerator_wiz.gif"
+               icon="icons/woproject/EOGenerator.png"
                id="org.objectstyle.wolips.wizards.actions.eogenFromEOModel"
                label="Create EOGenerator File"
                menubarPath="org.objectstyle.wolips.ui.ResourceContributions/group0"/>
          <action
                class="org.objectstyle.wolips.wizards.actions.CreateEOModelGroupFromEOModelAction"
-               icon="icons/woproject/eomodelGroup_wiz.gif"
+               icon="icons/woproject/ModelGroup.png"
                id="org.objectstyle.wolips.wizards.actions.eomodelgroupFromEOModel"
                label="Create EOModelGroup File"
                menubarPath="org.objectstyle.wolips.ui.ResourceContributions/group0"/>
@@ -289,7 +192,7 @@
          point="org.eclipse.ui.importWizards">
       <category
             id="org.objectstyle.wolips.wizards.actions.importEOModelCategory"
-            name="WOLips">
+            name="TBLips">
       </category>
       <wizard
             category="org.objectstyle.wolips.wizards.actions.importEOModelCategory"
