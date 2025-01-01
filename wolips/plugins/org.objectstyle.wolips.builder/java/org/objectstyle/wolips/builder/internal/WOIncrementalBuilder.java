@@ -145,11 +145,6 @@ public class WOIncrementalBuilder extends AbstractIncrementalProjectBuilder {
 				buildProperties.setPrincipalClass(principalClass);
 			}
 			
-			if (buildProperties.getWOVersion().isAtLeastVersion(5, 6)) {
-				IContainer infoPListContainer = getProject().getFolder(IWoprojectAdapter.FOLDER_NAME);
-				createInfoPlist(infoPListContainer);
-			}
-			else {
 				if (_buildVisitor == null) {
 					_buildVisitor = new BuildVisitor();
 				}
