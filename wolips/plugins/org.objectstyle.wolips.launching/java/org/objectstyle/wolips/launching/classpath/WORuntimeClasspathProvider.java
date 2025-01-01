@@ -59,7 +59,6 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.StandardClasspathProvider;
 import org.objectstyle.wolips.jdt.classpath.model.EclipseDependency;
 import org.objectstyle.wolips.preferences.Preferences;
-import org.objectstyle.wolips.variables.BuildProperties;
 
 /**
  * @author hn3000
@@ -113,7 +112,7 @@ public class WORuntimeClasspathProvider extends StandardClasspathProvider {
 		IRuntimeClasspathEntry[] orderedEntries;
 		
 		IProject project = JavaRuntime.getJavaProject(configuration).getProject();
-		boolean newNSBundle = ((BuildProperties) project.getAdapter(BuildProperties.class)).getWOVersion().isAtLeastVersion(5, 6) || !Preferences.mockBundleEnabled();
+		boolean newNSBundle = !Preferences.mockBundleEnabled();
 		if (newNSBundle) {
 			orderedEntries = resolvedEntries;
 		}

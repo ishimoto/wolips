@@ -80,7 +80,12 @@ public class WOLocalJavaApplicationTabGroup extends AbstractLaunchConfigurationT
 	 */
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 
-		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] { new JavaMainTab(), new JavaArgumentsTab(), new CommonWOArgumentsTab(), new LogTab(), new BrowserTab(), new JavaJRETab(), new JavaClasspathTab(), new SourceLookupTab(), new CommonTab() };
+//      Removed LogTab() from Run configuration
+		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] { new JavaMainTab(), 
+																	new JavaArgumentsTab(), new CommonWOArgumentsTab(), 
+																	new BrowserTab(), new JavaJRETab(), 
+																	new JavaClasspathTab(), 
+																	new SourceLookupTab(), new CommonTab() };
 		setTabs(tabs);
 	}
 

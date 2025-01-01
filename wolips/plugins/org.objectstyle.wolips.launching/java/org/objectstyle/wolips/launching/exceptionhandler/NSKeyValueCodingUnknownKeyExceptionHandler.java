@@ -74,7 +74,7 @@ public class NSKeyValueCodingUnknownKeyExceptionHandler extends AbstractConsoleH
 	public int lineAppended(String line) {
 		if (fileName == null) {
 			if (line != null) {
-				String exception = "com.webobjects.foundation.NSKeyValueCoding$UnknownKeyException:";
+				String exception = "org.treasureboat.foundation.kv.TBFKeyValueCoding$UnknownKeyException:";
 				int exceptionIndex = line.indexOf(exception);
 				if (exceptionIndex >= 0) {
 					int startIndex = exceptionIndex + exception.length();
@@ -105,8 +105,8 @@ public class NSKeyValueCodingUnknownKeyExceptionHandler extends AbstractConsoleH
 			if (startIndex >= 0) {
 				int endIndex = line.indexOf(' ', startIndex + variableOfTheName.length());
 				String key = line.substring(startIndex -1 + variableOfTheName.length(), endIndex);
-				int startIndexWOComponent = line.indexOf("This WOComponent");
-				if (startIndexWOComponent >= 0) {
+				int startIndexTBComponent = line.indexOf("This TBComponent");
+				if (startIndexTBComponent >= 0) {
 					IJavaProject javaProject = this.getJavaProject();
 					if (javaProject != null) {
 						IFile wodFile = null;
@@ -123,7 +123,7 @@ public class NSKeyValueCodingUnknownKeyExceptionHandler extends AbstractConsoleH
 						}
 						if (wodFile != null) {
 							final String errorMessage = line;
-							this.selectAndReveal(wodFile, key, IEditorTarget.TARGET_WOD, errorMessage, "Buggy key in WOComponent");
+							this.selectAndReveal(wodFile, key, IEditorTarget.TARGET_WOD, errorMessage, "Buggy key in TBComponent");
 						}
 					}
 				}

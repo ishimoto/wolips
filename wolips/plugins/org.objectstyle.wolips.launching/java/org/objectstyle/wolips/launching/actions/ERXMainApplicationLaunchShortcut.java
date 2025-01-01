@@ -95,9 +95,8 @@ public class ERXMainApplicationLaunchShortcut extends JavaApplicationLaunchShort
 		ILaunchConfigurationWorkingCopy wc = null;
 		try {
 			ILaunchConfigurationType configType = getConfigurationType();
-			wc = configType.newInstance(null, getLaunchManager().generateUniqueLaunchConfigurationNameFrom("ERXMainRunner: " + type.getJavaProject().getProject().getName() + "/" + type.getElementName()));
-			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, "er.extensions.ERXMainRunner");
-			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, type.getJavaProject().getElementName());
+			wc = configType.newInstance(null, getLaunchManager().generateUniqueLaunchConfigurationNameFrom("TBWMainRunner: " + type.getJavaProject().getProject().getName() + "/" + type.getElementName()));
+			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, "org.treasureboat.webcore.appserver.TBWMainRunner");
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, type.getJavaProject().getElementName());
 			wc.setMappedResources(new IResource[] { type.getJavaProject().getProject() });
 			WOJavaLocalApplicationLaunchConfigurationDelegate.initConfiguration(wc);

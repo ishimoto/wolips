@@ -67,7 +67,8 @@ public class WODeclarationFormatExceptionHandler extends AbstractConsoleHandler 
 	public int lineAppended(String line) {
 
 		if (line != null) {
-			String exception = "com.webobjects.foundation.NSForwardException [com.webobjects.appserver._private.WODeclarationFormatException] <WOHTMLTemplateParser> no declaration for dynamic element (or component) named";
+			// XXX CHECKME
+			String exception = "com.webobjects.foundation.NSForwardException [com.webobjects.appserver._private.WODeclarationFormatException] <TBHTMLTemplateParser> no declaration for dynamic element (or component) named";
 			int exceptionIndex = line.indexOf(exception);
 			if (exceptionIndex >= 0) {
 				int startIndex = line.indexOf('\'', exceptionIndex + exception.length());
@@ -78,7 +79,7 @@ public class WODeclarationFormatExceptionHandler extends AbstractConsoleHandler 
 				final String errorMessage = line.substring(133 + exceptionIndex, startIndex - 99 + exceptionIndex);
 				final String declared = line.substring(189 + exceptionIndex, startIndex - 99 + exceptionIndex);
 				final IFile wodfile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(wodpath);
-				this.selectAndReveal(wodfile, declared, IEditorTarget.TARGET_HTML, errorMessage, "Buggy WOComponent");
+				this.selectAndReveal(wodfile, declared, IEditorTarget.TARGET_HTML, errorMessage, "Buggy TBComponent");
 			}
 		}
 		return 5;

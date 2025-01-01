@@ -85,6 +85,11 @@ import org.objectstyle.wolips.preferences.PreferencesMessages;
 
 /**
  * @author uli
+ * @author pyu
+ * 
+ * @deprecated
+ * 
+ * I'm leaving this file here just in case we need to use this as a pattern for future logging tab  or something.
  */
 public class LogTab extends AbstractWOArgumentsTab {
 
