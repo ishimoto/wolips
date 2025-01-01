@@ -14,7 +14,7 @@
       </category>
       <wizard
             name="WOComponent"
-            icon="icons/wobuilder/WOComponentBundle.png"
+            icon="icons/wobuilder/TBComponentBundle.png"
             category="org.objectstyle.wolips.wizards"
             id="org.objectstyle.wolips.wizards.new.wo.5.1.component">
             <class class="org.objectstyle.wolips.wizards.WOComponentCreationWizard">
@@ -243,7 +243,7 @@
             id="org.objectstyle.wolips.wizards.ElementCreationActionSet">
         <action
               class="org.objectstyle.wolips.wizards.actions.NewWODropDown"
-              icon="icons/wolips/WOLips16-16.png"
+              icon="icons/wolips/TBLips16x16.png"
               id="org.objectstyle.wolips.wizards.actions.NewWODropDown"
               label="WO"
               style="pulldown"

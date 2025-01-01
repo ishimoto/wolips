@@ -89,6 +89,6 @@ public class EOModelCreationWizard extends Wizard implements INewWizard {
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		_mainPage = new EOModelCreationPage(selection);
 		setWindowTitle(Messages.getString("EOModelCreationWizard.title"));
-		setDefaultPageImageDescriptor(WizardsPlugin.WOCOMPONENT_WIZARD_BANNER());
+		setDefaultPageImageDescriptor(WizardsPlugin.TBCOMPONENT_WIZARD_BANNER());
 	}
 }

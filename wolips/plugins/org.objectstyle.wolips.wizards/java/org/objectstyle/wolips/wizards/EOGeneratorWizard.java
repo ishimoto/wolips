@@ -217,9 +217,11 @@ public class EOGeneratorWizard extends Wizard implements INewWizard {
 		
 		// MS: If you link to ERExtensions and you didn't set your default template names, guess that you want the Wonder versions
 		try {
-			if (eogenModel.getDefaultJavaTemplate() == null && ((ProjectFrameworkAdapter)parentResource.getProject().getAdapter(ProjectFrameworkAdapter.class)).isLinkedToFrameworkNamed("ERExtensions")) {
-				eogenModel.setJavaTemplate("_WonderEntity.java");
-				eogenModel.setSubclassJavaTemplate("WonderEntity.java");
+			// PY: If you link to TBExtensions and you didn't set your default template names, guess that you want the TreasureBoat versions
+			if (eogenModel.getDefaultJavaTemplate() == null && parentResource.getProject().getAdapter(ProjectFrameworkAdapter.class).isLinkedToFrameworkNamed("TBExtensions")) {
+				eogenModel.setTemplateDir("/Users/TreasureBoat/TeamplatesForEO");
+				eogenModel.setJavaTemplate("_Entity.vm");
+				eogenModel.setSubclassJavaTemplate("Entity.vm");
 			}
 		}
 		catch (Throwable t) {

@@ -18,11 +18,11 @@
  *    distribution.
  *
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
+ *    any, must include the following acknowledgement:
  *       "This product includes software developed by the
  *        ObjectStyle Group (http://objectstyle.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
+ *    Alternately, this acknowledgement may appear in the software itself,
+ *    if and wherever such third-party acknowledgements normally appear.
  *
  * 4. The names "ObjectStyle Group" and "Cayenne"
  *    must not be used to endorse or promote products derived
@@ -108,6 +108,7 @@ import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.objectstyle.wolips.bindings.utils.BindingReflectionUtils;
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.objectstyle.wolips.core.resources.types.TypeNameCollector;
 import org.objectstyle.wolips.core.resources.types.project.ProjectAdapter;
 import org.objectstyle.wolips.eomodeler.utils.StringLabelProvider;
@@ -119,17 +120,17 @@ import org.objectstyle.wolips.locate.result.LocalizedComponentsLocateResult;
  * @author mnolte
  * @author uli
  */
-public class WOComponentCreationPage extends WizardNewWOResourcePage {
+public class TBComponentCreationPage extends WizardNewWOResourcePage {
 	// widgets
-	private static final String BODY_CHECKBOX_KEY = "WOComponentCreationWizardSection.bodyCheckbox";
+	private static final String BODY_CHECKBOX_KEY = "TBComponentCreationWizardSection.bodyCheckbox";
 
-	private static final String API_CHECKBOX_KEY = "WOComponentCreationWizardSection.apiCheckbox";
+	private static final String API_CHECKBOX_KEY = "TBComponentCreationWizardSection.apiCheckbox";
 
-	private static final String HTML_DOCTYPE_KEY = "WOComponentCreationWizardSection.htmlDocType";
+	private static final String HTML_DOCTYPE_KEY = "TBComponentCreationWizardSection.htmlDocType";
 
-	private static final String NSSTRING_ENCODING_KEY = "WOComponentCreationWizardSection.encoding";
+	private static final String NSSTRING_ENCODING_KEY = "TBComponentCreationWizardSection.encoding";
 
-	private static final String SUPERCLASS_KEY = "WOComponentCreationWizardSection.superclass";
+	private static final String SUPERCLASS_KEY = "TBComponentCreationWizardSection.superclass";
 
 	private Button _bodyCheckbox;
 
@@ -187,53 +188,18 @@ public class WOComponentCreationPage extends WizardNewWOResourcePage {
 		}
 	}
 
-	enum NSSTRINGENCODING {
-		NSUTF8StringEncoding("NSUTF8StringEncoding"), 
-		NSMacOSRomanStringEncoding("NSMacOSRomanStringEncoding"), 
-		NSASCIIStringEncoding("NSASCIIStringEncoding"), 
-		NSNEXTSTEPStringEncoding("NSNEXTSTEPStringEncoding"), 
-		NSJapaneseEUCStringEncoding("NSJapaneseEUCStringEncoding"), 
-		NSISOLatin1StringEncoding("NSISOLatin1StringEncoding"), 
-		NSSymbolStringEncoding("NSSymbolStringEncoding"), 
-		NSNonLossyASCIIStringEncoding("NSNonLossyASCIIStringEncoding"), 
-		NSShiftJISStringEncoding("NSShiftJISStringEncoding"), 
-		NSISOLatin2StringEncoding("NSISOLatin2StringEncoding"), 
-		NSUnicodeStringEncoding("NSUnicodeStringEncoding"), 
-		NSWindowsCP1251StringEncoding("NSWindowsCP1251StringEncoding"), 
-		NSWindowsCP1252StringEncoding("NSWindowsCP1252StringEncoding"), 
-		NSWindowsCP1253StringEncoding("NSWindowsCP1253StringEncoding"), 
-		NSWindowsCP1254StringEncoding("NSWindowsCP1254StringEncoding"), 
-		NSWindowsCP1250StringEncoding("NSWindowsCP1250StringEncoding"), 
-		NSISO2022JPStringEncoding("NSISO2022JPStringEncoding"), 
-		NSProprietaryStringEncoding("NSProprietaryStringEncoding");
-
-		private final String _encoding;
-
-		NSSTRINGENCODING(String encoding) {
-			_encoding = encoding;
-		}
-
-		String getDisplayString() {
-			return _encoding;
-		}
-
-		String getDefaultEncoding() {
-			return NSSTRINGENCODING.NSUTF8StringEncoding.getDisplayString();
-		}
-	}
-
 	/**
-	 * Creates the page for the wocomponent creation wizard.
+	 * Creates the page for the tbcomponent creation wizard.
 	 * 
 	 * @param workbench
 	 *            the workbench on which the page should be created
 	 * @param selection
 	 *            the current selection
 	 */
-	public WOComponentCreationPage(IStructuredSelection selection) {
-		super("createWOComponentPage1", WOComponentCreationPage.processSelection(selection));
-		this.setTitle(Messages.getString("WOComponentCreationPage.title"));
-		this.setDescription(Messages.getString("WOComponentCreationPage.description"));
+	public TBComponentCreationPage(IStructuredSelection selection) {
+		super("createTBComponentPage1", TBComponentCreationPage.processSelection(selection));
+		this.setTitle(Messages.getString("TBComponentCreationPage.title"));
+		this.setDescription(Messages.getString("TBComponentCreationPage.description"));
 
 		if (selection != null) {
 			Object selectedObject = selection.getFirstElement();
@@ -245,7 +211,7 @@ public class WOComponentCreationPage extends WizardNewWOResourcePage {
 				} 
 				else {
 					IFolder selectedFolder = (IFolder)selectedObject;
-					ProjectAdapter projectAdapter = (ProjectAdapter) selectedFolder.getProject().getAdapter(ProjectAdapter.class);
+					ProjectAdapter projectAdapter = selectedFolder.getProject().getAdapter(ProjectAdapter.class);
 					IPath rootFolder = selectedFolder.getProjectRelativePath().uptoSegment(1);
 					if (!rootFolder.equals(projectAdapter.getDefaultComponentsFolder().getProjectRelativePath())) {
 						setContainerFullPath(projectAdapter.getDefaultComponentsFolder().getFullPath());
@@ -254,7 +220,7 @@ public class WOComponentCreationPage extends WizardNewWOResourcePage {
 			} 
 			else if (selectedObject instanceof IResource) {
 				IResource selectedResource = (IResource) selectedObject;
-				ProjectAdapter projectAdapter = (ProjectAdapter) selectedResource.getProject().getAdapter(ProjectAdapter.class);
+				ProjectAdapter projectAdapter = selectedResource.getProject().getAdapter(ProjectAdapter.class);
 				setContainerFullPath(projectAdapter.getDefaultComponentsFolder().getFullPath());
 			}
 		}
@@ -324,7 +290,7 @@ public class WOComponentCreationPage extends WizardNewWOResourcePage {
 			e.printStackTrace();
 		}
 		
-		// Check that we aren't going to create a wocomponent inside another wocomponent
+		// Check that we aren't going to create a tbcomponent inside another tbcomponent
 		IPath path = getContainerFullPath();
 		if (path.lastSegment().endsWith(".wo")) {
 			setErrorMessage("Cannot create a component within another component");
@@ -344,12 +310,12 @@ public class WOComponentCreationPage extends WizardNewWOResourcePage {
 		Composite composite = (Composite) getControl();
 		// WorkbenchHelp.setHelp(composite,
 		// IReadmeConstants.CREATION_WIZARD_PAGE_CONTEXT);
-		this.setFileName(Messages.getString("WOComponentCreationPage.newComponent.defaultName"));
+		this.setFileName(Messages.getString("TBComponentCreationPage.newComponent.defaultName"));
 
 		// new Label(composite, SWT.NONE); // vertical spacer
 
 		Group javaGroup = new Group(composite, SWT.NONE);
-		javaGroup.setText(Messages.getString("WOComponentCreationPage.creationOptions.javaFile.group"));
+		javaGroup.setText(Messages.getString("TBComponentCreationPage.creationOptions.javaFile.group"));
 		GridLayout javaLayout = new GridLayout();
 		javaLayout.numColumns = 4;
 		javaGroup.setLayout(javaLayout);
@@ -391,9 +357,9 @@ public class WOComponentCreationPage extends WizardNewWOResourcePage {
 		_superclassDialogField.setButtonLabel(NewWizardMessages.NewTypeWizardPage_superclass_button);
 		_superclassDialogField.setStatusWidthHint(NewWizardMessages.NewTypeWizardPage_default);
 		_superclassDialogField.doFillIntoGrid(javaGroup, 4);
-		String superclass = this.getDialogSettings().get(WOComponentCreationPage.SUPERCLASS_KEY);
+		String superclass = this.getDialogSettings().get(TBComponentCreationPage.SUPERCLASS_KEY);
 		if (superclass == null || superclass.length() == 0) {
-			_superclassDialogField.setText("com.webobjects.appserver.WOComponent");
+			_superclassDialogField.setText("org.treasureboat.webcore.components.TBComponent");
 		}
 		else {
 			_superclassDialogField.setText(superclass);
@@ -409,19 +375,19 @@ public class WOComponentCreationPage extends WizardNewWOResourcePage {
 		 */
 		Group optionalFilesGroup = new Group(composite, SWT.NONE);
 		optionalFilesGroup.setLayout(new GridLayout(3, false));
-		optionalFilesGroup.setText(Messages.getString("WOComponentCreationPage.creationOptions.group"));
+		optionalFilesGroup.setText(Messages.getString("TBComponentCreationPage.creationOptions.group"));
 		optionalFilesGroup.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 
 		ButtonSelectionAdaptor listener = new ButtonSelectionAdaptor();
 		_bodyCheckbox = new Button(optionalFilesGroup, SWT.CHECK);
-		_bodyCheckbox.setText(Messages.getString("WOComponentCreationPage.creationOptions.bodyTag.button"));
+		_bodyCheckbox.setText(Messages.getString("TBComponentCreationPage.creationOptions.bodyTag.button"));
 		_bodyCheckbox.setSelection(this.getDialogSettings().getBoolean(BODY_CHECKBOX_KEY));
 		_bodyCheckbox.setAlignment(SWT.CENTER);
 		_bodyCheckbox.addListener(SWT.Selection, this);
 		_bodyCheckbox.addSelectionListener(listener);
 
 		Label htmlLabel = new Label(optionalFilesGroup, SWT.RIGHT);
-		htmlLabel.setText(Messages.getString("WOComponentCreationPage.creationOptions.bodyTag.label"));
+		htmlLabel.setText(Messages.getString("TBComponentCreationPage.creationOptions.bodyTag.label"));
 		htmlLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		_htmlCombo = new Combo(optionalFilesGroup, SWT.DROP_DOWN);
 		_htmlCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -432,17 +398,10 @@ public class WOComponentCreationPage extends WizardNewWOResourcePage {
 		GridData apiLayoutData = new GridData();
 //		apiLayoutData.horizontalSpan = 3;
 		_apiCheckbox.setLayoutData(apiLayoutData);
-		_apiCheckbox.setText(Messages.getString("WOComponentCreationPage.creationOptions.apiFile.button"));
+		_apiCheckbox.setText(Messages.getString("TBComponentCreationPage.creationOptions.apiFile.button"));
 		_apiCheckbox.setSelection(this.getDialogSettings().getBoolean(API_CHECKBOX_KEY));
 		_apiCheckbox.addListener(SWT.Selection, this);
 		_apiCheckbox.addSelectionListener(listener);
-
-		Label encodingLabel = new Label(optionalFilesGroup, SWT.RIGHT);
-		encodingLabel.setText(Messages.getString("WOComponentCreationPage.creationOptions.wooFile.label"));
-		encodingLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		_encodingCombo = new Combo(optionalFilesGroup, SWT.DROP_DOWN);
-		_encodingCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		populateStringEncodingCombo(_encodingCombo);
 
 		setPageComplete(validatePage());
 
@@ -454,10 +413,9 @@ public class WOComponentCreationPage extends WizardNewWOResourcePage {
 	 * the appropriate error message is shown
 	 * 
 	 * @return whether creation was successful
-	 * @see WOComponentCreationWizard#performFinish()
 	 */
 	public boolean createComponent() {
-		WOComponentCreator componentCreator;
+		TBComponentCreator componentCreator;
 		String componentName = getFileName();
 		String packageName = _packageDialogField.getText();
 		String superclassName = _superclassDialogField.getText();
@@ -468,20 +426,20 @@ public class WOComponentCreationPage extends WizardNewWOResourcePage {
 			setErrorMessage("unknown error");
 			return false;
 		case 1:
-			componentCreator = new WOComponentCreator(actualProject, componentName, packageName, superclassName, _bodyCheckbox.getSelection(), _apiCheckbox.getSelection(), this);
+			componentCreator = new TBComponentCreator(actualProject, componentName, packageName, superclassName, _bodyCheckbox.getSelection(), _apiCheckbox.getSelection(), this);
 			break;
 		default:
 			// determine parent resource for component creator by removing
 			// first element (workspace) from full path
 			IFolder subprojectFolder = actualProject.getFolder(getContainerFullPath().removeFirstSegments(1));
-			componentCreator = new WOComponentCreator(subprojectFolder, componentName, packageName, superclassName, _bodyCheckbox.getSelection(), _apiCheckbox.getSelection(), this);
+			componentCreator = new TBComponentCreator(subprojectFolder, componentName, packageName, superclassName, _bodyCheckbox.getSelection(), _apiCheckbox.getSelection(), this);
 			break;
 		}
-		this.getDialogSettings().put(WOComponentCreationPage.SUPERCLASS_KEY, _superclassDialogField.getText());
-		this.getDialogSettings().put(WOComponentCreationPage.BODY_CHECKBOX_KEY, _bodyCheckbox.getSelection());
-		this.getDialogSettings().put(WOComponentCreationPage.HTML_DOCTYPE_KEY, _htmlCombo.getText());
-		this.getDialogSettings().put(WOComponentCreationPage.NSSTRING_ENCODING_KEY, _encodingCombo.getText());
-		this.getDialogSettings().put(WOComponentCreationPage.API_CHECKBOX_KEY, _apiCheckbox.getSelection());
+		this.getDialogSettings().put(TBComponentCreationPage.SUPERCLASS_KEY, _superclassDialogField.getText());
+		this.getDialogSettings().put(TBComponentCreationPage.BODY_CHECKBOX_KEY, _bodyCheckbox.getSelection());
+		this.getDialogSettings().put(TBComponentCreationPage.HTML_DOCTYPE_KEY, _htmlCombo.getText());
+		this.getDialogSettings().put(TBComponentCreationPage.NSSTRING_ENCODING_KEY, _encodingCombo.getText());
+		this.getDialogSettings().put(TBComponentCreationPage.API_CHECKBOX_KEY, _apiCheckbox.getSelection());
 
 		// logPreferences();
 		IRunnableWithProgress op = new WorkspaceModifyDelegatingOperation(componentCreator);
@@ -496,7 +454,7 @@ public class WOComponentCreationPage extends WizardNewWOResourcePage {
 		System.out.println("HTML_DOCTYPE_KEY: " + this.getDialogSettings().get(HTML_DOCTYPE_KEY));
 		System.out.println("NSSTRING_ENCODING_KEY: " + this.getDialogSettings().get(NSSTRING_ENCODING_KEY));
 		System.out.println("API_CHECKBOX_KEY: " + this.getDialogSettings().get(API_CHECKBOX_KEY));
-		System.out.println("SUPERCLASS_KEY: " + this.getDialogSettings().get(WOComponentCreationPage.SUPERCLASS_KEY));
+		System.out.println("SUPERCLASS_KEY: " + this.getDialogSettings().get(TBComponentCreationPage.SUPERCLASS_KEY));
 	}
 
 	/**
@@ -565,77 +523,12 @@ public class WOComponentCreationPage extends WizardNewWOResourcePage {
 
 		return HTML.TRANSITIONAL_XHTML10;
 	}
-
-	/**
-	 * Populate a SWT Combo with NSStringEncoding doctypes (See NSString.h)
-	 * 
-	 * @param c
-	 */
-	public void populateStringEncodingCombo(Combo c) {
-
-		for (NSSTRINGENCODING entry : NSSTRINGENCODING.values()) {
-			c.add(entry.getDisplayString());
-		}
-
-		selectNSStringEncodingPreference(c);
-	}
-
-	/**
-	 * Pick the previous encoding preference else default to
-	 * NSSTRINGENCODING.NSUTF8StringEncoding
-	 * 
-	 * @param c
-	 */
-	public void selectNSStringEncodingPreference(Combo c) {
-		String previousEncoding = this.getDialogSettings().get(NSSTRING_ENCODING_KEY);
-
-		if (previousEncoding != null && previousEncoding.length() > 0) {
-			int i = 0;
-			for (NSSTRINGENCODING entry : NSSTRINGENCODING.values()) {
-				if (previousEncoding.equals(entry.getDisplayString())) {
-					c.select(i);
-					return;
-				}
-				i++;
-			}
-		}
-		// default
-		c.select(0);
-	}
-
-	/**
-	 * Return current selected encoding
-	 * 
-	 * @return defaults to NSUTF8StringEncoding
-	 */
-	public String getSelectedEncoding() {
-		return getEncodingForDisplayString(_encodingCombo.getText());
-
-//		return NSSTRINGENCODING.NSUTF8StringEncoding.getDisplayString();
-	}
-
-	/**
-	 * Return the encoding value to insert into the .woo file
-	 * 
-	 * @param displayString
-	 * @return selected encoding or NSUTF8StringEncoding if not set
-	 */
-	public String getEncodingForDisplayString(String displayString) {
-		for (NSSTRINGENCODING entry : NSSTRINGENCODING.values()) {
-
-			if (displayString.equals(entry.getDisplayString())) {
-				return displayString;
-			}
-		}
-
-		return NSSTRINGENCODING.NSUTF8StringEncoding.getDefaultEncoding();
-	}
-
+	
 	/**
 	 * (non-Javadoc) Method declared on WizardNewFileCreationPage.
 	 */
 	protected String getNewFileLabel() {
-		return Messages.getString("WOComponentCreationPage.newComponent.label");
+		return Messages.getString("TBComponentCreationPage.newComponent.label");
 	}
 
 	public IResource[] getResourcesToReveal() {
@@ -665,7 +558,7 @@ public class WOComponentCreationPage extends WizardNewWOResourcePage {
 	protected String packageNameForComponentFolder(IFolder folder) {
 		try {
 			for(IResource resource : folder.members()) {
-				if ("wo".equals(resource.getLocation().getFileExtension())) {
+				if (TBLipsConstants.WO_EXTENSION_KEY.equals(resource.getLocation().getFileExtension())) {
 					return packageNameForComponent(resource.getLocation().removeFileExtension().lastSegment());
 				}
 			}

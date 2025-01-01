@@ -18,7 +18,6 @@ public abstract class AbstractWonderProjectWizard extends AbstractProjectWizard 
 		wo.mkdirs();
 		engine.addTemplate(new TemplateDefinition(templateFolder + "/" + name + ".html.vm", path + File.separator + "Components" + File.separator  + name + ".wo", name + ".html", name + ".html"));
 		engine.addTemplate(new TemplateDefinition(templateFolder + "/" + name + ".wod.vm", path + File.separator + "Components" + File.separator  + name + ".wo", name + ".wod", name + ".wod"));
-		engine.addTemplate(new TemplateDefinition(templateFolder + "/" + name + ".woo.vm", path + File.separator + "Components" + File.separator  + name + ".wo", name + ".woo", name + ".woo"));
 		engine.addTemplate(new TemplateDefinition(templateFolder + "/" + name + ".api.vm", path + File.separator + "Components", name + ".api", name + ".api"));
 		engine.addTemplate(new TemplateDefinition(templateFolder + "/" + name + ".java.vm", path + File.separator + "Sources", name + ".java", name + ".java"));
 	}
@@ -36,11 +35,11 @@ public abstract class AbstractWonderProjectWizard extends AbstractProjectWizard 
 		libraries.mkdirs();
 		File bin = new File(path + File.separator + "bin");
 		bin.mkdirs();
-		File ant = new File(path + File.separator + ProjectPatternsets.ANT_FOLDER_NAME);
-		ant.mkdirs();
-
-		writeString("WebServerResources/**/*\n", new File(ant, "wsresources.include.patternset"));
-		writeString("Components/**/*.wo\nComponents/**/*.api\nResources/**/*\n", new File(ant, "resources.include.patternset"));
+//		File ant = new File(path + File.separator + ProjectPatternsets.ANT_FOLDER_NAME);
+//		ant.mkdirs();
+//
+//		writeString("WebServerResources/**/*\n", new File(ant, "wsresources.include.patternset"));
+//		writeString("Components/**/*.wo\nComponents/**/*.api\nResources/**/*\n", new File(ant, "resources.include.patternset"));
 	}
 
 	private void writeString(String string, File file) {

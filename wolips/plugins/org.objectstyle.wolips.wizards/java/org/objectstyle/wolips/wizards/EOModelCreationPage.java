@@ -189,9 +189,19 @@ public class EOModelCreationPage extends WizardNewWOResourcePage {
 	public boolean createEOModel() {
 		EOModelCreator modelCreator;
 		String modelName = getFileName();
+		String adaptorName = "";
+		String pluginName = "";
+		
 		boolean createEOGeneratorFile = _createEOGeneratorFileButton.getSelection();
-		String adaptorName = _adaptorCombo.getItem(_adaptorCombo.getSelectionIndex());
-		String pluginName = _pluginCombo.getItem(_pluginCombo.getSelectionIndex());
+		int adaptorSelectionIndex = _adaptorCombo.getSelectionIndex();
+		if (adaptorSelectionIndex != -1) {
+			adaptorName = _adaptorCombo.getItem(adaptorSelectionIndex);
+		}
+		
+		int plugInSelectionIndex = _pluginCombo.getSelectionIndex();
+		if (_pluginCombo.getSelectionIndex() > -1 ) {
+			pluginName = _pluginCombo.getItem(_pluginCombo.getSelectionIndex());
+		}
 		// determine parent resource
 		switch (getContainerFullPath().segmentCount()) {
 		case 0:

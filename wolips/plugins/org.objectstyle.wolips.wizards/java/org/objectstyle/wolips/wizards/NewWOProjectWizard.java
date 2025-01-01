@@ -178,15 +178,22 @@ public abstract class NewWOProjectWizard extends BasicNewResourceWizard implemen
 	 */
 	protected static final int NEWPROJECT_TEMPLATE_WIZARD = 0;
 
-	/**
-	 * Valid project wizard types: WO_APPLICATION_WIZARD,
-	 * D2W_APPLICATION_WIZARD, D2WS_APPLICATION_WIZARD, JARPROJECT_WIZARD,
-	 * WO_FRAMEWORK_WIZARD, WONDER_APPLICATION_WIZARD,
-	 * WONDER_D2W_APPLICATION_WIZARD, WONDER_FRAMEWORK_WIZARD,
-	 * NEWPROJECT_TEMPLATE_WIZARD,WOMAVENAPPLICATION, ERREST_APPLICATION_WIZARD
-	 */
 	public enum WizardType {
-		WO_APPLICATION_WIZARD, D2W_APPLICATION_WIZARD, D2JC_APPLICATION_WIZARD, D2WS_APPLICATION_WIZARD, JARPROJECT_WIZARD, WO_FRAMEWORK_WIZARD, WONDER_APPLICATION_WIZARD, WONDER_D2W_APPLICATION_WIZARD, WONDER_FRAMEWORK_WIZARD, NEWPROJ_TEMPLATE_WIZARD, WOMAVENPROJECT, ERREST_APPLICATION_WIZARD
+		TB_APPLICATION_WIZARD, 
+		TB_APPLICATION_EX_WIZARD, 
+		TB_FRAMEWORK, 
+		WO_APPLICATION_WIZARD, 
+		D2W_APPLICATION_WIZARD, 
+		D2JC_APPLICATION_WIZARD, 
+		D2WS_APPLICATION_WIZARD, 
+		JARPROJECT_WIZARD, 
+		WO_FRAMEWORK_WIZARD, 
+		WONDER_APPLICATION_WIZARD, 
+		WONDER_D2W_APPLICATION_WIZARD, 
+		WONDER_FRAMEWORK_WIZARD, 
+		NEWPROJ_TEMPLATE_WIZARD, 
+		WOMAVENPROJECT, 
+		ERREST_APPLICATION_WIZARD
 	}
 
 	private WizardNewProjectCreationPage _mainPage;
@@ -249,9 +256,7 @@ public abstract class NewWOProjectWizard extends BasicNewResourceWizard implemen
 
 	/**
 	 * For simple wizard type identification. A sub-classer must implement.
-	 * Valid types are WO_APPLICATION_WIZARD, D2W_APPLICATION_WIZARD,
-	 * JARPROJECT_WIZARD, WO_FRAMEWORK_WIZARD, WONDER_APPLICATION_WIZARD,
-	 * WONDER_D2W_APPLICATION_WIZARD, WONDER_FRAMEWORK_WIZARD = 7;
+	 * @see WizardType
 	 * 
 	 * @return wizard type
 	 */
@@ -295,14 +300,14 @@ public abstract class NewWOProjectWizard extends BasicNewResourceWizard implemen
 			}
 		}
 
-		if (wizardType == WizardType.D2W_APPLICATION_WIZARD || wizardType == WizardType.WO_APPLICATION_WIZARD || wizardType == WizardType.ERREST_APPLICATION_WIZARD || wizardType == WizardType.D2WS_APPLICATION_WIZARD || wizardType == WizardType.WO_FRAMEWORK_WIZARD) {
+		if (wizardType == WizardType.TB_APPLICATION_WIZARD || wizardType == WizardType.TB_APPLICATION_EX_WIZARD || wizardType == WizardType.D2W_APPLICATION_WIZARD || wizardType == WizardType.WO_APPLICATION_WIZARD || wizardType == WizardType.ERREST_APPLICATION_WIZARD || wizardType == WizardType.D2WS_APPLICATION_WIZARD || wizardType == WizardType.WO_FRAMEWORK_WIZARD) {
 			_frameworkSupportPage = createFrameworkSupportPage();
 			if (_frameworkSupportPage != null) {
 				addPage(_frameworkSupportPage);
 			}
 		}
 
-		if (wizardType == WizardType.WO_APPLICATION_WIZARD || wizardType == WizardType.ERREST_APPLICATION_WIZARD || wizardType == WizardType.D2W_APPLICATION_WIZARD || wizardType == WizardType.WO_FRAMEWORK_WIZARD) {
+		if (wizardType == WizardType.TB_APPLICATION_WIZARD || wizardType == WizardType.TB_APPLICATION_EX_WIZARD || wizardType == WizardType.WO_APPLICATION_WIZARD || wizardType == WizardType.ERREST_APPLICATION_WIZARD || wizardType == WizardType.D2W_APPLICATION_WIZARD || wizardType == WizardType.WO_FRAMEWORK_WIZARD) {
 			_webservicesSupportPage = createWebServicesSupportPage();
 			if (_webservicesSupportPage != null) {
 				addPage(_webservicesSupportPage);
@@ -784,7 +789,6 @@ public abstract class NewWOProjectWizard extends BasicNewResourceWizard implemen
 
 		engine.addTemplate(new TemplateDefinition(templateFolder + "/" + name + ".html.vm", componentPath, name + ".html", name + ".html"));
 		engine.addTemplate(new TemplateDefinition(templateFolder + "/" + name + ".wod.vm", componentPath, name + ".wod", name + ".wod"));
-		engine.addTemplate(new TemplateDefinition(templateFolder + "/" + name + ".woo.vm", componentPath, name + ".woo", name + ".woo"));
 		engine.addTemplate(new TemplateDefinition(templateFolder + "/" + name + ".api.vm", rootPath, name + ".api", name + ".api"));
 		engine.addTemplate(new TemplateDefinition(templateFolder + "/" + name + ".java.vm", fullPackagePath, name + ".java", name + ".java"));
 	}

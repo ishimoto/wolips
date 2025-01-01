@@ -18,11 +18,11 @@
  *    distribution.
  *
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
+ *    any, must include the following acknowledgement:
  *       "This product includes software developed by the
  *        ObjectStyle Group (http://objectstyle.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
+ *    Alternately, this acknowledgement may appear in the software itself,
+ *    if and wherever such third-party acknowledgements normally appear.
  *
  * 4. The names "ObjectStyle Group" and "Cayenne"
  *    must not be used to endorse or promote products derived
@@ -70,14 +70,14 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.objectstyle.wolips.baseforplugins.util.CharSetUtils;
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.objectstyle.wolips.templateengine.ComponentEngine;
 
 /**
  * @author mnolte
  * @author uli
  */
-public class WOComponentCreator implements IRunnableWithProgress {
+public class TBComponentCreator implements IRunnableWithProgress {
 	private String componentName;
 
 	private String packageName;
@@ -90,14 +90,12 @@ public class WOComponentCreator implements IRunnableWithProgress {
 
 	private IResource parentResource;
 
-	private WOComponentCreationPage page;
+	private TBComponentCreationPage page;
 
 	private int htmlBodyType;
 
-	private String wooEncoding;
-
 	/**
-	 * Constructor for WOComponentCreator.
+	 * Constructor for TBComponentCreator.
 	 *
 	 * @param parentResource
 	 * @param componentName
@@ -105,7 +103,7 @@ public class WOComponentCreator implements IRunnableWithProgress {
 	 * @param createBodyTag
 	 * @param createApiFile
 	 */
-	public WOComponentCreator(IResource parentResource, String componentName, String packageName, String superclassName, boolean createBodyTag, boolean createApiFile, WOComponentCreationPage page) {
+	public TBComponentCreator(IResource parentResource, String componentName, String packageName, String superclassName, boolean createBodyTag, boolean createApiFile, TBComponentCreationPage page) {
 		this.parentResource = parentResource;
 		this.componentName = componentName;
 		this.packageName = packageName;
@@ -114,25 +112,24 @@ public class WOComponentCreator implements IRunnableWithProgress {
 		this.createApiFile = createApiFile;
 		this.page = page;
 		this.htmlBodyType = page.getSelectedHTMLDocType().getTemplateIndex();
-		this.wooEncoding = CharSetUtils.encodingNameFromObjectiveC(page.getSelectedEncoding());
 	}
 
 	public void run(IProgressMonitor monitor) throws InvocationTargetException {
 		try {
-			createWOComponent(monitor);
+			createTBComponent(monitor);
 		} catch (CoreException e) {
 			throw new InvocationTargetException(e);
 		}
 	}
 
 	/**
-	 * Method createWOComponent.
+	 * Method createTBComponent.
 	 *
 	 * @param monitor
 	 * @throws CoreException
 	 * @throws InvocationTargetException
 	 */
-	public void createWOComponent(IProgressMonitor monitor) throws CoreException, InvocationTargetException {
+	public void createTBComponent(IProgressMonitor monitor) throws CoreException, InvocationTargetException {
 		IFolder componentFolder = null;
 		IPath componentJavaPath = null;
 		IPath apiPath = null;
@@ -141,12 +138,12 @@ public class WOComponentCreator implements IRunnableWithProgress {
 
 		switch (this.parentResource.getType()) {
 		case IResource.PROJECT:
-			componentFolder = ((IProject) this.parentResource).getFolder(this.componentName + ".wo");
+			componentFolder = ((IProject) this.parentResource).getFolder(this.componentName + TBLipsConstants.DOT_WO_EXTENSION_KEY);
 			componentFolderToReveal = componentFolder.getParent();
 			apiPath = this.parentResource.getProject().getLocation();
 			break;
 		case IResource.FOLDER:
-			componentFolder = ((IFolder) this.parentResource).getFolder(this.componentName + ".wo");
+			componentFolder = ((IFolder) this.parentResource).getFolder(this.componentName + TBLipsConstants.DOT_WO_EXTENSION_KEY);
 			componentFolderToReveal = componentFolder.getParent();
 			apiPath = componentFolder.getParent().getLocation();
 //			IFolder pbFolder = project.getParentFolderWithPBProject((IFolder) this.parentResource);
@@ -193,12 +190,11 @@ public class WOComponentCreator implements IRunnableWithProgress {
 		componentEngine.setJavaPath(componentJavaPath);
 		componentEngine.setCreateApiFile(this.createApiFile);
 		componentEngine.setHTMLBodyType(this.htmlBodyType);
-		componentEngine.setWOOEncoding(this.wooEncoding);
 
 		try {
 			componentEngine.run(new NullProgressMonitor());
 			this.parentResource.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
-			IResource[] resources = new IResource[] {componentFolderToReveal.findMember(this.componentName + ".java"), componentFolder.findMember(this.componentName + ".wod")};
+			IResource[] resources = new IResource[] {componentFolderToReveal.findMember(this.componentName +  TBLipsConstants.DOT_JAVA_EXTENSION_KEY), componentFolder.findMember(this.componentName +  TBLipsConstants.DOT_WOD_EXTENSION_KEY)};
 			page.setResourcesToReveal(resources);
 		} catch (Exception e) {
 			WizardsPlugin.getDefault().log(e);
