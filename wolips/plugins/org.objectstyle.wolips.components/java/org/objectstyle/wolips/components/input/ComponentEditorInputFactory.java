@@ -76,7 +76,19 @@ public class ComponentEditorInputFactory implements IElementFactory {
 		if (countString == null) {
 			return null;
 		}
-		int count = Integer.parseInt(countString);
+		
+		// Check the XML for the correct Number XXX CHECKME
+		int countChecker = Integer.parseInt(countString);
+		int realNumber = 0;
+		for (int i = 0; i < countChecker; i++) {
+			String s = memento.getString(TAG_EDITOR + i);
+			if(s != null && s.length() > 0) {
+				realNumber++;
+			}
+		}		
+		
+		int count = realNumber;
+
 		String[] editors = new String[count];
 		ComponentEditorFileEditorInput[] allInputs = new ComponentEditorFileEditorInput[count];
 		ComponentEditorFileEditorInput[] allComponentInputs = new ComponentEditorFileEditorInput[count - 1];
