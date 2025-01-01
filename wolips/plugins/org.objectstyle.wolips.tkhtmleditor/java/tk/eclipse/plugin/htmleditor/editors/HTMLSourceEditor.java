@@ -54,6 +54,7 @@ import org.eclipse.ui.texteditor.ContentAssistAction;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.objectstyle.wolips.wodclipse.core.util.CursorPositionSupport;
 import org.objectstyle.wolips.wodclipse.core.util.ICursorPositionListener;
 
@@ -683,7 +684,7 @@ public class HTMLSourceEditor extends TextEditor {
           text = text.substring(1, text.length());
           while (stack.size() != 0) {
             FoldingInfo info = stack.pop();
-            if (info.getType().equalsIgnoreCase(text) || (info.getType().toLowerCase().startsWith("wo:") && text.toLowerCase().startsWith("wo"))) {
+            if (info.getType().equalsIgnoreCase(text) || (info.getType().toLowerCase().startsWith(TBLipsConstants.TB_TAG_COLON_KEY) && text.toLowerCase().startsWith(TBLipsConstants.TB_TAG_KEY))) {
               info.setEnd(matcher.end());
               // Don't fold if start offset and end offset are same line
               if (doc.getLineOfOffset(info.getStart()) != doc.getLineOfOffset(info.getEnd())) {

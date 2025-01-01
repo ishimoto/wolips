@@ -40,6 +40,7 @@ import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.objectstyle.wolips.bindings.wod.IWodBinding;
 import org.objectstyle.wolips.bindings.wod.IWodElement;
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.objectstyle.wolips.variables.BuildProperties;
 import org.objectstyle.wolips.wodclipse.core.completion.WodParserCache;
 import org.objectstyle.wolips.wodclipse.core.util.WodHtmlUtils;
@@ -99,8 +100,7 @@ public class TemplateOutlinePage extends Page implements IContentOutlinePage, IH
   }
 
   protected FuzzyXMLParser createParser(IProject project) {
-    BuildProperties buildProperties = (BuildProperties)project.getAdapter(BuildProperties.class);
-    FuzzyXMLParser parser = new FuzzyXMLParser(buildProperties != null ? buildProperties.isWellFormedTemplateRequired() : false, isHTML());
+    FuzzyXMLParser parser = new FuzzyXMLParser(true, isHTML());
     return parser;
   }
 
@@ -124,7 +124,7 @@ public class TemplateOutlinePage extends Page implements IContentOutlinePage, IH
 
   /**
    * The protocol that we use to communicate between the Browser preview component
-   * and WOLips is via the Browser status text.  Changing status text in Javascript
+   * and TBLips is via the Browser status text.  Changing status text in Javascript
    * fires an SWT event of the form 'command:target' that we parse on the Java side
    * to determine what action the user performed inside the Browser.  This method
    * handles each of the corresponding event types.
@@ -371,7 +371,7 @@ public class TemplateOutlinePage extends Page implements IContentOutlinePage, IH
     renderBuffer.append("<html>\n");
     renderBuffer.append("<head>\n");
     renderBuffer.append("<style>\n");
-    renderBuffer.append("body { font-family: Helvetica; font-size: 8pt; margin: 5px; margin-top: 2px; }\n");
+    renderBuffer.append("body { margin: 5px; margin-top: 2px; }\n");
 
     renderBuffer.append("a { text-decoration: none; }\n");
 
@@ -379,14 +379,14 @@ public class TemplateOutlinePage extends Page implements IContentOutlinePage, IH
     renderBuffer.append("div.viewControls a { color: rgb(0, 0, 200); }\n");
     renderBuffer.append("div.elements { margin-top: 0px; }\n");
 
-    renderBuffer.append("div.element { overflow: hidden; margin-top: 5px; margin-bottom: 5px; margin-right: 0px; padding: 0px; border: 1px solid rgb(230, 230, 230); border-right: none; }\n");
+    renderBuffer.append("div.element { overflow: hidden; margin-top: 5px; margin-bottom: 5px; margin-right: 0px; padding: 0px; border: 2px solid rgb(230, 230, 230); border-right: none; }\n");
     renderBuffer.append("div.element div.summary { cursor: pointer; white-space: nowrap; background-color: rgb(240, 240, 240); padding: 3px; border-bottom: 1px solid rgb(230, 230, 230); }\n");
     renderBuffer.append("div.element.empty div.summary { border-bottom: none; }\n");
     renderBuffer.append("div.element div.summary:hover { background-color: rgb(220, 220, 220); border-color: rgb(210, 210, 210); }\n");
     renderBuffer.append("div.element div.expandcollapse { cursor: pointer; float: right; background-color: rgb(255, 255, 255); width: 10px; border: 1px solid rgb(230, 230, 230); border-top: none; padding-left: 3px; padding-right: 3px; text-align: center; }\n");
     renderBuffer.append("div.element div.expandcollapse:hover { font-weight: bold; border-width: 2px; border-right-width: 1px; background-color: rgb(245, 245, 245); }\n");
     renderBuffer.append("div.element div.expandcollapse:active { font-weight: bold; border-width: 2px; border-right-width: 1px; background-color: rgb(230, 230, 230); }\n");
-    renderBuffer.append("div.element div.contents { background-color: rgb(255, 255, 255); padding-left: 10px; padding-right: 0px; padding-top: 5px; padding-bottom: 5px; }\n");
+    renderBuffer.append("div.element div.contents { background-color: rgb(251, 255, 245); padding-left: 10px; padding-right: 0px; padding-top: 5px; padding-bottom: 5px; }\n");
 
     renderBuffer.append("div.element.wo { border-color: rgb(200, 200, 255); }\n");
     renderBuffer.append("div.element.wo > div.summary { background-color: rgb(240, 240, 255); border-bottom: 1px solid rgb(200, 200, 255); }\n");
@@ -404,59 +404,59 @@ public class TemplateOutlinePage extends Page implements IContentOutlinePage, IH
     renderBuffer.append("div.element div.summary div.title.nonwo span.idName { font-weight: bold; color: rgb(180, 180, 180); padding-left: 10px; }\n");
     renderBuffer.append("div.element div.summary div.title.nonwo span.className { font-weight: bold; color: rgb(180, 180, 180); padding-left: 10px; }\n");
 
-    renderBuffer.append("div.element div.summary table.bindings { font-family: Helvetica; font-size: 8pt; margin: 0px; padding: 0px; }\n");
-    renderBuffer.append("div.element div.summary table.bindings th { text-align: right; font-weight: normal; color: rgb(220, 0, 0); padding-right: 3px; }\n");
+    renderBuffer.append("div.element div.summary table.bindings { margin: 0px; padding: 0px; }\n");
+    renderBuffer.append("div.element div.summary table.bindings th { text-align: right; font-weight: normal; color: rgb(85, 85, 100); padding-right: 3px; }\n");
     renderBuffer.append("div.element div.summary table.bindings td.literal { color: rgb(0, 0, 200); }\n");
     renderBuffer.append("div.element div.summary table.bindings td.ognl { color: rgb(180, 0, 0); }\n");
-    renderBuffer.append("div.element div.summary table.bindings td.keypath { color: rgb(180, 0, 0); }\n");
+    renderBuffer.append("div.element div.summary table.bindings td.keypath { color: rgb(148, 0, 211); }\n");
 
     renderBuffer.append("div.text { display: inline; }\n");
 
     renderBuffer.append("span.negate { font-weight: bold; }\n");
 
-    renderBuffer.append("div.element.wo.WOString.simple { display: inline; border: none; }\n");
-    renderBuffer.append("div.element.wo.WOString.simple div.summary { display: inline; border: 1px solid rgb(200, 200, 255); border: none; background-color: transparent; padding: 0px; }\n");
-    renderBuffer.append("div.element.wo.WOString.simple div.summary div.title { display: inline; }\n");
-    renderBuffer.append("div.element.wo.WOString.simple div.text.literal { color: rgb(0, 0, 200); }\n");
-    renderBuffer.append("div.element.wo.WOString.simple div.text.ognl { color: rgb(180, 0, 0); }\n");
-    renderBuffer.append("div.element.wo.WOString.simple div.text.keypath { color: rgb(180, 0, 0); }\n");
-//    renderBuffer.append("div.element.wo.WOString div.summary { background-color: rgb(240, 240, 255); }\n");
-//    renderBuffer.append("div.element.wo.WOString div.summary:hover { background-color: rgb(240, 240, 255); border-color: rgb(170, 225, 170); }\n");
-//    renderBuffer.append("div.element.wo.WOString div.contents { background-color: rgb(250, 255, 250); border-color: rgb(200, 255, 200); }\n");
-//    renderBuffer.append("div.element.wo.WOString:hover div.contents { display: block; }\n");
+    renderBuffer.append("div.element.wo.TBString.simple { display: inline; border: none; }\n");
+    renderBuffer.append("div.element.wo.TBString.simple div.summary { display: inline; border: 1px solid rgb(200, 200, 255); border: none; background-color: transparent; padding: 0px; }\n");
+    renderBuffer.append("div.element.wo.TBString.simple div.summary div.title { display: inline; }\n");
+    renderBuffer.append("div.element.wo.TBString.simple div.text.literal { color: rgb(0, 0, 200); }\n");
+    renderBuffer.append("div.element.wo.TBString.simple div.text.ognl { color: rgb(180, 0, 0); }\n");
+    renderBuffer.append("div.element.wo.TBString.simple div.text.keypath { color: rgb(215, 144, 10); }\n");
+//    renderBuffer.append("div.element.wo.TBString div.summary { background-color: rgb(240, 240, 255); }\n");
+//    renderBuffer.append("div.element.wo.TBString div.summary:hover { background-color: rgb(240, 240, 255); border-color: rgb(170, 225, 170); }\n");
+//    renderBuffer.append("div.element.wo.TBString div.contents { background-color: rgb(250, 255, 250); border-color: rgb(200, 255, 200); }\n");
+//    renderBuffer.append("div.element.wo.TBString:hover div.contents { display: block; }\n");
 
-    renderBuffer.append("div.element.wo.ERXLocalizedString.simple { display: inline; border: none; }\n");
-    renderBuffer.append("div.element.wo.ERXLocalizedString.simple div.summary { display: inline; border: 1px solid rgb(200, 200, 255); border: none; background-color: transparent; padding: 0px; }\n");
-    renderBuffer.append("div.element.wo.ERXLocalizedString.simple div.summary div.title { display: inline; }\n");
-    renderBuffer.append("div.element.wo.ERXLocalizedString.simple div.text.literal { color: rgb(0, 0, 200); }\n");
-    renderBuffer.append("div.element.wo.ERXLocalizedString.simple div.text.ognl { color: rgb(180, 0, 0); }\n");
-    renderBuffer.append("div.element.wo.ERXLocalizedString.simple div.text.keypath { color: rgb(180, 0, 0); }\n");
+    renderBuffer.append("div.element.wo.TBWLocalizedString.simple { display: inline; border: none; }\n");
+    renderBuffer.append("div.element.wo.TBWLocalizedString.simple div.summary { display: inline; border: 1px solid rgb(200, 200, 255); border: none; background-color: transparent; padding: 0px; }\n");
+    renderBuffer.append("div.element.wo.TBWLocalizedString.simple div.summary div.title { display: inline; }\n");
+    renderBuffer.append("div.element.wo.TBWLocalizedString.simple div.text.literal { color: rgb(0, 0, 200); }\n");
+    renderBuffer.append("div.element.wo.TBWLocalizedString.simple div.text.ognl { color: rgb(180, 0, 0); }\n");
+    renderBuffer.append("div.element.wo.TBWLocalizedString.simple div.text.keypath { color: rgb(180, 0, 0); }\n");
 
-    renderBuffer.append("div.element.wo.WOConditional { border-color: rgb(190, 250, 190); }\n");
-    renderBuffer.append("div.element.wo.WOConditional > div.summary { background-color: rgb(230, 250, 230); }\n");
-    renderBuffer.append("div.element.wo.WOConditional > div.summary:hover { background-color: rgb(200, 250, 200); border-color: rgb(200, 255, 200); }\n");
-    renderBuffer.append("div.element.wo.WOConditional > div.expandcollapse { border-color: rgb(200, 255, 200); }\n");
-    renderBuffer.append("div.element.wo.WOConditional > div.expandcollapse:hover { background-color: rgb(245, 255, 245); }\n");
-    renderBuffer.append("div.element.wo.WOConditional > div.expandcollapse:active { background-color: rgb(200, 255, 200); }\n");
-    renderBuffer.append("div.element.wo.WOConditional > div.contents { background-color: rgb(250, 255, 250); border-color: rgb(190, 250, 190); }\n");
-    renderBuffer.append("div.element.wo.WOConditional > div.summary div.title span.type { display: none; }\n");
-    renderBuffer.append("div.element.wo.WOConditional > div.summary table.bindings th { text-align: right; font-weight: normal; color: rgb(220, 0, 0); padding-right: 3px; }\n");
-    renderBuffer.append("div.element.wo.WOConditional > div.summary table.bindings td.literal { color: rgb(0, 0, 200); }\n");
-    renderBuffer.append("div.element.wo.WOConditional > div.summary table.bindings td.ognl { color: rgb(180, 0, 0); }\n");
-    renderBuffer.append("div.element.wo.WOConditional > div.summary table.bindings td.keypath { color: rgb(180, 0, 0); }\n");
+    renderBuffer.append("div.element.wo.TBConditional { border-color: rgb(190, 250, 190); }\n");
+    renderBuffer.append("div.element.wo.TBConditional > div.summary { background-color: rgb(230, 250, 230); }\n");
+    renderBuffer.append("div.element.wo.TBConditional > div.summary:hover { background-color: rgb(200, 250, 200); border-color: rgb(200, 255, 200); }\n");
+    renderBuffer.append("div.element.wo.TBConditional > div.expandcollapse { border-color: rgb(200, 255, 200); }\n");
+    renderBuffer.append("div.element.wo.TBConditional > div.expandcollapse:hover { background-color: rgb(245, 255, 245); }\n");
+    renderBuffer.append("div.element.wo.TBConditional > div.expandcollapse:active { background-color: rgb(200, 255, 200); }\n");
+    renderBuffer.append("div.element.wo.TBConditional > div.contents { background-color: rgb(250, 255, 250); border-color: rgb(190, 250, 190); }\n");
+    renderBuffer.append("div.element.wo.TBConditional > div.summary div.title span.type { display: none; }\n");
+    renderBuffer.append("div.element.wo.TBConditional > div.summary table.bindings th { text-align: right; font-weight: normal; color: rgb(255, 99, 71); padding-right: 3px; }\n");
+    renderBuffer.append("div.element.wo.TBConditional > div.summary table.bindings td.literal { color: rgb(0, 0, 200); }\n");
+    renderBuffer.append("div.element.wo.TBConditional > div.summary table.bindings td.ognl { color: rgb(180, 0, 0); }\n");
+    renderBuffer.append("div.element.wo.TBConditional > div.summary table.bindings td.keypath { color: rgb(85, 85, 100); }\n");
 
-    renderBuffer.append("div.element.wo.ERXElse { border-color: rgb(190, 250, 190); }\n");
-    renderBuffer.append("div.element.wo.ERXElse > div.summary { background-color: rgb(230, 250, 230); }\n");
-    renderBuffer.append("div.element.wo.ERXElse > div.summary:hover { background-color: rgb(200, 250, 200); border-color: rgb(200, 255, 200); }\n");
-    renderBuffer.append("div.element.wo.ERXElse > div.expandcollapse { border-color: rgb(200, 255, 200); }\n");
-    renderBuffer.append("div.element.wo.ERXElse > div.expandcollapse:hover { background-color: rgb(245, 255, 245); }\n");
-    renderBuffer.append("div.element.wo.ERXElse > div.expandcollapse:active { background-color: rgb(200, 255, 200); }\n");
-    renderBuffer.append("div.element.wo.ERXElse > div.contents { background-color: rgb(250, 255, 250); border-color: rgb(190, 250, 190); }\n");
-    renderBuffer.append("div.element.wo.ERXElse > div.summary div.title span.type { display: none; }\n");
-    renderBuffer.append("div.element.wo.ERXElse > div.summary table.bindings th { text-align: right; font-weight: normal; color: rgb(220, 0, 0); padding-right: 3px; }\n");
-    renderBuffer.append("div.element.wo.ERXElse > div.summary table.bindings td.literal { color: rgb(0, 0, 200); }\n");
-    renderBuffer.append("div.element.wo.ERXElse > div.summary table.bindings td.ognl { color: rgb(180, 0, 0); }\n");
-    renderBuffer.append("div.element.wo.ERXElse > div.summary table.bindings td.keypath { color: rgb(180, 0, 0); }\n");
+    renderBuffer.append("div.element.wo.TBElse { border-color: rgb(190, 250, 190); }\n");
+    renderBuffer.append("div.element.wo.TBElse > div.summary { background-color: rgb(230, 250, 230); }\n");
+    renderBuffer.append("div.element.wo.TBElse > div.summary:hover { background-color: rgb(200, 250, 200); border-color: rgb(200, 255, 200); }\n");
+    renderBuffer.append("div.element.wo.TBElse > div.expandcollapse { border-color: rgb(200, 255, 200); }\n");
+    renderBuffer.append("div.element.wo.TBElse > div.expandcollapse:hover { background-color: rgb(245, 255, 245); }\n");
+    renderBuffer.append("div.element.wo.TBElse > div.expandcollapse:active { background-color: rgb(200, 255, 200); }\n");
+    renderBuffer.append("div.element.wo.TBElse > div.contents { background-color: rgb(250, 255, 250); border-color: rgb(190, 250, 190); }\n");
+    renderBuffer.append("div.element.wo.TBElse > div.summary div.title span.type { display: none; }\n");
+    renderBuffer.append("div.element.wo.TBElse > div.summary table.bindings th { text-align: right; font-weight: normal; color: rgb(220, 0, 0); padding-right: 3px; }\n");
+    renderBuffer.append("div.element.wo.TBElse > div.summary table.bindings td.literal { color: rgb(0, 0, 200); }\n");
+    renderBuffer.append("div.element.wo.TBElse > div.summary table.bindings td.ognl { color: rgb(180, 0, 0); }\n");
+    renderBuffer.append("div.element.wo.TBElse > div.summary table.bindings td.keypath { color: rgb(180, 0, 0); }\n");
 
 //    renderBuffer.append("div.element.wo.WORepetition { border-color: rgb(255, 200, 200); }\n");
 //    renderBuffer.append("div.element.wo.WORepetition div.summary { background-color: rgb(255, 230, 230); }\n");
@@ -472,11 +472,11 @@ public class TemplateOutlinePage extends Page implements IContentOutlinePage, IH
     renderBuffer.append("body.verbose div.element div.summary div.title span.nodeName.verbose { display: block; }\n");
     renderBuffer.append("body.verbose div.element div.summary div.title span.nodeName.compact { display: none; }\n");
 
-    renderBuffer.append("body.compact { font-size: 7.5pt; }\n");
+    renderBuffer.append("body.compact { }\n");
     renderBuffer.append("body.compact div.element { margin-top: 2px; margin-bottom: 3px; }\n");
     renderBuffer.append("body.compact div.element div.expandcollapse { width: 5px; padding-left: 4px; padding-right: 4px; padding-top: 1px; padding-bottom: 1px; }\n");
     renderBuffer.append("body.compact div.element div.expandcollapse:hover { border-width: 1px; }\n");
-    renderBuffer.append("body.compact div.element div.summary { padding: 1px; padding-left: 2px; }\n");
+    renderBuffer.append("body.compact div.element div.summary { padding: 1px; padding-left: 5px; }\n");
     renderBuffer.append("body.compact div.element div.summary table.bindings { display: none; }\n");
     renderBuffer.append("body.compact div.element div.summary div.title { font-weight: normal; }\n");
     renderBuffer.append("body.compact div.element div.summary div.title span.nodeName.verbose { display: none; }\n");
@@ -484,19 +484,19 @@ public class TemplateOutlinePage extends Page implements IContentOutlinePage, IH
     renderBuffer.append("body.compact div.element div.summary div.title span.type { display: none; }\n");
     renderBuffer.append("body.compact div.element div.contents { padding-left: 8px; padding-top: 2px; padding-bottom: 2px; }\n");
 
-    renderBuffer.append("body.compact div.element.wo.WOString { display: inline; border: none; }\n");
-    renderBuffer.append("body.compact div.element.wo.WOString div.summary { display: inline; border: 1px solid rgb(200, 200, 255); }\n");
-    renderBuffer.append("body.compact div.element.wo.WOString div.summary div.title { display: inline; }\n");
-    renderBuffer.append("body.compact div.element.wo.WOString.simple { border: none; }\n");
-    renderBuffer.append("body.compact div.element.wo.WOString.simple div.summary { border: none; background-color: transparent; padding: 0px; }\n");
-    renderBuffer.append("body.compact div.element.wo.WOString.simple div.summary div.title { display: inline; }\n");
+    renderBuffer.append("body.compact div.element.wo.TBString { display: inline; border: none; }\n");
+    renderBuffer.append("body.compact div.element.wo.TBString div.summary { display: inline; border: 1px solid rgb(200, 200, 255); }\n");
+    renderBuffer.append("body.compact div.element.wo.TBString div.summary div.title { display: inline; }\n");
+    renderBuffer.append("body.compact div.element.wo.TBString.simple { border: none; }\n");
+    renderBuffer.append("body.compact div.element.wo.TBString.simple div.summary { border: none; background-color: transparent; padding: 0px; }\n");
+    renderBuffer.append("body.compact div.element.wo.TBString.simple div.summary div.title { display: inline; }\n");
 
-    renderBuffer.append("body.compact div.element.wo.ERXLocalizedString { display: inline; border: none; }\n");
-    renderBuffer.append("body.compact div.element.wo.ERXLocalizedString div.summary { display: inline; border: 1px solid rgb(200, 200, 255); }\n");
-    renderBuffer.append("body.compact div.element.wo.ERXLocalizedString div.summary div.title { display: inline; }\n");
-    renderBuffer.append("body.compact div.element.wo.ERXLocalizedString.simple { border: none; }\n");
-    renderBuffer.append("body.compact div.element.wo.ERXLocalizedString.simple div.summary { border: none; background-color: transparent; padding: 0px; }\n");
-    renderBuffer.append("body.compact div.element.wo.ERXLocalizedString.simple div.summary div.title { display: inline; }\n");
+    renderBuffer.append("body.compact div.element.wo.TBWLocalizedString { display: inline; border: none; }\n");
+    renderBuffer.append("body.compact div.element.wo.TBWLocalizedString div.summary { display: inline; border: 1px solid rgb(200, 200, 255); }\n");
+    renderBuffer.append("body.compact div.element.wo.TBWLocalizedString div.summary div.title { display: inline; }\n");
+    renderBuffer.append("body.compact div.element.wo.TBWLocalizedString.simple { border: none; }\n");
+    renderBuffer.append("body.compact div.element.wo.TBWLocalizedString.simple div.summary { border: none; background-color: transparent; padding: 0px; }\n");
+    renderBuffer.append("body.compact div.element.wo.TBWLocalizedString.simple div.summary div.title { display: inline; }\n");
 
     renderBuffer.append("body div.element.document { margin: 0px; padding: 0px; border: none; }\n");
     renderBuffer.append("body div.element.document > div.summary { margin: 0px; padding: 0px; border: none; display: none; }\n");
@@ -521,7 +521,7 @@ public class TemplateOutlinePage extends Page implements IContentOutlinePage, IH
       renderBuffer.append("<body id = \"outline\" class = \"verbose\">\n");
     }
 
-    renderBuffer.append("<div class = \"viewControls\"><a href = \"javascript:void(0)\" onclick = \"toggleCompact()\">toggle compact view</a></div>\n");
+    renderBuffer.append("<div class = \"viewControls\"><a href = \"javascript:void(0)\" onclick = \"toggleCompact()\">Toggle compact view</a></div>\n");
     renderBuffer.append("<div class = \"elements\">\n");
   }
 
@@ -569,8 +569,8 @@ public class TemplateOutlinePage extends Page implements IContentOutlinePage, IH
         if (wodElement != null) {
           className = className + " " + wodElement.getElementType();
 
-          if ("WOString".equals(wodElement.getElementType()) || "ERXLocalizedString".equals(wodElement.getElementType())) {
-            if (wodElement.getBindingNamed("value") != null) {
+          if ("TBString".equals(wodElement.getElementType()) || "TBWLocalizedString".equals(wodElement.getElementType())) {
+            if (wodElement.getBindingNamed(TBLipsConstants.VALUE_BINDING_KEY) != null) {
               if (wodElement.getBindingNamed("escapeHTML") != null && wodElement.getBindings().size() == 2) {
                 woSimpleString = true;
               }
@@ -624,7 +624,7 @@ public class TemplateOutlinePage extends Page implements IContentOutlinePage, IH
 
       // ... a simple string tag
       if (woSimpleString) {
-        IWodBinding valueBinding = wodElement.getBindingNamed("value");
+        IWodBinding valueBinding = wodElement.getBindingNamed(TBLipsConstants.VALUE_BINDING_KEY);
         String text = valueBinding.getValue();
         String textClassName;
         if (valueBinding.isLiteral()) {
@@ -639,7 +639,7 @@ public class TemplateOutlinePage extends Page implements IContentOutlinePage, IH
         }
         renderBuffer.append("<div class = \"title\"></div> <div class = \"" + textClassName + "\">[" + text + "]</div>");
       }
-      // ... a WO tag
+      // ... a TB tag
       else if (woTag) {
         if (wodElement != null) {
           if (WodHtmlUtils.isInline(nodeName)) {
@@ -648,7 +648,7 @@ public class TemplateOutlinePage extends Page implements IContentOutlinePage, IH
             renderBuffer.append("<div class = \"title\"><span class = \"nodeName verbose\">" + summaryName + "</span></div>");
 
             // Special case for the compact display of a conditional
-            if ("WOConditional".equals(summaryName)) {
+            if ("TBConditional".equals(summaryName)) {
               String conditionValue = wodElement.getBindingValue("condition");
               if (conditionValue != null) {
                 summaryName = conditionValue;
@@ -659,7 +659,7 @@ public class TemplateOutlinePage extends Page implements IContentOutlinePage, IH
                     negated = true;
                   }
                 }
-                else if (nodeName.equals("wo:not")) {
+                else if (nodeName.equals("tb:not")) {
                   negated = true;
                 }
 
@@ -672,17 +672,17 @@ public class TemplateOutlinePage extends Page implements IContentOutlinePage, IH
               }
             }
             // Special case for the compact display of a string
-            else if ("WOString".equals(summaryName)) {
-              String value = wodElement.getBindingValue("value");
+            else if ("TBString".equals(summaryName)) {
+              String value = wodElement.getBindingValue(TBLipsConstants.VALUE_BINDING_KEY);
               if (value != null) {
-                summaryName = "WOString: " + value;
+                summaryName = "TBString: " + value;
               }
             }
             // Special case for the compact display of a localized string
-            else if ("ERXLocalizedString".equals(summaryName)) {
-              String value = wodElement.getBindingValue("value");
+            else if ("TBWLocalizedString".equals(summaryName)) {
+              String value = wodElement.getBindingValue(TBLipsConstants.VALUE_BINDING_KEY);
               if (value != null) {
-                summaryName = "ERXLocalizedString: " + value;
+                summaryName = "TBWLocalizedString: " + value;
               }
             }
             // Special case for the compact display of links, buttons, etc
@@ -691,8 +691,8 @@ public class TemplateOutlinePage extends Page implements IContentOutlinePage, IH
               summaryName = wodElement.getElementType() + ": " + action;
             }
             // Special case for the compact display of form fields
-            else if (wodElement.getBindingNamed("value") != null) {
-              String value = wodElement.getBindingValue("value");
+            else if (wodElement.getBindingNamed(TBLipsConstants.VALUE_BINDING_KEY) != null) {
+              String value = wodElement.getBindingValue(TBLipsConstants.VALUE_BINDING_KEY);
               summaryName = wodElement.getElementType() + ": " + value;
             }
             // Special case for the compact display of checkboxes
@@ -734,7 +734,7 @@ public class TemplateOutlinePage extends Page implements IContentOutlinePage, IH
             renderBuffer.append("</table>");
           }
         }
-        // ... if the WO tag doesn't have a WOD entry, show it as "missing"
+        // ... if the TB tag doesn't have a WOD entry, show it as "missing"
         else {
           String missingName = element.getAttributeValue("name");
           if (missingName == null) {

@@ -8,6 +8,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.ui.IFileEditorInput;
+import org.objectstyle.wolips.core.TBLipsConstants;
 
 import tk.eclipse.plugin.htmleditor.HTMLPlugin;
 import tk.eclipse.plugin.htmleditor.HTMLUtil;

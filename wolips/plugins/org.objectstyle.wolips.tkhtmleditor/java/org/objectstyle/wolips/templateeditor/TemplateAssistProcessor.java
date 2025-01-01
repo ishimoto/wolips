@@ -27,6 +27,7 @@ import org.objectstyle.wolips.bindings.utils.BindingReflectionUtils;
 import org.objectstyle.wolips.bindings.wod.IWodElement;
 import org.objectstyle.wolips.bindings.wod.IWodModel;
 import org.objectstyle.wolips.bindings.wod.TagShortcut;
+import org.objectstyle.wolips.core.TBLipsConstants;
 import org.objectstyle.wolips.variables.BuildProperties;
 import org.objectstyle.wolips.wodclipse.core.completion.WodCompletionProposal;
 import org.objectstyle.wolips.wodclipse.core.completion.WodCompletionUtils;
@@ -57,11 +58,11 @@ public class TemplateAssistProcessor extends HTMLAssistProcessor {
     _cache = wodParserCache;
     _tagList = new ArrayList<TagInfo>(TagDefinition.getTagInfoAsList());
 
-    TagInfo webobject = new TagInfo("webobject", true);
+    TagInfo webobject = new TagInfo(TBLipsConstants.TreasureBoat_TAG_KEY, true);
     webobject.addAttributeInfo(new AttributeInfo("name", true, AttributeInfo.NONE, true));
     _tagList.add(webobject);
 
-    TagInfo wo = new TagInfo("wo", true);
+    TagInfo wo = new TagInfo("tb", true);
     wo.addAttributeInfo(new AttributeInfo("name", true, AttributeInfo.NONE, true));
     _tagList.add(wo);
 
@@ -102,8 +103,8 @@ public class TemplateAssistProcessor extends HTMLAssistProcessor {
   @Override
   protected List<TagInfo> getDynamicTagInfo(String tagName) {
     List<TagInfo> tagInfos = null;
-    if (tagName.startsWith("wo:")) {
-      String partialElementType = tagName.substring("wo:".length());
+    if (tagName.startsWith("tb:")) {
+      String partialElementType = tagName.substring("tb:".length());
       IJavaProject javaProject = getJavaProject();
       try {
         Set<WodCompletionProposal> proposals = new HashSet<WodCompletionProposal>();
@@ -157,17 +158,7 @@ public class TemplateAssistProcessor extends HTMLAssistProcessor {
         String bindingValue = value;
         String prefix = "$";
         String suffix = "";
-        String inlineBindingPrefix = _buildProperties.getInlineBindingPrefix();
-        String inlineBindingSuffix = _buildProperties.getInlineBindingSuffix();
-        if (value.startsWith(inlineBindingPrefix)) {
-          prefix = inlineBindingPrefix;
-          bindingValue = value.substring(inlineBindingPrefix.length());
-          if (inlineBindingSuffix.length() > 0 && value.endsWith(inlineBindingSuffix)) {
-            bindingValue = bindingValue.substring(0, bindingValue.length() - inlineBindingSuffix.length());
-            suffix = inlineBindingSuffix;
-          }
-        }
-        else if (value.startsWith("~")) {
+        if (value.startsWith("~")) {
           Matcher m = Pattern.compile("[a-z0-9.]*$").matcher(value);
           if (m.find()) {
             int index = m.start();
@@ -277,8 +268,8 @@ public class TemplateAssistProcessor extends HTMLAssistProcessor {
 
   @Override
   protected TagInfo getTagInfo(String name) {
-    if (name.startsWith("wo:")) {
-      String elementTypeName = name.substring("wo:".length());
+    if (name.startsWith("tb:")) {
+      String elementTypeName = name.substring("tb:".length());
       InlineWodTagInfo tagInfo = new InlineWodTagInfo(elementTypeName, WodParserCache.getTypeCache());
       tagInfo.setJavaProject(getJavaProject());
       return tagInfo;

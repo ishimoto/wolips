@@ -24,7 +24,7 @@ public class InlineWodTagInfo extends TagInfo {
   private TypeCache _cache;
 
   public InlineWodTagInfo(String elementTypeName, TypeCache cache) {
-    super("wo:" + elementTypeName, true, true);
+    super("tb:" + elementTypeName, true, true);
     setRequiresAttributes(true);
     _cache = cache;
     _elementTypeName = elementTypeName;

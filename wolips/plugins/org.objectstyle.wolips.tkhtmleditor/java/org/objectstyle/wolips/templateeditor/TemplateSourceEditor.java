@@ -238,8 +238,7 @@ public class TemplateSourceEditor extends HTMLSourceEditor implements ITextWOEdi
   public FuzzyXMLDocument getHtmlXmlDocument(boolean refreshModel) throws Exception {
     FuzzyXMLDocument doc;
     if (refreshModel || isDirty()) {
-      BuildProperties buildProperties = (BuildProperties)getParserCache().getProject().getAdapter(BuildProperties.class);
-      FuzzyXMLParser parser = new FuzzyXMLParser(buildProperties != null ? buildProperties.isWellFormedTemplateRequired() : false, true);
+      FuzzyXMLParser parser = new FuzzyXMLParser(true, true);
       doc = parser.parse(getHTMLSource());
       getParserCache().getHtmlEntry().setModel(doc);
       setCacheOutOfSync(false);
