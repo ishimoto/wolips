@@ -227,10 +227,6 @@ on the ObjectStyle Group, please see http://objectstyle.org/
          version="5.0.0.qualifier"/>
 
    <plugin
-         id="org.objectstyle.wolips.pbserver"
-         version="5.0.0.qualifier"/>
-
-   <plugin
          id="org.objectstyle.wolips.builder"
          version="5.0.0.qualifier"/>
 

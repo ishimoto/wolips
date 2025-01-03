@@ -73,7 +73,6 @@
 		<module>wolips/plugins/org.objectstyle.wolips.jdt</module>
 		<module>wolips/plugins/org.objectstyle.wolips.launching</module>
 		<module>wolips/plugins/org.objectstyle.wolips.locate</module>
-		<module>wolips/plugins/org.objectstyle.wolips.pbserver</module>
 		<module>wolips/plugins/org.objectstyle.wolips.preferences</module>
 		<module>wolips/plugins/org.objectstyle.wolips.refactoring</module>
 		<module>wolips/plugins/org.objectstyle.wolips.ruleeditor</module>
