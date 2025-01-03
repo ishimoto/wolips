@@ -3,10 +3,10 @@
       id="org.objectstyle.wolips.feature"
       label="WOLips"
       version="5.0.0.qualifier"
-      provider-name="wocommunity.org">
+      provider-name="treasureboat.org">
 
    <description url="https://wiki.wocommunity.org/xwiki/bin/view/WOL/">
-      The WOLips project is a set of tools for WebObjects development
+      The TBLips project is a set of tools for TreasureBoat development
 on the eclipse platform.
    </description>
 

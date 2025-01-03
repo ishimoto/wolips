@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Automatic-Module-Name: org.objectstyle.wolips.tkhtmleditor
-Bundle-Name: WOLips Html Editor
+Bundle-Name: TBLips Html Editor
 Bundle-SymbolicName: org.objectstyle.wolips.tkhtmleditor;singleton:=true
 Bundle-Version: 5.0.0.qualifier
 Bundle-Activator: tk.eclipse.plugin.htmleditor.HTMLPlugin
-Bundle-Vendor: wocommunity.org
+Bundle-Vendor: treasureboat.org
 Bundle-Localization: plugin
 Export-Package: DTD,
  TLD,

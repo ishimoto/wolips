@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Automatic-Module-Name: org.objectstyle.wolips.debug
-Bundle-Name: WOLips Debug Plug-in
+Bundle-Name: TBLips Debug Plug-in
 Bundle-SymbolicName: org.objectstyle.wolips.debug; singleton:=true
 Bundle-Version: 5.0.0.qualifier
 Bundle-Activator: org.objectstyle.wolips.debug.Activator
-Bundle-Vendor: wocommunity.org
+Bundle-Vendor: treasureboat.org
 Require-Bundle: org.eclipse.debug.core,
  org.eclipse.jdt.debug,
  org.objectstyle.wolips.baseforplugins

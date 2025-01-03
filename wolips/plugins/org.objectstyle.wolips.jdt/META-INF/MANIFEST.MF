@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Automatic-Module-Name: org.objectstyle.wolips.jdt
-Bundle-Name: WOLips JDT Plug-in
+Bundle-Name: TBLips JDT Plug-in
 Bundle-SymbolicName: org.objectstyle.wolips.jdt; singleton:=true
 Bundle-Version: 5.0.0.qualifier
 Bundle-Activator: org.objectstyle.wolips.jdt.JdtPlugin
 Bundle-Localization: plugin
-Bundle-Vendor: wocommunity.org
+Bundle-Vendor: treasureboat.org
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources,
  org.eclipse.jdt.core,

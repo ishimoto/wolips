@@ -5,7 +5,7 @@ Bundle-Name: EOGenerator JDT
 Bundle-SymbolicName: org.objectstyle.wolips.eogenerator.jdt; singleton:=true
 Bundle-Version: 5.0.0.qualifier
 Bundle-Activator: org.objectstyle.wolips.eogenerator.jdt.Activator
-Bundle-Vendor: wocommunity.org
+Bundle-Vendor: treasureboat.org
 Require-Bundle: org.objectstyle.wolips.baseforplugins,
  org.objectstyle.wolips.eogenerator.core,
  org.eclipse.jdt.core,
