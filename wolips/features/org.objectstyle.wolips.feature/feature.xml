@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.objectstyle.wolips.feature"
-      label="WOLips"
+      label="TBLips"
       version="5.0.0.qualifier"
       provider-name="treasureboat.org">
 
@@ -11,6 +11,10 @@ on the eclipse platform.
    </description>
 
    <license>
+      The TreasureBoat Group Software License, Version 2.0
+Copyright (c) 2016 - 2025 The TreasureBoat Group and individual
+authors of the Software. All rights reserved.
+
       The ObjectStyle Group Software License, Version 1.0
 Copyright (c) 2002 - 2010 The ObjectStyle Group and individual
 authors of the software. All rights reserved.
