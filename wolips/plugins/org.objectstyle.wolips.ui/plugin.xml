@@ -175,7 +175,7 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            name="WOLips"
+            name="TBLips"
             id="org.objectstyle.wolips.ui">
       </category>
       <view
@@ -192,7 +192,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            name="WOLips"
+            name="TBLips"
             class="org.objectstyle.wolips.ui.preferences.WOLipsPropertiesPreferencesPage"
             id="org.objectstyle.wolips.preferences.PreferencesPage">
       </page>
