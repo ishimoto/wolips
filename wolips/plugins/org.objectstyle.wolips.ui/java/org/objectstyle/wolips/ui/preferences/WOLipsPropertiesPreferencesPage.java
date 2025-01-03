@@ -107,19 +107,9 @@ public class WOLipsPropertiesPreferencesPage extends FieldEditorPreferencePage i
 		};
 		addField(_wolipsPropertiesFieldEditor);
 
-		addField(new WOLipsDirectoryFieldEditor(WOVariables.SYSTEM_FRAMEWORKS, "System Frameworks", widthInChars, getFieldEditorParent()));
-		addField(new WOLipsDirectoryFieldEditor(WOVariables.LOCAL_FRAMEWORKS, "Local Frameworks", widthInChars, getFieldEditorParent()));
-		addField(new WOLipsDirectoryFieldEditor(WOVariables.USER_FRAMEWORKS, "User Frameworks", widthInChars, getFieldEditorParent()));
-
 		addField(new WOLipsDirectoryFieldEditor(WOVariables.SYSTEM_ROOT, "System Root", widthInChars, getFieldEditorParent()));
 		addField(new WOLipsDirectoryFieldEditor(WOVariables.LOCAL_ROOT, "Local Root", widthInChars, getFieldEditorParent()));
 		addField(new WOLipsDirectoryFieldEditor(WOVariables.USER_ROOT, "User Root", widthInChars, getFieldEditorParent()));
-
-		addField(new WOLipsDirectoryFieldEditor(WOVariables.WEBOBJECTS_EXTENSIONS, "WebObjects Extensions", widthInChars, getFieldEditorParent()));
-
-		addField(new WOLipsDirectoryFieldEditor(WOVariables.APPS_ROOT, "Installed Applications", widthInChars, getFieldEditorParent()));
-
-		addField(new WOLipsDirectoryFieldEditor(WOVariables.API_ROOT_KEY, "TreasureBoat Javadoc", widthInChars, getFieldEditorParent()));
 	}
 	
 	@Override
