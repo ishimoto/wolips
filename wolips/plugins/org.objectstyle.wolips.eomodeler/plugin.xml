@@ -105,6 +105,11 @@
          <propertyTab
                afterTab="org.objectstyle.wolips.eomodeler.tabs.eoentityAdvanced"
                category="eoentity"
+               id="org.objectstyle.wolips.eomodeler.tabs.eoentityLocalized"
+               label="Localized"/>
+         <propertyTab
+               afterTab="org.objectstyle.wolips.eomodeler.tabs.eoentityLocalized"
+               category="eoentity"
                id="org.objectstyle.wolips.eomodeler.tabs.eoentitySharedObjects"
                label="Shared"/>
          <propertyTab
@@ -131,8 +136,13 @@
                category="eoattribute"
                id="org.objectstyle.wolips.eomodeler.tabs.eoattributeAdvanced"
                label="Advanced"/>
-         <propertyTab
+          <propertyTab
                afterTab="org.objectstyle.wolips.eomodeler.tabs.eoattributeAdvanced"
+               category="eoattribute"
+               id="org.objectstyle.wolips.eomodeler.tabs.eoattributeLocalized"
+               label="Localized"/>
+         <propertyTab
+               afterTab="org.objectstyle.wolips.eomodeler.tabs.eoattributeLocalized"
                category="eoattribute"
                id="org.objectstyle.wolips.eomodeler.tabs.eoattributeUserInfo"
                label="User Info"/>
@@ -152,6 +162,11 @@
                label="Advanced"/>
          <propertyTab
                afterTab="org.objectstyle.wolips.eomodeler.tabs.eorelationshipAdvanced"
+               category="eorelationship"
+               id="org.objectstyle.wolips.eomodeler.tabs.eorelationshipLocalized"
+               label="Localized"/>
+         <propertyTab
+               afterTab="org.objectstyle.wolips.eomodeler.tabs.eorelationshipLocalized"
                category="eorelationship"
                id="org.objectstyle.wolips.eomodeler.tabs.eorelationshipUserInfo"
                label="User Info"/>
@@ -287,6 +302,13 @@
             <input type="org.objectstyle.wolips.eomodeler.core.model.EOEntity"/>
          </propertySection>
          <propertySection
+               class="org.objectstyle.wolips.eomodeler.editors.entity.EOEntityLocalizedEditorSection"
+               enablesFor="1"
+               id="org.objectstyle.wolips.eomodeler.sections.eoentityLocalized"
+               tab="org.objectstyle.wolips.eomodeler.tabs.eoentityLocalized">
+            <input type="org.objectstyle.wolips.eomodeler.core.model.EOEntity"/>
+         </propertySection>
+         <propertySection
                class="org.objectstyle.wolips.eomodeler.editors.entity.EOEntitySharedObjectsEditorSection"
                enablesFor="1"
                id="org.objectstyle.wolips.eomodeler.sections.eoentitySharedObjects"
@@ -323,6 +345,14 @@
             <input type="org.objectstyle.wolips.eomodeler.core.model.EOAttributePath"/>
          </propertySection>
          <propertySection
+               class="org.objectstyle.wolips.eomodeler.editors.attribute.EOAttributeLocalizedEditorSection"
+               enablesFor="1"
+               id="org.objectstyle.wolips.eomodeler.sections.eoattributeLocalized"
+               tab="org.objectstyle.wolips.eomodeler.tabs.eoattributeLocalized">
+            <input type="org.objectstyle.wolips.eomodeler.core.model.EOAttribute"/>
+            <input type="org.objectstyle.wolips.eomodeler.core.model.EOAttributePath"/>
+         </propertySection>
+         <propertySection
                class="org.objectstyle.wolips.eomodeler.editors.userInfo.UserInfoPropertySection"
                enablesFor="1"
                id="org.objectstyle.wolips.eomodeler.sections.eoattributeUserInfo"
@@ -349,6 +379,14 @@
                enablesFor="1"
                id="org.objectstyle.wolips.eomodeler.sections.eorelationshipAdvanced"
                tab="org.objectstyle.wolips.eomodeler.tabs.eorelationshipAdvanced">
+            <input type="org.objectstyle.wolips.eomodeler.core.model.EORelationship"/>
+            <input type="org.objectstyle.wolips.eomodeler.core.model.EORelationshipPath"/>
+         </propertySection>
+         <propertySection
+               class="org.objectstyle.wolips.eomodeler.editors.relationship.EORelationshipLocalizedEditorSection"
+               enablesFor="1"
+               id="org.objectstyle.wolips.eomodeler.sections.eorelationshipLocalized"
+               tab="org.objectstyle.wolips.eomodeler.tabs.eorelationshipLocalized">
             <input type="org.objectstyle.wolips.eomodeler.core.model.EORelationship"/>
             <input type="org.objectstyle.wolips.eomodeler.core.model.EORelationshipPath"/>
          </propertySection>
