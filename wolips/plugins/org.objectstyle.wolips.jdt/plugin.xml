@@ -110,6 +110,30 @@
       </filter>
       <filter
             targetId="org.objectstyle.wolips.jdt.ui.WOPackageExplorer"
+            id="org.objectstyle.wolips.ui.javaelementfilters.dotdsstore"
+            name=".DS_Store"
+            enabled="true"
+            description="Hide all .DS_Store files"
+            pattern=".DS_Store">
+      </filter>
+      <filter
+            targetId="org.objectstyle.wolips.jdt.ui.WOPackageExplorer"
+            id="org.objectstyle.wolips.ui.javaelementfilters.gradlebuild"
+            name="build (Gradle)"
+            enabled="false"
+            description="Hide build folder"
+            pattern="build">
+      </filter>
+       <filter
+               targetId="org.objectstyle.wolips.jdt.ui.WOPackageExplorer"
+               id="org.objectstyle.wolips.ui.javaelementfilters.gradleout"
+               name="out (Gradle)"
+               enabled="false"
+               description="Hide out folder"
+               pattern="out">
+       </filter>
+      <filter
+            targetId="org.objectstyle.wolips.jdt.ui.WOPackageExplorer"
             id="org.objectstyle.wolips.ui.javaelementfilters.builddotproperties"
             name="build.properties (TBLips)"
             enabled="true"
