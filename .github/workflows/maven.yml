@@ -2,7 +2,7 @@ name: Deploy p2 to pages
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "tblips" ]
   workflow_dispatch:
 
 jobs:
@@ -26,17 +26,21 @@ jobs:
       with:
         path: wolips.p2/target/
 
+
+
+
+
   # Deployment job
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      pages: write
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+  # deploy:
+  #   environment:
+  #     name: github-pages
+  #     url: ${{ steps.deployment.outputs.page_url }}
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     id-token: write
+  #     pages: write
+  #   needs: build
+  #   steps:
+  #     - name: Deploy to GitHub Pages
+  #       id: deployment
+  #       uses: actions/deploy-pages@v4

@@ -3,9 +3,9 @@
 
 name: Maven Package
 
-on:
-  push:
-    branches: [ "release" ]
+#on:
+#  push:
+#    branches: [ "release" ]
 
 jobs:
   build:
@@ -66,6 +66,6 @@ jobs:
         # Branch to merge
           branchtomerge: release
           # Branch that will be updated
-          branch: master
+          branch: tblips
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
