@@ -6,7 +6,7 @@
 	<artifactId>wolips-project</artifactId>
 	<version>5.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<url>https://github.com/wocommunity/wolips/</url>
+	<url>https://github.com/ishimoto/wolips/</url>
 
 	<properties>
 		<maven.compiler.release>21</maven.compiler.release>
@@ -20,14 +20,14 @@
 
 	<issueManagement>
 		<system>gihhub</system>
-		<url>https://github.com/wocommunity/wolips/issues</url>
+		<url>https://github.com/ishimoto/wolips/pulls</url>
 	</issueManagement>
 
 	<inceptionYear>2001</inceptionYear>
 
 	<organization>
-		<name>WOCommunity</name>
-		<url>http://wocommunity.org/</url>
+		<name>TreasureBoat</name>
+		<url>https://treasureboat.org/</url>
 	</organization>
 
 	<repositories>
